@@ -12,11 +12,16 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
+@app.route('/admin_vendor')
+def avhome():
+    return render_template('admin_vendor.html')
+    
 
 
 
 
 
 
-if __name__ == '__app__':
+
+if __name__ == '__main__':
     app.run(debug=True)
