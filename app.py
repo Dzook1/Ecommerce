@@ -15,6 +15,12 @@ def home():
 @app.route('/loginUser.html', methods=['GET'])
 def loginUser():
     return render_template('loginUser.html')
+  
+  
+@app.route('/admin_vendor')
+def avhome():
+    return render_template('admin_vendor.html')
+
 
 @app.route('/loginUser.html', methods=['POST'])
 def loginUserGo():
@@ -75,7 +81,6 @@ def loginEmpGo():
         return render_template('empLanding.html')
     else:
         return render_template('index.html')
-
 
 if __name__ == '__main__':
     app.run(debug=True)
