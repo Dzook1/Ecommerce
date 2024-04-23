@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from sqlalchemy import create_engine, text
 
-conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
+conn_str = "mysql://root:MySQL@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -17,9 +17,9 @@ def loginUser():
     return render_template('loginUser.html')
   
   
-@app.route('/admin_vendor')
+@app.route('/products')
 def avhome():
-    return render_template('admin_vendor.html')
+    return render_template('products.html')
 
 
 @app.route('/loginUser.html', methods=['POST'])
@@ -81,6 +81,14 @@ def loginEmpGo():
         return render_template('empLanding.html')
     else:
         return render_template('index.html')
+
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
