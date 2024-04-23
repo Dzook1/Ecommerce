@@ -12,15 +12,17 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
+@app.route('/baseCustomer.html')
+def baseCustomer():
+    return render_template('baseCustomer.html')
+
 @app.route('/loginUser.html', methods=['GET'])
 def loginUser():
     return render_template('loginUser.html')
   
-  
 @app.route('/admin_vendor')
 def avhome():
     return render_template('admin_vendor.html')
-
 
 @app.route('/loginUser.html', methods=['POST'])
 def loginUserGo():
