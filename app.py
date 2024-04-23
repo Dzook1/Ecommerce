@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from sqlalchemy import create_engine, text
 
+
 conn_str = "mysql://root:MySQL@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
