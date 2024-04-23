@@ -25,7 +25,7 @@ def loginUserGo():
     username = request.form['Username']
     password = request.form['Password']
 
-    query = text("SELECT User_ID FROM Users WHERE Username = :username OR Email = :username AND Password = :password AND Type = 'User'")
+    query = text("SELECT User_ID FROM Users WHERE Username = :username AND Password = :password AND Type = 'User' OR Email = :username AND Password = :password AND Type = 'User'")
     result = conn.execute(query, {'username': username, 'password': password}).fetchone()
 
     if result:
@@ -97,7 +97,7 @@ def addItem():
 @app.route('/add_item.html', methods=['POST'])
 def addItemGo():
 
-    
+
     return render_template('add_item.html')
 
 if __name__ == '__main__':
