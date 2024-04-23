@@ -1,0 +1,16 @@
+{% extends 'base.html'%}
+{% block body %}
+    <h1>Employee Login</h1>
+    <form action="/add_item.html" method="POST">
+        <input type="text" name="Title" placeholder="Product Name" required>
+        <input type="text" name="Description" placeholder="Product Description" required>
+        <input type="image" name="Images" placeholder="Image URL" required>
+        <input type="text" name="Warranty" placeholder="Warranty Period" required>
+        <input type="text" name="Category" placeholder="Category" required>
+        <input type="text" name="Colors" placeholder="Colors" required>
+        <input type="text" name="Sizes" placeholder="Sizes" required>
+        <input type="number" name="Number" placeholder="Number Of Stock" required>
+        <input type="number" step="0.01" name="Price" placeholder="Price" required>
+        <input type="submit" value="Login">
+    </form>
+{% endblock %}

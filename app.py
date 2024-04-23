@@ -19,10 +19,6 @@ def baseCustomer():
 @app.route('/loginUser.html', methods=['GET'])
 def loginUser():
     return render_template('loginUser.html')
-  
-@app.route('/admin_vendor')
-def avhome():
-    return render_template('admin_vendor.html')
 
 @app.route('/loginUser.html', methods=['POST'])
 def loginUserGo():
@@ -89,6 +85,20 @@ def loginEmpGo():
             return render_template('empLanding.html')
     else:
         return render_template('index.html')
+
+@app.route('/adminLanding.html')
+def adminLanding():
+    return render_template('adminLanding.html')
+
+@app.route('/add_item.html', methods=['GET'])
+def addItem():
+    return render_template('add_item.html')
+
+@app.route('/add_item.html', methods=['POST'])
+def addItemGo():
+
+    
+    return render_template('add_item.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
