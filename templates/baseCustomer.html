@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Base Customer{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <header>
+        <div class="header-line1">
+            <h1 class="nameH">Name</h1>
+            <div class="searchContainer">
+                <input class="searchContainer-input" type="text" placeholder="Search">
+                <a class="searchContainer-a" type="submit"><img src="../static/485-4851736_free-png-search-icon-search-icon-free-download-removebg-preview.png" alt="Search Icon"></a>
+            </div>
+            <a href="/" class="signinA">Sign-In</a>
+            <a href="/" class="cartA"><img src="" alt=""></a>
+        </div>
+
+        <div class="header-line2">
+            <a href="/" class="line2-a">My Orders</a>
+            <a href="/" class="line2-a">Discounts</a>
+            <a href="/" class="line2-a">Chats</a>
+            <a href="/" class="line2-a">Register</a>
+        </div>
+    </header>
+
+
+    <footer>
+        Footer
+    </footer>
+</body>
+</html>
