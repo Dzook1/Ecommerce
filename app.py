@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from sqlalchemy import create_engine, text
 
-conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
+conn_str = "mysql://root:MySQL@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -19,6 +19,10 @@ def baseCustomer():
 @app.route('/loginUser.html', methods=['GET'])
 def loginUser():
     return render_template('loginUser.html')
+
+@app.route('/products')
+def producthome():
+    return render_template('products.html')
 
 @app.route('/loginUser.html', methods=['POST'])
 def loginUserGo():
@@ -95,10 +99,9 @@ def addItem():
     return render_template('add_item.html')
 
 @app.route('/add_item.html', methods=['POST'])
-def addItemGo():
-
-    
+def addItemGo():    
     return render_template('add_item.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
