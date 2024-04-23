@@ -1,12 +1,51 @@
+<style>
+    .body form{
+        display: inline-block;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+    .body{
+        text-align:center;
+        background-color: #EADAC0;
+    }
+    .input_field {
+      width: 60%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .input_submit {
+      width: 60%;
+      background-color: #305D58;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .input_submit:hover {
+      background-color: #62606B;
+    }
+</style>
+
 {% extends 'base.html' %}
 {% block body %}
+<div class='body'>
     <h1>Signup Page</h1>
     <form action="/signup.html" method="POST">
-        <input type="text" name="First_Name" placeholder="First Name" required>
-        <input type="text" name="Last_Name" placeholder="Last Name" required>
-        <input type="email" name="Email" placeholder="Email" required>
-        <input type="text" name="Username" placeholder="Username" required>
-        <input type="password" name="Password" placeholder="Password" required>
-        <input type="submit" value="Signup">
+        <input type="text" name="First_Name" placeholder="First Name" class='input_field' required>
+        <input type="text" name="Last_Name" placeholder="Last Name" class='input_field' required>
+        <input type="email" name="Email" placeholder="Email" class='input_field' required>
+        <input type="text" name="Username" placeholder="Username" class='input_field' required>
+        <input type="password" name="Password" placeholder="Password" class='input_field' required>
+        <input type="submit" value="Signup" class='input_submit'>
     </form>
+<div class='body'>
 {% endblock %}
