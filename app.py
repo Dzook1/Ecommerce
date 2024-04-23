@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request
 from sqlalchemy import create_engine, text
 
 conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
@@ -73,14 +73,20 @@ def loginEmpGo():
     username = request.form['Username']
     password = request.form['Password']
 
-    query = text("SELECT User_ID FROM Users WHERE Username = :username AND Password = :password AND Type = 'Admin' OR Type = 'Vendor'")
+    query = text("SELECT User_ID FROM Users WHERE Username = :username AND Password = :password AND Type = 'Admin' OR Username = :username AND Password = :password AND Type = 'Vendor'")
     result = conn.execute(query, {'username': username, 'password': password}).fetchone()
 
     if result:
         global AcctID
         AcctID = result[0]
+
+        query = text("SELECT Type FROM Users WHERE Username = :username AND Password = :password")
+        result2 = conn.execute(query, {'username': username, 'password': password}).fetchone()
         
-        return render_template('empLanding.html')
+        if result2[0] == "Admin":
+            return render_template('adminLanding.html')
+        else:
+            return render_template('empLanding.html')
     else:
         return render_template('index.html')
 
