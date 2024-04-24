@@ -1,0 +1,150 @@
+{% extends 'baseCustomer.html' %}
+
+{% block title %}Products {% endblock %}
+
+{% block body %}
+    <div class="filter">
+        <label for="categories">Filter by Category</label>
+        <select class="categories">
+            <option value="all">All</option>
+            <option value="clothing">Clothing</option>
+            <option value="electronics">Electronics</option>
+            <option value="books">Books</option>
+        </select>
+    </div>
+
+    <section class="productGrid">
+        <div class="productGrid-product">
+            <h1 class="productsGrid-product-title">Title</h1>
+            <div class="productGrid-product-imgDiv">
+                <img class="productGrid-product-img" src="https://www.nyfifth.com/category/20210318/30027_f_fm.jpg" alt="" onclick="productDivPopUp()">
+            </div>
+            <p class="productGrid-product-desc">Description</p>
+            <h2 class="productGrid-product-price">Price</h2>
+            <form>
+                <input class="productGrid-product-input" type="submit" value="Add to Cart">
+            </form>
+        </div>
+        <div class="productGrid-product">
+            <h1 class="productsGrid-product-title">Title</h1>
+            <div class="productGrid-product-imgDiv">
+                <img class="productGrid-product-img" src="https://www.nyfifth.com/category/20210318/30027_f_fm.jpg" alt="" onclick="productDivPopUp()">
+            </div>
+            <p class="productGrid-product-desc">Description</p>
+            <h2 class="productGrid-product-price">Price</h2>
+            <form>
+                <input class="productGrid-product-input" type="submit" value="Add to Cart">
+            </form>
+        </div>
+        <div class="productGrid-product">
+            <h1 class="productsGrid-product-title">Title</h1>
+            <div class="productGrid-product-imgDiv">
+                <img class="productGrid-product-img" src="https://www.nyfifth.com/category/20210318/30027_f_fm.jpg" alt="" onclick="productDivPopUp()">
+            </div>
+            <p class="productGrid-product-desc">Description</p>
+            <h2 class="productGrid-product-price">Price</h2>
+            <form>
+                <input class="productGrid-product-input" type="submit" value="Add to Cart">
+            </form>
+        </div>
+        <div class="productGrid-product">
+            <h1 class="productsGrid-product-title">Title</h1>
+            <div class="productGrid-product-imgDiv">
+                <img class="productGrid-product-img" src="https://www.nyfifth.com/category/20210318/30027_f_fm.jpg" alt="" onclick="productDivPopUp()">
+            </div>
+            <p class="productGrid-product-desc">Description</p>
+            <h2 class="productGrid-product-price">Price</h2>
+            <form>
+                <input class="productGrid-product-input" type="submit" value="Add to Cart">
+            </form>
+        </div>
+        <div class="productGrid-product">
+            <h1 class="productsGrid-product-title">Title</h1>
+            <div class="productGrid-product-imgDiv">
+                <img class="productGrid-product-img" src="https://www.nyfifth.com/category/20210318/30027_f_fm.jpg" alt="" onclick="productDivPopUp()">
+            </div>
+            <p class="productGrid-product-desc">Description</p>
+            <h2 class="productGrid-product-price">Price</h2>
+            <form>
+                <input class="productGrid-product-input" type="submit" value="Add to Cart">
+            </form>
+        </div>
+        <div class="productGrid-product">
+            <h1 class="productsGrid-product-title">Title</h1>
+            <div class="productGrid-product-imgDiv">
+                <img class="productGrid-product-img" src="https://www.nyfifth.com/category/20210318/30027_f_fm.jpg" alt="" onclick="productDivPopUp()">
+            </div>
+            <p class="productGrid-product-desc">Description</p>
+            <h2 class="productGrid-product-price">Price</h2>
+            <form>
+                <input class="productGrid-product-input" type="submit" value="Add to Cart">
+            </form>
+        </div>
+        <div class="productGrid-product">
+            <h1 class="productsGrid-product-title">Title</h1>
+            <div class="productGrid-product-imgDiv">
+                <img class="productGrid-product-img" src="https://www.nyfifth.com/category/20210318/30027_f_fm.jpg" alt="" onclick="productDivPopUp()">
+            </div>
+            <p class="productGrid-product-desc">Description</p>
+            <h2 class="productGrid-product-price">Price</h2>
+            <form>
+                <input class="productGrid-product-input" type="submit" value="Add to Cart">
+            </form>
+        </div>
+        <div class="productGrid-product">
+            <h1 class="productsGrid-product-title">Title</h1>
+            <div class="productGrid-product-imgDiv">
+                <img class="productGrid-product-img" src="https://www.nyfifth.com/category/20210318/30027_f_fm.jpg" alt="" onclick="productDivPopUp()">
+            </div>
+            <p class="productGrid-product-desc">Description</p>
+            <h2 class="productGrid-product-price">Price</h2>
+            <form>
+                <input class="productGrid-product-input" type="submit" value="Add to Cart">
+            </form>
+        </div>
+    </section>
+
+    <section class="productDiv">
+        <div class="productDiv-box">
+            <div class="left">
+                <button class="left-btn" onclick="backToProductGrid()">Back</button>
+                <h1 class="left-title">Title</h1>
+                <div class="left-imgDiv">
+                    <img src="https://www.nyfifth.com/category/20210318/30027_f_fm.jpg" alt="" class="left-img">
+                </div>
+            </div>
+    
+            <div class="right">
+                <h1 class="right-price">Price</h1>
+                <p class="right-description">DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescription</p>
+                <label for="right-sizeForm" class="right-mainLabel">Sizes</label>
+                <form class="right-sizeForm">
+                    <label class="right-label" for="smallRadio">Small</label>
+                    <input type="radio" class="radio smallRadio">
+                    <label class="right-label" for="mediumRadio">Medium</label>
+                    <input type="radio" class="radio mediumRadio">
+                    <label class="right-label" for="largeRadio">Large</label>
+                    <input type="radio" class="radio largeRadio">
+                </form>
+                <label for="right-colorForm" class="right-mainLabel">Colors</label>
+                <form class="right-colorForm">
+                    <label class="right-label" for="redRadio">Red</label>
+                    <input type="radio" class="radio redRadio">
+                    <label class="right-label" for="blueRadio">Blue</label>
+                    <input type="radio" class="radio blueRadio">
+                    <label class="right-label" for="greenRadio">Green</label>
+                    <input type="radio" class="radio greenRadio">
+                </form>
+                <p class=right-stock># in stock</p>
+                <div class="rightFlex">
+                    <input type="number" class="right-quantity" min="1" max="99" value="1">
+                    <form class="right-btnBox">
+                        <input type="submit" value="Add to Cart" class="right-btn">
+                    </form>
+                </div>
+                </div>
+
+        </div>
+        
+    </section>
+{% endblock %}
