@@ -1,0 +1,16 @@
+{% extends 'baseCustomer.html' %}
+{% block body %}
+    {% for i in cart %}
+        <div class="productItems">
+            <ul>
+                <li style='width:fit-content;'>: {{i[0]}}</li>
+                <ul>
+                    <li>: ${{i[1]}}</li>
+                    <li>: {{i[2]}}</li>
+                    <li>: {{i[3]}}</li>
+                </ul>
+                <br>
+            </ul>
+        </div> 
+    {% endfor %}
+{% endblock %}

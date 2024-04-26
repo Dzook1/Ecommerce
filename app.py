@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 from sqlalchemy import create_engine, text
 
-
 conn_str = "mysql://root:MySQL@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
@@ -12,19 +11,6 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     return render_template('index.html')
-# -------------------------- CUSTOMER PAGE ------------------------------------------
-
-@app.route('/userLanding.html')
-def userlanding():
-    return render_template('userLanding.html')
-
-@app.route('/baseCustomer.html')
-def baseCustomer():
-    return render_template('baseCustomer.html')
-
-
-
-# ---------------------------- END CUSTOMER -----------------------------------------
 
 
 @app.route('/loginUser.html', methods=['GET'])
@@ -47,7 +33,7 @@ def loginUserGo():
         global userID
         userID = result[0]
         
-        return render_template('userLanding.html')
+        return render_template('/baseCustomer.html')
     else:
         return render_template('index.html')
 
@@ -112,6 +98,46 @@ def addItem():
 @app.route('/add_item.html', methods=['POST'])
 def addItemGo():    
     return render_template('add_item.html')
+
+
+    # -------------------------- CUSTOMER PAGE ------------------------------------------
+
+@app.route('/baseCustomer.html')
+def baseCustomer():
+    return render_template('baseCustomer.html')
+
+@app.route('/orders.html', methods=['GET'])
+def orders():
+    order = conn.execute(text(f'SELECT * FROM ORDERS WHERE USER_ID = {userID}')).all()
+    print(order)
+    return render_template('orders.html', orders=order)
+
+@app.route('/orderDetails/<ORDER_ID>', methods=['GET'])
+def orderDetails(ORDER_ID):
+    allOrderDetails = conn.execute(text(f'SELECT * FROM ORDER_ITEMS WHERE ORDER_ID = {ORDER_ID}')).all()
+    print(allOrderDetails)
+    return render_template('/orderDetails.html', orderDetails=allOrderDetails)
+
+@app.route('/cart.html')
+def cart():
+    cart = conn.execute(text(f'SELECT * FROM CARTS NATURAL JOIN CART_ITEMS WHERE USER_ID = {userID}')).all()
+    print(cart)
+    return render_template('/cart.html', cart=cart)
+
+@app.route('/account.html', methods=["GET"])
+def account():
+    account = conn.execute(text(f'SELECT * FROM USERS WHERE USER_ID = {userID}')).all()
+    print(account)
+    return render_template(f'/account.html', account=account)
+
+
+
+
+# --------------------------------------- END CUSTOMER -----------------------------------------
+
+
+
+
 
 
 

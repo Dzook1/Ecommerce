@@ -1,0 +1,16 @@
+{% extends 'baseCustomer.html' %}
+
+{% block body %}
+<div class='accountbody'>
+    <h2 style='font-family: Anta;'>~Account Details~</h2>
+    <br>
+    <div class='account'>
+        <ul>
+            <li>
+                USER ID: {{account[0][0]}} <br><br>FIRST NAME: {{account[0][1]}} <br><br>LAST NAME: {{account[0][2]}}
+                <br><br>USERNAME: {{account[0][3]}} <br><br>EMAIL: {{account[0][4]}} <br><br>ACC TYPE: {{account[0][6]}}
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
