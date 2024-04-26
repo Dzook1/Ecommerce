@@ -12,10 +12,20 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     return render_template('index.html')
+# -------------------------- CUSTOMER PAGE ------------------------------------------
+
+@app.route('/userLanding.html')
+def userlanding():
+    return render_template('userLanding.html')
 
 @app.route('/baseCustomer.html')
 def baseCustomer():
     return render_template('baseCustomer.html')
+
+
+
+# ---------------------------- END CUSTOMER -----------------------------------------
+
 
 @app.route('/loginUser.html', methods=['GET'])
 def loginUser():
@@ -80,7 +90,7 @@ def loginEmpGo():
         query = text("SELECT Type FROM Users WHERE Username = :username AND Password = :password")
         result2 = conn.execute(query, {'username': username, 'password': password}).fetchone()
         
-        if result2[0] == "Admin":
+        if result2[0] == "ADMIN":
             return render_template('adminLanding.html')
         else:
             return render_template('empLanding.html')
@@ -116,6 +126,7 @@ def addItem():
 @app.route('/add_item.html', methods=['POST'])
 def addItemGo():    
     return render_template('add_item.html')
+
 
 
 if __name__ == '__main__':
