@@ -17,3 +17,5 @@ function backToProductGrid(){
     productGrid = document.getElementsByClassName('productGrid')[0];
     productGrid.style.display = 'grid';
 }
+
+
