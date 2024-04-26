@@ -1,0 +1,20 @@
+{% extends 'baseCustomer.html' %}
+
+
+{% block body %}
+    {% for i in orders %}
+        <a href="/orderDetails/{{i[0]}}" style='text-decoration: none; width:fit-content;'>
+            <div class="orders">
+                <ul>
+                    <li style='width:fit-content;'>ORDER_ID: {{i[0]}}</li>
+                    <ul>
+                        <li>TOTAL OF ORDER: ${{i[3]}}</li>
+                        <li>DATE: {{i[2]}}</li>
+                        <li>STATUS: {{i[4]}}</li>
+                    </ul>
+                    <br>
+                </ul>
+            </div> 
+        </a>
+    {% endfor %}
+{% endblock %}

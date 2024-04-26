@@ -5,26 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Base Customer{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='baseCustomer.css') }}">
+
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Anta&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+</head>
+  <body>
+    
     <script src="{{ url_for('static', filename='index.js') }}"></script>
+
     <header>
         <div class="header-line1">
-            <h1 class="nameH">Name</h1>
+            <a href="/baseCustomer.html" style='text-decoration: none; align-content: center; font-size: 20px; color: #f2eaea; font-family: Anta;'>E-Commi</a>
             <div class="searchContainer">
                 <input class="searchContainer-input" type="text" placeholder="Search">
                 <a class="searchContainer-a" type="submit"><img src="../static/485-4851736_free-png-search-icon-search-icon-free-download-removebg-preview.png" alt="Search Icon"></a>
             </div>
-            <a href="/" class="signinA">Sign-In</a>
-            <a href="/" class="cartA"><img src="../static/logo.png" alt="Cart Logo" style="text-align: center;" class="logo"></a>
+            <a href="/" class="signinA" style='text-decoration: none;'>Log Out</a>
+            <a href="/cart.html" class="cartA"><img src="../static/logo.png" alt="Cart Logo" style="text-align: center;" class="logo"></a>
         </div>
 
         <div class="header-line2">
-            <a href="/" class="line2-a">My Orders</a>
-            <a href="/" class="line2-a">Discounts</a>
-            <a href="/" class="line2-a">Chats</a>
-            <a href="/" class="line2-a">Register</a>
+            <a href="/orders.html" class="line2-a" style='text-decoration: none;'>My Orders</a>
+            <a href="/baseCustomer.html" class="line2-a" style='text-decoration: none;'>Home</a>
+            <a href="/account.html" class="line2-a" style='text-decoration: none;'>Account</a>
+            <a href="/" class="line2-a" style='text-decoration: none;'>Chats</a>
         </div>
     </header>
-
+    <br><br>
     {% block body %}{% endblock %}
 
     <footer class="footer">

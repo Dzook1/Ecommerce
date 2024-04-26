@@ -1,0 +1,14 @@
+{% extends 'baseCustomer.html' %}
+
+{% block body %}
+
+        <ul>
+            -ITEMS IN ORDER-
+            <br><br>
+            {% for i in orderDetails %}
+                <li>CART_ITEM_ID: {{i[0]}} <br>TITLE: {{i[2]}} <br>PRICE: {{i[3]}}</li>
+                <br>
+            {% endfor %}
+        </ul>
+
+{% endblock %}
