@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from sqlalchemy import create_engine, text
 
 
-conn_str = "mysql://root:MySQL@localhost/ecommerce"
+conn_str = "mysql://root:cset155@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -20,10 +20,6 @@ def baseCustomer():
 @app.route('/loginUser.html', methods=['GET'])
 def loginUser():
     return render_template('loginUser.html')
-
-@app.route('/products')
-def producthome():
-    return render_template('products.html')
 
 @app.route('/loginUser.html', methods=['POST'])
 def loginUserGo():
@@ -93,7 +89,21 @@ def loginEmpGo():
     
 @app.route('/products.html')
 def products():
-    return render_template('products.html')
+    query = text('''
+        SELECT p.Product_ID, p.Title, p.Description, p.Price, 
+            (SELECT Image FROM Images WHERE Product_ID = p.Product_ID LIMIT 1) AS Image
+        FROM Products p;
+    ''')    
+    data = conn.execute(query)
+    product_data = []
+    for row in data:
+        product_info = {
+            'title': row[1],
+            'price': '{:.2f}'.format(row[3]),
+            'image': row[4]
+        }
+        product_data.append(product_info)
+    return render_template('products.html', product_data=product_data)
 
 @app.route('/adminLanding.html')
 def adminLanding():

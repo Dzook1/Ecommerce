@@ -275,12 +275,11 @@ header {
 
 .filter {
     margin: 0 auto;
-    display: none;
 }
 
 .productGrid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     padding: 50px;
 }
@@ -293,11 +292,12 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #26be00;
 }
 
 .productGrid-product-imgDiv {
-    width: 250px;
-    height: 100px;
+    width: 50%;
+    height: 50%;
     overflow: hidden;
 }
 
@@ -309,6 +309,14 @@ header {
 }
 
 .productGrid-product-img:hover {
+    cursor: pointer;
+}
+
+.productGrid-product-btn {
+    padding: 5px;
+}
+
+.productGrid-product-btn:hover {
     cursor: pointer;
 }
 
@@ -353,18 +361,29 @@ header {
     word-wrap: break-word;
 }
 
+.left-imgGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2);
+    width: 90%;
+    height: 80%;
+    gap: 10px;
+}
+
 .left-imgDiv {
-    width: 600px;
-    height: 600px;
     overflow: hidden;
     margin: 0 auto;
+}
+
+.topDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .left-img {
     max-width: 100%;
     max-height: 100%;
-    display: block;
-    margin: 0 auto;
     border: 3px solid black;
 }
 
@@ -408,6 +427,7 @@ header {
 .rightFlex {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 5px;
 }
 
@@ -423,3 +443,75 @@ header {
     width: 130px;
     height: 50px;
 }
+
+.radio-buttons {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    margin: 0 auto;
+  }
+  
+  .radio-button {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+    justify-content: center;
+  }
+  
+  .radio-button input[type="radio"] {
+    display: none;
+  }
+  
+  .radio-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #aaa;
+    position: relative;
+    margin-right: 10px;
+  }
+  
+  .radio-circle::before {
+    content: "";
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ddd;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .radio-button input[type="radio"]:checked + .radio-circle::before {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  
+  .radio-button:nth-of-type(1) input[type="radio"]:checked + .radio-circle::before {
+    background-color: #ff6600;
+  }
+  
+  .radio-button:nth-of-type(2) input[type="radio"]:checked + .radio-circle::before {
+    background-color: #ffffff;
+  }
+  
+  .radio-button:nth-of-type(3) input[type="radio"]:checked + .radio-circle::before {
+    background-color: #26be00;
+  }
+  
+  .radio-label {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .radio-button:hover .radio-circle {
+    border-color: #555;
+  }
+  
+  .radio-button:hover input[type="radio"]:checked + .radio-circle::before {
+    background-color: #555;
+  }
+  
