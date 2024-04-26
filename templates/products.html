@@ -1,23 +1,106 @@
-{% extends 'base.html' %}
+{% extends 'baseCustomer.html' %}
+
+{% block title %}Products {% endblock %}
+
 {% block body %}
-    <div>Product 1</div>
-    <br>
-    <div>product 2</div>
-    <br>
-    <div>product 3</div>
-    <br>
-    <div>Product 4</div>
-    <br>
-    <div>Product 5</div>
-    <br>
-
-
-
-    <div class="scheme1">
-        <div class="body">Home Page (WEBSITE COLOR SCHEME?)</div>
-        <p style="background-color: #051d30; padding: 20px;">fill one</p>
-        <p style="background-color: #305D58;  padding: 20px;">fill two</p>
-        <p style="background-color: #62606B;  padding: 20px;">fill three</p>
-        <p style="background-color: #EADAC0;  padding: 20px;">fill four</p>
+    <div class="filter">
+        <label for="categories">Filter by Category</label>
+        <select class="categories">
+            <option value="all">All</option>
+            <option value="clothing">Clothing</option>
+            <option value="electronics">Electronics</option>
+            <option value="books">Books</option>
+        </select>
     </div>
+
+    <section class="productGrid">
+        {% for product in product_data %}
+        <div class="productGrid-product">
+            <h1 class="productsGrid-product-title">{{ product['title'] }}</h1>
+            <div class="productGrid-product-imgDiv">
+                <img class="productGrid-product-img" src="{{ product['image'] }}" alt="" onclick="productDivPopUp()">
+            </div>
+            <h2 class="productGrid-product-price">${{ product['price'] }}</h2>
+            <button class="productGrid-product-btn" onclick="productDivPopUp()">Show More</button>
+        </div>
+        {% endfor %}
+    </section>
+
+    <section class="productDiv">
+        <div class="productDiv-box">
+            <div class="left">
+                <button class="left-btn" onclick="backToProductGrid()">Back</button>
+                <h1 class="left-title">Title</h1>
+                <div class="left-imgGrid">
+                    <div class="left-imgDiv topDiv">
+                        <img src="https://th.bing.com/th?id=OIP.qN9J4Gj796xk9V68PYOLagHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="" class="left-img">
+                    </div>
+                    <div class="left-imgDiv topDiv">
+                        <img src="https://th.bing.com/th?id=OIP.-cF734Gc6-NyrrQvpWiyawHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="" class="left-img">
+                    </div>
+                    <div class="left-imgDiv topDiv">
+                        <img src="https://th.bing.com/th?id=OIP.-cF734Gc6-NyrrQvpWiyawHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="" class="left-img">
+                    </div>
+                    <div class="left-imgDiv">
+                        <img src="https://th.bing.com/th?id=OIP.-cF734Gc6-NyrrQvpWiyawHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="" class="left-img">
+                    </div>
+                    <div class="left-imgDiv">
+                        <img src="https://th.bing.com/th?id=OIP.-cF734Gc6-NyrrQvpWiyawHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="" class="left-img">
+                    </div>
+                    <div class="left-imgDiv">
+                        <img src="https://th.bing.com/th?id=OIP.-cF734Gc6-NyrrQvpWiyawHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="" class="left-img">
+                    </div>
+                </div>
+            </div>
+    
+            <div class="right">
+                <h1 class="right-price">Price</h1>
+                <p class="right-description">DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescription</p>
+                <h3 class="right-mainLabel">Sizes</h3>
+                <div class="radio-buttons">
+                    <label class="radio-button">
+                        <input type="radio" name="size" value="option1">
+                        <div class="radio-circle"></div>
+                        <span class="radio-label">Option 1</span>
+                    </label>
+                    <label class="radio-button">
+                        <input type="radio" name="size" value="option2">
+                        <div class="radio-circle"></div>
+                        <span class="radio-label">Option 2</span>
+                    </label>
+                    <label class="radio-button">
+                        <input type="radio" name="size" value="option3">
+                        <div class="radio-circle"></div>
+                        <span class="radio-label">Option 3</span>
+                    </label>
+                </div>
+                <h3 class="right-mainLabel">Colors</h3>
+                <div class="radio-buttons">
+                    <label class="radio-button">
+                        <input type="radio" name="color" value="option1">
+                        <div class="radio-circle"></div>
+                        <span class="radio-label">Option 1</span>
+                    </label>
+                    <label class="radio-button">
+                        <input type="radio" name="color" value="option2">
+                        <div class="radio-circle"></div>
+                        <span class="radio-label">Option 2</span>
+                    </label>
+                    <label class="radio-button">
+                        <input type="radio" name="color" value="option3">
+                        <div class="radio-circle"></div>
+                        <span class="radio-label">Option 3</span>
+                    </label>
+                </div>
+                <p class=right-stock># in stock</p>
+                <div class="rightFlex">
+                    <input type="number" class="right-quantity" min="1" max="99" value="1">
+                    <form class="right-btnBox">
+                        <input type="submit" value="Add to Cart" class="right-btn">
+                    </form>
+                </div>
+                </div>
+
+        </div>
+    </section>
 {% endblock %}
