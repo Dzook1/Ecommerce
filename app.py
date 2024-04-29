@@ -77,7 +77,7 @@ def loginEmpGo():
         query = text("SELECT Type FROM Users WHERE Username = :username AND Password = :password")
         result2 = conn.execute(query, {'username': username, 'password': password}).fetchone()
         
-        if result2[0] == "ADMIN":
+        if result2[0] == "Admin":
             return render_template('adminLanding.html')
         else:
             return render_template('empLanding.html')

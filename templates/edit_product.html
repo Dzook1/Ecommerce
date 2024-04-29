@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block content %}
+{% block body %}
   <h1>Edit Product</h1>
   <form method="POST">
     <div class="form-group">
       <label for="title">Title</label>
-      <input type="text" class="form-control" id="title" name="Title" value="{{ product_data.title }}">
+      <input type="text" class="form-control" id="title" name="Title" value="{{ product_data.title }}" required>
     </div>
     <div class="form-group">
       <label for="description">Description</label>
@@ -13,19 +13,19 @@
     </div>
     <div class="form-group">
       <label for="price">Price</label>
-      <input type="number" step="0.01" class="form-control" id="price" name="Price" value="{{ product_data.price }}">
+      <input type="number" step="0.01" class="form-control" id="price" name="Price" value="{{ product_data.price }}" required>
     </div>
     <div class="form-group">
       <label for="warranty">Warranty Period</label>
-      <input type="text" class="form-control" id="warranty" name="Warranty" value="{{ product_data.warranty }}">
+      <input type="text" class="form-control" id="warranty" name="Warranty" value="{{ product_data.warranty }}" required>
     </div>
     <div class="form-group">
       <label for="category">Category</label>
-      <input type="text" class="form-control" id="category" name="Category" value="{{ product_data.category }}">
+      <input type="text" class="form-control" id="category" name="Category" value="{{ product_data.category }}" required>
     </div>
     <div class="form-group">
       <label for="number">Number Available</label>
-      <input type="number" class="form-control"id="number" name="Number" value="{{ product_data.number }}">
+      <input type="number" class="form-control"id="number" name="Number" value="{{ product_data.number }}" required>
     </div>
     <button type="submit" class="btn btn-primary">Save Changes</button>
   </form>
