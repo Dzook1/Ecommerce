@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../static/base.css">
     <title>Title</title>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Anta&display=swap" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,9 +19,29 @@
 </head>
   <body>
     <header>
-      <div class="topBar" style="padding: 10px;">
-        <a href="/"><img src="../static/logo.png" alt="Logo" class="logo" style="text-align: center;"></a>
+      <div class="header-line1">
+          <a href="/baseCustomer.html" style='text-decoration: none; align-content: center; font-size: 20px; color: #f2eaea; font-family: Anta;'>E-Commi</a>
+          <div class="searchContainer">
+              <input class="searchContainer-input" type="text" placeholder="Search">
+              <a class="searchContainer-a" type="submit"><img src="../static/485-4851736_free-png-search-icon-search-icon-free-download-removebg-preview.png" alt="Search Icon"></a>
+          </div>
+          <a href="/" class="cartA"><img src="../static/logo.png" alt="Cart Logo" style="text-align: center;" class="logo"></a>
+      </div>
 
+      <div class="header-line2">
+          <a href="/" class="line2-a" style='text-decoration: none;'>Home</a>
+          <a href="/loginUser.html" class="line2-a" style='text-decoration: none;'>Login</a>
+          <a href="/signup.html" class="line2-a" style='text-decoration: none;'>Signup</a>
+          <a href="/loginEmp.html" class="line2-a" style='text-decoration: none;'>Employee Portal</a>
+      </div>
+  </header>
+     <!-- <header>
+      <div class="topBar" style="padding: 10px;">
+        <a href="/" style='text-decoration: none; align-content: center; font-size: 20px; color: #f2eaea; font-family: Anta;' class='logo'>E-Commi</a>
+        <div class="searchContainer">
+          <input class="searchContainer-input" type="text" placeholder="Search">
+          <a class="searchContainer-a" type="submit"><img src="../static/485-4851736_free-png-search-icon-search-icon-free-download-removebg-preview.png" alt="Search Icon"></a>
+        </div>
           <ul class="barItem">
             <li style="padding: 5px"><a href="/">Home</a></li>
             <li style="padding: 5px"><a href="/loginUser.html">Login</a></li>
@@ -24,7 +51,7 @@
 
           </ul>
         </div>
-    </header>
+    </header>  -->
 
     {% block body %}
         <!-- empty body/ empty block in jinja template-->
