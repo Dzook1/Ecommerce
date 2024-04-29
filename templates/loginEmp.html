@@ -1,9 +1,48 @@
+<style>
+    .body form{
+        display: inline-block;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+    .body{
+        text-align:center;
+        background-color: #EADAC0;
+        margin: 20px;
+    }
+    .input_field {
+      width: 60%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .input_submit {
+      width: 60%;
+      background-color: #305D58;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .input_submit:hover {
+      background-color: #62606B;
+    }
+</style>
 {% extends 'base.html' %}
 {% block body %}
-    <h1>Employee Login</h1>
-    <form action="/loginEmp.html" method="POST">
-        <input type="text" name="Username" placeholder="Username" required>
-        <input type="password" name="Password" placeholder="Password" required>
-        <input type="submit" value="Login">
-    </form>
+    <div class="body">
+        <h1>Employee Login</h1>
+        <form action="/loginEmp.html" method="POST">
+            <input type="text" name="Username" placeholder="Username" class='input_field' required>
+            <input type="password" name="Password" class='input_field' placeholder="Password" required>
+            <input type="submit" value="Login" class='input_submit'>
+        </form>
+    </div>
 {% endblock %}

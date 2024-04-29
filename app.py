@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request
 from sqlalchemy import create_engine, text
 
-conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
+
+conn_str = "mysql://root:MySQL@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -12,9 +13,6 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-@app.route('/baseCustomer.html')
-def baseCustomer():
-    return render_template('baseCustomer.html')
 
 @app.route('/loginUser.html', methods=['GET'])
 def loginUser():
@@ -32,7 +30,7 @@ def loginUserGo():
         global userID
         userID = result[0]
         
-        return render_template('userLanding.html')
+        return render_template('/baseCustomer.html')
     else:
         return render_template('index.html')
 
@@ -79,12 +77,33 @@ def loginEmpGo():
         query = text("SELECT Type FROM Users WHERE Username = :username AND Password = :password")
         result2 = conn.execute(query, {'username': username, 'password': password}).fetchone()
         
-        if result2[0] == "Admin":
+        if result2[0] == "ADMIN":
             return render_template('adminLanding.html')
         else:
             return render_template('empLanding.html')
     else:
         return render_template('index.html')
+    
+@app.route('/products.html')
+def products():
+    query = text('''
+        SELECT p.Product_ID, p.Title, p.Description, p.Price, 
+            (SELECT Image FROM Images WHERE Product_ID = p.Product_ID LIMIT 1) AS Image
+        FROM Products p;
+    ''')    
+    data = conn.execute(query)
+    product_data = []
+    for row in data:
+        product_info = {
+            'title': row[1],
+            'price': '{:.2f}'.format(row[3]),
+            'image': row[4]
+        }
+        product_data.append(product_info)
+    return render_template('products.html', product_data=product_data)
+
+@app.route('/productDetails.html')
+
 
 @app.route('/adminLanding.html')
 def adminLanding():
@@ -173,6 +192,47 @@ def addItemAdminGo():
         return render_template('adminLanding.html')
     else:
         return render_template('add_itemAdmin.html')
+
+    # -------------------------- CUSTOMER PAGE ------------------------------------------
+
+@app.route('/baseCustomer.html')
+def baseCustomer():
+    return render_template('baseCustomer.html')
+
+@app.route('/orders.html', methods=['GET'])
+def orders():
+    order = conn.execute(text(f'SELECT * FROM ORDERS WHERE USER_ID = {userID}')).all()
+    print(order)
+    return render_template('orders.html', orders=order)
+
+@app.route('/orderDetails/<ORDER_ID>', methods=['GET'])
+def orderDetails(ORDER_ID):
+    allOrderDetails = conn.execute(text(f'SELECT * FROM ORDER_ITEMS WHERE ORDER_ID = {ORDER_ID}')).all()
+    print(allOrderDetails)
+    return render_template('/orderDetails.html', orderDetails=allOrderDetails)
+
+@app.route('/cart.html')
+def cart():
+    cart = conn.execute(text(f'SELECT * FROM CARTS NATURAL JOIN CART_ITEMS WHERE USER_ID = {userID}')).all()
+    print(cart)
+    return render_template('/cart.html', cart=cart)
+
+@app.route('/account.html', methods=["GET"])
+def account():
+    account = conn.execute(text(f'SELECT * FROM USERS WHERE USER_ID = {userID}')).all()
+    print(account)
+    return render_template(f'/account.html', account=account)
+
+
+
+
+# --------------------------------------- END CUSTOMER -----------------------------------------
+
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

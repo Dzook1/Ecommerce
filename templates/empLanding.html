@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+
+{% block vendor %} <!--Displays their specific menu bar from logbase.html-->
+    <li style="padding: 5px"><a href="/">Logout</a></li>
+{% endblock %}
+
 {% block body %}
     <h1>Successful Vendor Login</h1>
     <a href="/add_item.html">Add Items</a>

@@ -1,0 +1,28 @@
+{% extends 'baseCustomer.html' %}
+
+{% block title %}Products {% endblock %}
+
+{% block body %}
+    <div class="filter">
+        <label for="categories">Filter by Category</label>
+        <select class="categories">
+            <option value="all">All</option>
+            <option value="clothing">Clothing</option>
+            <option value="electronics">Electronics</option>
+            <option value="books">Books</option>
+        </select>
+    </div>
+
+    <section class="productGrid">
+        {% for product in product_data %}
+        <div class="productGrid-product">
+            <h1 class="productsGrid-product-title">{{ product['title'] }}</h1>
+            <div class="productGrid-product-imgDiv">
+                <img class="productGrid-product-img" src="{{ product['image'] }}" alt="">
+            </div>
+            <h2 class="productGrid-product-price">${{ product['price'] }}</h2>
+            <a class="productGrid-product-a" href="/productDetails/{{ product['id'] }}">Show More</a>
+        </div>
+        {% endfor %}
+    </section>
+{% endblock %}

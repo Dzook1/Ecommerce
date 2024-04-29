@@ -4,29 +4,152 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Base Customer{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='baseCustomer.css') }}">
+
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Anta&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+</head>
+  <body>
+    
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+
     <header>
         <div class="header-line1">
-            <h1 class="nameH">Name</h1>
+            <a href="/baseCustomer.html" style='text-decoration: none; align-content: center; font-size: 20px; color: #f2eaea; font-family: Anta;'>E-Commi</a>
             <div class="searchContainer">
                 <input class="searchContainer-input" type="text" placeholder="Search">
                 <a class="searchContainer-a" type="submit"><img src="../static/485-4851736_free-png-search-icon-search-icon-free-download-removebg-preview.png" alt="Search Icon"></a>
             </div>
-            <a href="/" class="signinA">Sign-In</a>
-            <a href="/" class="cartA"><img src="" alt=""></a>
+            <a href="/" class="signinA" style='text-decoration: none;'>Log Out</a>
+            <a href="/cart.html" class="cartA"><img src="../static/logo.png" alt="Cart Logo" style="text-align: center;" class="logo"></a>
         </div>
 
         <div class="header-line2">
-            <a href="/" class="line2-a">My Orders</a>
-            <a href="/" class="line2-a">Discounts</a>
-            <a href="/" class="line2-a">Chats</a>
-            <a href="/" class="line2-a">Register</a>
+            <a href="/orders.html" class="line2-a" style='text-decoration: none;'>My Orders</a>
+            <a href="/baseCustomer.html" class="line2-a" style='text-decoration: none;'>Home</a>
+            <a href="/account.html" class="line2-a" style='text-decoration: none;'>Account</a>
+            <a href="/" class="line2-a" style='text-decoration: none;'>Chats</a>
         </div>
     </header>
+    <br><br>
+    {% block body %}{% endblock %}
 
-
-    <footer>
-        Footer
-    </footer>
-</body>
+    <footer class="footer">
+        <div class="abovefooter">
+          <a href="#"><h2>Back To Top</h2></a>
+        </div>
+        <div class="navigation">
+          <ul class="footer__nav">
+            <li class="nav__item">
+              <h2 class="nav__title"></h2>
+              <ul class="nav__ul">
+                <h3>Contact Us</h3>
+                <li>
+                  <a href="#">Chat</a>
+                </li>
+                <li>
+                  <a href="#">Account Help</a>
+                </li>
+                <li>
+                  <a href="#">Want to Delete your Account?</a>
+                </li>
+                <li>
+                  <a href="#">Become an Affilliate</a>
+                </li>
+                <li>
+                  <a href="#">Customer Assistance</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="footer__nav">
+            <li class="nav__item">
+              <h2 class="nav__title"></h2>
+              <ul class="nav__ul">
+                <h3>Let Us Help You</h3>
+                <li>
+                  <a href="#">Reporting Scam Emails</a>
+                </li>
+                <li>
+                  <a href="#">Become an Affilliate</a>
+                </li>
+                <li>
+                  <a href="#">Complaints</a>
+                </li>
+                <li>
+                  <a href="#">Contract Details</a>
+                </li>
+                <li>
+                  <a href="#">Seller or Vendor Assistance</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="footer__nav">
+            <li class="nav__item">
+              <h2 class="nav__title"></h2>
+              <ul class="nav__ul">
+                <h3>Careers</h3>
+                <li>
+                  <a href="#">Application</a>
+                </li>
+                <li>
+                  <a href="#">Schedule your Interview</a>
+                </li>
+                <li>
+                  <a href="#">Available Positions</a>
+                </li>
+                <li>
+                  <a href="#">Marketing</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="footer__nav">
+            <li class="nav__item">
+              <h2 class="nav__title"></h2>
+              <ul class="nav__ul">
+                <h3>Make Money with Us</h3>
+                <li>
+                  <a href="#">Become an Affilliate</a>
+                </li>
+                <li>
+                  <a href="#">Funding</a>
+                </li>
+                <li>
+                  <a href="#">How to Sell your Products</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="footerBottom" style="text-align: center; background-color: #0e2538f3; margin: 0; padding-bottom: 1%; color: #f2eaea; font-weight: 300; font-size: smaller;">
+              <ul class="nav__ul" style="display: inline-block;">
+                <li>
+                  <a href="#">Conditions of Use</a>
+                </li>
+                <li>
+                  <a href="#">Privacy Notice</a>
+                </li>
+                <li>
+                  <a href="#">Consumer Health Data Privacy Disclosure</a>
+                </li>
+                <li>
+                  <a href="#">Your Ads Privacy Choices</a>
+                </li>
+              </ul>
+          <h2 style="color:#f2eaea; font-weight: 300;">© 2020-2024, E-Commi.com, inc. or affilliates</h2>
+        </div>
+      </footer>
+    </body>
 </html>
