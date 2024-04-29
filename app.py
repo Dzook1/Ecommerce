@@ -102,6 +102,9 @@ def products():
         product_data.append(product_info)
     return render_template('products.html', product_data=product_data)
 
+@app.route('/productDetails.html')
+
+
 @app.route('/adminLanding.html')
 def adminLanding():
     return render_template('adminLanding.html')

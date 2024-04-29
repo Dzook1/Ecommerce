@@ -361,7 +361,7 @@ header {
     cursor: pointer;
 }
 
-.productGrid-product-btn {
+.productGrid-product-a {
     padding: 5px;
 }
 
@@ -377,7 +377,6 @@ header {
     padding: 10px;
     margin-top: 20px;
     margin-bottom: 30px;
-    display: none;
 }
 
 .productDiv-box {
@@ -392,7 +391,7 @@ header {
     border-right: 2px solid black;
 }
 
-.left-btn {
+.left-a {
     background-color: transparent;
     border: none;
     text-decoration: underline;
