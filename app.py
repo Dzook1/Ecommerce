@@ -30,7 +30,7 @@ def loginUserGo():
         global userID
         userID = result[0]
         
-        return render_template('/baseCustomer.html')
+        return render_template('userLanding.html')
     else:
         return render_template('index.html')
 
@@ -83,27 +83,6 @@ def loginEmpGo():
             return render_template('empLanding.html')
     else:
         return render_template('index.html')
-    
-@app.route('/products.html')
-def products():
-    query = text('''
-        SELECT p.Product_ID, p.Title, p.Description, p.Price, 
-            (SELECT Image FROM Images WHERE Product_ID = p.Product_ID LIMIT 1) AS Image
-        FROM Products p;
-    ''')    
-    data = conn.execute(query)
-    product_data = []
-    for row in data:
-        product_info = {
-            'title': row[1],
-            'price': '{:.2f}'.format(row[3]),
-            'image': row[4]
-        }
-        product_data.append(product_info)
-    return render_template('products.html', product_data=product_data)
-
-@app.route('/productDetails.html')
-
 
 @app.route('/adminLanding.html')
 def adminLanding():
@@ -196,8 +175,7 @@ def addItemAdminGo():
 @app.route('/itemList.html')
 def itemList():
     query = text('''
-        SELECT p.Product_ID, p.Title, p.Description, p.Price, 
-            (SELECT Image FROM Images WHERE Product_ID = p.Product_ID LIMIT 1) AS Image
+        SELECT p.Product_ID, p.Title, p.Description, p.Price 
         FROM Products p;
     ''')    
     data = conn.execute(query)
@@ -208,7 +186,6 @@ def itemList():
             'title': row[1],
             'description': row[2],
             'price': '{:.2f}'.format(row[3]),
-            'image': row[4]
         }
         product_data.append(product_info)
     return render_template('itemList.html', product_data=product_data)
@@ -274,8 +251,73 @@ def account():
     print(account)
     return render_template(f'/account.html', account=account)
 
+@app.route('/view_accounts.html')
+def view_accounts():
+    users = conn.execute(text('SELECT * FROM Users')).fetchall()
+    return render_template('view_accounts.html', users=users)
 
 
+@app.route('/products')
+def products():
+    query = text('''
+        SELECT p.Product_ID, p.Title, MIN(i.Image) AS Image
+        FROM Products p
+        JOIN Images i ON p.Product_ID = i.Product_ID
+        GROUP BY p.Product_ID, p.Title;
+    ''')
+    data = conn.execute(query)
+    global product_data
+    product_data = []
+    for row in data:
+        product_info = {
+            'product_id': row[0],
+            'title': row[1],
+            'image': row[2]
+        }
+        product_data.append(product_info)
+    return render_template('products.html', product_data=product_data)
+
+@app.route('/product_details/<product_id>')
+def product_details(product_id):
+    query = text('''
+        SELECT *
+        FROM Products
+        WHERE Product_ID = :product_id;
+    ''')
+    product_data = conn.execute(query, {'product_id': product_id}).fetchone()
+
+    query = text('''
+        SELECT Image
+        FROM Images
+        WHERE Product_ID = :product_id;
+    ''')
+    images = conn.execute(query, {'product_id': product_id}).fetchall()
+    return render_template('product_details.html', product_data=product_data, images=images)
+
+@app.route('/add_to_cart', methods=['POST'])
+def add_to_cart():
+    product_id = request.form['product_id']
+    user_id = userID
+    query = text('''
+        SELECT Price
+        FROM Products
+        WHERE Product_ID = :product_id;
+    ''')
+    price = conn.execute(query, {'product_id': product_id}).fetchone()[0]
+
+    query = text('''
+        INSERT INTO Carts (User_ID, Total_Price)
+        VALUES (:user_id, :price);
+    ''')
+    cart_id = conn.execute(query, {'user_id': user_id, 'price': price}).lastrowid
+
+    query = text('''
+        INSERT INTO Cart_Items (Cart_ID, Title, Price)
+        VALUES (:cart_id, :title, :price);
+    ''')
+    conn.execute(query, {'cart_id': cart_id, 'title': product_data[1], 'price': price})
+
+    return redirect(url_for('products'))
 
 # --------------------------------------- END CUSTOMER -----------------------------------------
 
