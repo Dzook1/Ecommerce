@@ -23,7 +23,7 @@ def loginUserGo():
     username = request.form['Username']
     password = request.form['Password']
 
-    query = text("SELECT User_ID FROM Users WHERE Username = :username OR Email = :username AND Password = :password AND Type = 'User'")
+    query = text("SELECT User_ID FROM Users WHERE Username = :username AND Password = :password AND Type = 'User' OR Email = :username AND Password = :password AND Type = 'User'")
     result = conn.execute(query, {'username': username, 'password': password}).fetchone()
 
     if result:
@@ -114,9 +114,84 @@ def addItem():
     return render_template('add_item.html')
 
 @app.route('/add_item.html', methods=['POST'])
-def addItemGo():    
-    return render_template('add_item.html')
+def addItemGo():
+    title = request.form['Title']
+    description = request.form['Description']
+    images = request.form['Images']
+    warranty = request.form['Warranty']
+    category = request.form['Category']
+    colors = request.form['Colors']
+    sizes = request.form['Sizes']
+    number = request.form['Number']
+    price = request.form['Price']
 
+    query = text("INSERT INTO Products (Title, Description, Warranty_Period, Category, Number_Available, Price, User_ID) VALUES (:Title, :Description, :Warranty, :Category, :Number, :Price, :User_ID)")
+    conn.execute(query, {'Title': title, 'Description': description, 'Warranty': warranty, 'Category': category, 'Number': number, 'Price': price, 'User_ID': AcctID})
+    conn.commit()
+
+    product_id = conn.execute(text("SELECT MAX(Product_ID) FROM Products")).scalar()
+
+    for image in images.split(','):
+        query = text("INSERT INTO Images (Product_ID, Image) VALUES (:Product_ID, :Image)")
+        conn.execute(query, {'Product_ID': product_id, 'Image': image})
+        conn.commit()
+
+    for color in colors.split(','):
+        query = text("INSERT INTO Colors (Product_ID, Color) VALUES (:Product_ID, :Color)")
+        conn.execute(query, {'Product_ID': product_id, 'Color': color})
+        conn.commit()
+
+    for size in sizes.split(','):
+        query = text("INSERT INTO Sizes (Product_ID, Size) VALUES (:Product_ID, :Size)")
+        conn.execute(query, {'Product_ID': product_id, 'Size': size})
+        conn.commit()
+
+    return render_template('empLanding.html')
+
+@app.route('/add_itemAdmin.html', methods=['GET'])
+def addItemAdmin():
+    return render_template('add_itemAdmin.html')
+
+@app.route('/add_itemAdmin.html', methods=['POST'])
+def addItemAdminGo():
+    title = request.form['Title']
+    description = request.form['Description']
+    images = request.form['Images']
+    warranty = request.form['Warranty']
+    category = request.form['Category']
+    colors = request.form['Colors']
+    sizes = request.form['Sizes']
+    number = request.form['Number']
+    price = request.form['Price']
+    id = request.form['ID']
+
+    query = text("SELECT Type FROM Users WHERE User_ID = :id")
+    type = conn.execute(query, {"id": id}).fetchone()[0]
+    if type == "Vendor":
+        query = text("INSERT INTO Products (Title, Description, Warranty_Period, Category, Number_Available, Price, User_ID) VALUES (:Title, :Description, :Warranty, :Category, :Number, :Price, :User_ID)")
+        conn.execute(query, {'Title': title, 'Description': description, 'Warranty': warranty, 'Category': category, 'Number': number, 'Price': price, 'User_ID': id})
+        conn.commit()
+
+        product_id = conn.execute(text("SELECT MAX(Product_ID) FROM Products")).scalar()
+
+        for image in images.split(','):
+            query = text("INSERT INTO Images (Product_ID, Image) VALUES (:Product_ID, :Image)")
+            conn.execute(query, {'Product_ID': product_id, 'Image': image})
+            conn.commit()
+
+        for color in colors.split(','):
+            query = text("INSERT INTO Colors (Product_ID, Color) VALUES (:Product_ID, :Color)")
+            conn.execute(query, {'Product_ID': product_id, 'Color': color})
+            conn.commit()
+
+        for size in sizes.split(','):
+            query = text("INSERT INTO Sizes (Product_ID, Size) VALUES (:Product_ID, :Size)")
+            conn.execute(query, {'Product_ID': product_id, 'Size': size})
+            conn.commit()
+
+        return render_template('adminLanding.html')
+    else:
+        return render_template('add_itemAdmin.html')
 
     # -------------------------- CUSTOMER PAGE ------------------------------------------
 
