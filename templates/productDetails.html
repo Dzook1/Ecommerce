@@ -3,80 +3,74 @@
 {% block title %}Products Details{% endblock %}
 
 {% block body %}
-<section class="productDiv">
-    <div class="productDiv-box">
-        <div class="left">
-            <a class="left-a" href="/products.html">Back</a>
-            <h1 class="left-title">Title</h1>
-            <div class="left-imgGrid">
-                <div class="left-imgDiv topDiv">
-                    <img src="https://th.bing.com/th?id=OIP.qN9J4Gj796xk9V68PYOLagHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="" class="left-img">
-                </div>
-                <div class="left-imgDiv topDiv">
-                    <img src="https://th.bing.com/th?id=OIP.-cF734Gc6-NyrrQvpWiyawHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="" class="left-img">
-                </div>
-                <div class="left-imgDiv topDiv">
-                    <img src="https://th.bing.com/th?id=OIP.-cF734Gc6-NyrrQvpWiyawHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="" class="left-img">
-                </div>
-                <div class="left-imgDiv">
-                    <img src="https://th.bing.com/th?id=OIP.-cF734Gc6-NyrrQvpWiyawHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="" class="left-img">
-                </div>
-                <div class="left-imgDiv">
-                    <img src="https://th.bing.com/th?id=OIP.-cF734Gc6-NyrrQvpWiyawHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="" class="left-img">
-                </div>
-                <div class="left-imgDiv">
-                    <img src="https://th.bing.com/th?id=OIP.-cF734Gc6-NyrrQvpWiyawHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="" class="left-img">
-                </div>
-            </div>
-        </div>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+}
 
-        <div class="right">
-            <h1 class="right-price">Price</h1>
-            <p class="right-description">DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescription</p>
-            <h3 class="right-mainLabel">Sizes</h3>
-            <div class="radio-buttons">
-                <label class="radio-button">
-                    <input type="radio" name="size" value="option1">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 1</span>
-                </label>
-                <label class="radio-button">
-                    <input type="radio" name="size" value="option2">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 2</span>
-                </label>
-                <label class="radio-button">
-                    <input type="radio" name="size" value="option3">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 3</span>
-                </label>
-            </div>
-            <h3 class="right-mainLabel">Colors</h3>
-            <div class="radio-buttons">
-                <label class="radio-button">
-                    <input type="radio" name="color" value="option1">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 1</span>
-                </label>
-                <label class="radio-button">
-                    <input type="radio" name="color" value="option2">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 2</span>
-                </label>
-                <label class="radio-button">
-                    <input type="radio" name="color" value="option3">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 3</span>
-                </label>
-            </div>
-            <p class=right-stock># in stock</p>
-            <div class="rightFlex">
-                <input type="number" class="right-quantity" min="1" max="99" value="1">
-                <form class="right-btnBox">
-                    <input type="submit" value="Add to Cart" class="right-btn">
-                </form>
-            </div>
-            </div>
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.product {
+    width: 30%;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.product img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product h2 {
+    margin: 10px 0;
+}
+
+.product-details {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.product-details h2 {
+    margin-bottom: 20px;
+}
+
+.product-details p {
+    margin-bottom: 10px;
+}
+
+.images {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.images img {
+    width: 30%;
+    margin-bottom: 10px;
+}
+</style>
+<h1>Product Details</h1>
+<div class="product-details">
+    <h2>{{ product_data[1] }}</h2>
+    <p>Price: {{ product_data[6] }}</p>
+    <p>Description: {{ product_data[2] }}</p>
+    <p>Warranty Period: {{ product_data[3] }}</p>
+    <p>Category: {{ product_data[4] }}</p>
+    <p>Number Available: {{ product_data[5] }}</p>
+    <div class="images">
+        {% for image in images %}
+            <img src="{{ image[0] }}" alt="{{ product_data[1] }}">
+        {% endfor %}
     </div>
-</section>
+    <form action="{{ url_for('add_to_cart') }}" method="post">
+        <input type="hidden" name="product_id" value="{{ product_data[0] }}">
+        <input type="submit" value="Add to Cart">
+    </form>
+</div>
 {% endblock %}
