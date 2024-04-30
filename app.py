@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, redirect, render_template, request, url_for
 from sqlalchemy import create_engine, text
 
 
-conn_str = "mysql://root:MySQL@localhost/ecommerce"
+conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -30,7 +30,7 @@ def loginUserGo():
         global userID
         userID = result[0]
         
-        return render_template('/baseCustomer.html')
+        return render_template('userLanding.html')
     else:
         return render_template('index.html')
 
@@ -77,33 +77,12 @@ def loginEmpGo():
         query = text("SELECT Type FROM Users WHERE Username = :username AND Password = :password")
         result2 = conn.execute(query, {'username': username, 'password': password}).fetchone()
         
-        if result2[0] == "ADMIN":
+        if result2[0] == "Admin":
             return render_template('adminLanding.html')
         else:
             return render_template('empLanding.html')
     else:
         return render_template('index.html')
-    
-@app.route('/products.html')
-def products():
-    query = text('''
-        SELECT p.Product_ID, p.Title, p.Description, p.Price, 
-            (SELECT Image FROM Images WHERE Product_ID = p.Product_ID LIMIT 1) AS Image
-        FROM Products p;
-    ''')    
-    data = conn.execute(query)
-    product_data = []
-    for row in data:
-        product_info = {
-            'title': row[1],
-            'price': '{:.2f}'.format(row[3]),
-            'image': row[4]
-        }
-        product_data.append(product_info)
-    return render_template('products.html', product_data=product_data)
-
-@app.route('/productDetails.html')
-
 
 @app.route('/adminLanding.html')
 def adminLanding():
@@ -193,7 +172,56 @@ def addItemAdminGo():
     else:
         return render_template('add_itemAdmin.html')
 
-    # -------------------------- CUSTOMER PAGE ------------------------------------------
+@app.route('/itemList.html')
+def itemList():
+    query = text('''
+        SELECT p.Product_ID, p.Title, p.Description, p.Price 
+        FROM Products p;
+    ''')    
+    data = conn.execute(query)
+    product_data = []
+    for row in data:
+        product_info = {
+            'product_id': row[0],
+            'title': row[1],
+            'description': row[2],
+            'price': '{:.2f}'.format(row[3]),
+        }
+        product_data.append(product_info)
+    return render_template('itemList.html', product_data=product_data)
+
+@app.route('/edit_product/<product_id>', methods=['GET', 'POST'])
+def edit_product(product_id):
+    if request.method == 'GET':
+        query = text('''
+            SELECT p.Product_ID, p.Title, p.Description, p.Price, p.Warranty_Period, p.Category, p.Number_Available, p.User_ID,
+                (SELECT Image FROM Images WHERE Product_ID = p.Product_ID LIMIT 1) AS Image
+            FROM Products p
+            WHERE p.Product_ID = :product_id;
+        ''')
+        product_data = conn.execute(query, {'product_id': product_id}).fetchone()
+
+        return render_template('edit_product.html', product_data=product_data)
+
+    elif request.method == 'POST':
+        title = request.form['Title']
+        description = request.form['Description']
+        price = request.form['Price']
+        warranty = request.form['Warranty']
+        category = request.form['Category']
+        number = request.form['Number']
+
+        query = text('''
+            UPDATE Products
+            SET Title = :title, Description = :description, Price = :price, Warranty_Period = :warranty, Category = :category, Number_Available = :number
+            WHERE Product_ID = :product_id;
+        ''')
+        conn.execute(query, {'title': title, 'description': description, 'price': price, 'warranty': warranty, 'category': category, 'number': number, 'product_id': product_id})
+        conn.commit()
+
+        return redirect(url_for('itemList'))
+
+# -------------------------- CUSTOMER PAGE ------------------------------------------
 
 @app.route('/baseCustomer.html')
 def baseCustomer():
@@ -223,8 +251,73 @@ def account():
     print(account)
     return render_template(f'/account.html', account=account)
 
+@app.route('/view_accounts.html')
+def view_accounts():
+    users = conn.execute(text('SELECT * FROM Users')).fetchall()
+    return render_template('view_accounts.html', users=users)
 
 
+@app.route('/products')
+def products():
+    query = text('''
+        SELECT p.Product_ID, p.Title, MIN(i.Image) AS Image
+        FROM Products p
+        JOIN Images i ON p.Product_ID = i.Product_ID
+        GROUP BY p.Product_ID, p.Title;
+    ''')
+    data = conn.execute(query)
+    global product_data
+    product_data = []
+    for row in data:
+        product_info = {
+            'product_id': row[0],
+            'title': row[1],
+            'image': row[2]
+        }
+        product_data.append(product_info)
+    return render_template('products.html', product_data=product_data)
+
+@app.route('/product_details/<product_id>')
+def product_details(product_id):
+    query = text('''
+        SELECT *
+        FROM Products
+        WHERE Product_ID = :product_id;
+    ''')
+    product_data = conn.execute(query, {'product_id': product_id}).fetchone()
+
+    query = text('''
+        SELECT Image
+        FROM Images
+        WHERE Product_ID = :product_id;
+    ''')
+    images = conn.execute(query, {'product_id': product_id}).fetchall()
+    return render_template('product_details.html', product_data=product_data, images=images)
+
+@app.route('/add_to_cart', methods=['POST'])
+def add_to_cart():
+    product_id = request.form['product_id']
+    user_id = userID
+    query = text('''
+        SELECT Price
+        FROM Products
+        WHERE Product_ID = :product_id;
+    ''')
+    price = conn.execute(query, {'product_id': product_id}).fetchone()[0]
+
+    query = text('''
+        INSERT INTO Carts (User_ID, Total_Price)
+        VALUES (:user_id, :price);
+    ''')
+    cart_id = conn.execute(query, {'user_id': user_id, 'price': price}).lastrowid
+
+    query = text('''
+        INSERT INTO Cart_Items (Cart_ID, Title, Price)
+        VALUES (:cart_id, :title, :price);
+    ''')
+    conn.execute(query, {'cart_id': cart_id, 'title': product_data[1], 'price': price})
+
+    return redirect(url_for('products'))
 
 # --------------------------------------- END CUSTOMER -----------------------------------------
 
