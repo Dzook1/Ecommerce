@@ -421,6 +421,12 @@ def delete_product_vendor(product_id):
 
     return redirect(url_for('itemListVendor'))
 
+@app.route('/complaintUser.html')
+def complaintUser():
+    render_template('complaintUser.html')
+
+
+
 # --------------------------------------- END CUSTOMER -----------------------------------------
 
 if __name__ == '__main__':
