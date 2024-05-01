@@ -371,13 +371,57 @@ def delete_product(product_id):
 
     return redirect(url_for('itemList'))
 
+@app.route('/itemListVendor.html')
+def itemListVendor():
+    query = text('''
+        SELECT p.Product_ID, p.Title, p.Description, p.Price 
+        FROM Products p WHERE User_ID = :AcctID;
+    ''')
+    data = conn.execute(query, {"AcctID": AcctID})
+    product_data = []
+    for row in data:
+        product_info = {
+            'product_id': row[0],
+            'title': row[1],
+            'description': row[2],
+            'price': '{:.2f}'.format(row[3]),
+        }
+        product_data.append(product_info)
+    return render_template('itemListVendor.html', product_data=product_data)
+
+@app.route('/delete_product_vendor/<product_id>', methods=['POST'])
+def delete_product_vendor(product_id):
+    query = text('''
+        DELETE FROM Images
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Sizes
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Colors
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Products
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    return redirect(url_for('itemListVendor'))
+
 # --------------------------------------- END CUSTOMER -----------------------------------------
-
-
-
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
