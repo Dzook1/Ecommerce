@@ -56,6 +56,10 @@ def signupGo():
     conn.execute(query, {"result": result[0], "First_Name": first, "Last_Name": last})
     conn.commit()
 
+    query = text("INSERT INTO Carts (User_ID, Total_Price) VALUES (:User_ID, 0)")
+    conn.execute(query, {"User_ID": result[0]})
+    conn.commit()
+
     return render_template('index.html')
 
 @app.route('/loginEmp.html', methods=['GET'])
@@ -110,17 +114,17 @@ def addItemGo():
 
     product_id = conn.execute(text("SELECT MAX(Product_ID) FROM Products")).scalar()
 
-    for image in images.split(','):
+    for image in images.split(', '):
         query = text("INSERT INTO Images (Product_ID, Image) VALUES (:Product_ID, :Image)")
         conn.execute(query, {'Product_ID': product_id, 'Image': image})
         conn.commit()
 
-    for color in colors.split(','):
+    for color in colors.split(', '):
         query = text("INSERT INTO Colors (Product_ID, Color) VALUES (:Product_ID, :Color)")
         conn.execute(query, {'Product_ID': product_id, 'Color': color})
         conn.commit()
 
-    for size in sizes.split(','):
+    for size in sizes.split(', '):
         query = text("INSERT INTO Sizes (Product_ID, Size) VALUES (:Product_ID, :Size)")
         conn.execute(query, {'Product_ID': product_id, 'Size': size})
         conn.commit()
@@ -153,17 +157,17 @@ def addItemAdminGo():
 
         product_id = conn.execute(text("SELECT MAX(Product_ID) FROM Products")).scalar()
 
-        for image in images.split(','):
+        for image in images.split(', '):
             query = text("INSERT INTO Images (Product_ID, Image) VALUES (:Product_ID, :Image)")
             conn.execute(query, {'Product_ID': product_id, 'Image': image})
             conn.commit()
 
-        for color in colors.split(','):
+        for color in colors.split(', '):
             query = text("INSERT INTO Colors (Product_ID, Color) VALUES (:Product_ID, :Color)")
             conn.execute(query, {'Product_ID': product_id, 'Color': color})
             conn.commit()
 
-        for size in sizes.split(','):
+        for size in sizes.split(', '):
             query = text("INSERT INTO Sizes (Product_ID, Size) VALUES (:Product_ID, :Size)")
             conn.execute(query, {'Product_ID': product_id, 'Size': size})
             conn.commit()
@@ -292,7 +296,7 @@ def product_details(product_id):
         WHERE Product_ID = :product_id;
     ''')
     images = conn.execute(query, {'product_id': product_id}).fetchall()
-    return render_template('product_details.html', product_data=product_data, images=images)
+    return render_template('productDetails.html', product_data=product_data, images=images)
 
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
@@ -306,18 +310,66 @@ def add_to_cart():
     price = conn.execute(query, {'product_id': product_id}).fetchone()[0]
 
     query = text('''
-        INSERT INTO Carts (User_ID, Total_Price)
-        VALUES (:user_id, :price);
+        SELECT Total_Price
+        FROM Carts
+        WHERE User_ID = :user_id;
     ''')
-    cart_id = conn.execute(query, {'user_id': user_id, 'price': price}).lastrowid
+    price2 = conn.execute(query, {'user_id': user_id}).fetchone()[0]
+
+    totalPrice = float(price) + float(price2)
+
+    query = text('''
+        UPDATE Carts SET Total_Price = :totalPrice WHERE User_ID = :user_id;
+    ''')
+    conn.execute(query, {'user_id': user_id, 'totalPrice': totalPrice})
+    conn.commit()
+
+    query = text( '''SELECT Cart_ID FROM Carts WHERE User_ID = :user_id''' )
+    cart_id = conn.execute(query, {'user_id': user_id}).fetchone()[0]
+
+    query = text('''SELECT Title FROM Products WHERE Product_ID = :product_id;''')
+    title = conn.execute(query, {'product_id': product_id}).fetchone()[0]
 
     query = text('''
         INSERT INTO Cart_Items (Cart_ID, Title, Price)
         VALUES (:cart_id, :title, :price);
     ''')
-    conn.execute(query, {'cart_id': cart_id, 'title': product_data[1], 'price': price})
+    conn.execute(query, {'cart_id': cart_id, 'title': title, 'price': price})
+    conn.commit()
 
     return redirect(url_for('products'))
+
+@app.route('/delete_product/<product_id>', methods=['POST'])
+def delete_product(product_id):
+    query = text('''
+        DELETE FROM Images
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Sizes
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Colors
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Products
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    return redirect(url_for('itemList'))
 
 # --------------------------------------- END CUSTOMER -----------------------------------------
 
