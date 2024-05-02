@@ -9,6 +9,43 @@ header {
     height: 40%;
 }
 
+.cart{
+    background-color: #cfc2c2;
+}
+.cart h2{
+    background-color: #051d30;
+    color: #f2eaea;
+    padding:20px;
+}
+.cart_productItems{
+    background-color: #cfc2c2;
+}
+
+.cartbody{
+    text-align:center;
+    background-color: #EADAC0;
+    margin: 20px;
+}
+.cartbody form{
+    justify-content: center;
+    align-items: center;
+    margin-top:20px
+}
+.cart_input_submit {
+  width: 40%;
+  background-color: #305D58;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cart_input_submit:hover {
+  background-color: #62606B;
+}
+
 .orders{
     margin: 5%;
     padding: 20px;
@@ -55,6 +92,206 @@ header {
     background-color: #051d30;
     box-shadow: 2px 2px 5px #051d30;
 }
+
+/*body customer home page*/
+.homegrid{
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    grid-template-rows: auto;
+    padding: 10px;
+    gap: 5%;
+    width: 100%;
+}
+.homegrid a{
+    text-decoration: none;
+    color: #f2eaea;
+}
+.grid_item{
+    border: 3px solid rosybrown;
+    font-size: small;
+    text-align: center;
+    padding: 50px;
+    border-radius: 10px;
+}
+
+.grid_item:hover{
+    background-color: #00000088;
+    width: 100%;
+    height: 100%;
+}
+
+.grid_item.item1{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.605), rgba(0, 0, 0, 0)), url("food.png"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+    height: 200px;
+    align-content: center;
+ }
+ .grid_item.item2{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.605), rgba(0, 0, 0, 0)), url("apparel.png"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+    height: 200px;
+    align-content: center;
+ }
+.grid_item.item3{
+   background-image: radial-gradient(rgba(0, 0, 0, 0.605), rgba(0, 0, 0, 0)), url("electronics.png"); 
+   background-repeat: no-repeat;
+   background-size: cover;
+   text-align: center;
+   height: 200px;
+   align-content: center;
+}
+.grid_item.item4{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.605), rgba(0, 0, 0, 0)), url("books.png"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+    height: 200px;
+    align-content: center;
+ }
+ .grid_item.item5{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.605), rgba(0, 0, 0, 0)), url("toys.png"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+    height: 200px;
+    align-content: center;
+ }
+ .grid_item.item6{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.605), rgba(0, 0, 0, 0)), url("general.png"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+    height: 200px;
+    align-content: center;
+ }
+/*end body of customer home page*/
+
+/*body customer dashboard*/
+.dashgrid{
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    grid-template-rows: auto;
+    padding: 10px;
+    gap: 5%;
+    width: 100%;
+}
+
+.dashgrid a{
+    text-decoration: none;
+    border: 4px solid rosybrown;
+    color: #ffffff;
+    border-radius: 10px;
+}
+.dash_item{
+    display: flex;
+    position: relative;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin: auto;
+    width: 100%;
+    height: 200px;
+}
+
+.descript{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+.item{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    z-index: -1;
+}
+
+.dash_item:hover{
+background-color: #00000088;
+width: 100%;
+height: 100%;
+}
+
+.item.item1{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.914), rgba(0, 0, 0, 0)), url("account.png"); 
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+ }
+.item.item2{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.914), rgba(0, 0, 0, 0)), url("home.jpeg"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+ }
+ .item.item3{
+   background-image: radial-gradient(rgba(0, 0, 0, 0.914), rgba(0, 0, 0, 0)), url("chats.png"); 
+   background-repeat: no-repeat;
+   background-size: cover;
+   background-position: center;
+}
+.item.item4{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.914), rgba(0, 0, 0, 0)), url("review.png"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+ }
+ .item.item5{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.914), rgba(0, 0, 0, 0)), url("complaint.png"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+ }
+ .item.item6{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.914), rgba(0, 0, 0, 0)), url("return.png"); 
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+ }
+ .item.item7{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.914), rgba(0, 0, 0, 0)), url("security.png"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+ }
+ .item.item8{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.914), rgba(0, 0, 0, 0)), url("payment.png"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+ }
+ .item.item9{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.914), rgba(0, 0, 0, 0)), url("address.png"); 
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+ }
+ .item.item10{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.914), rgba(0, 0, 0, 0)), url("service.png"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+ }
+ .item.item11{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.914), rgba(0, 0, 0, 0)), url("electronics.png"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+ }
+ .item.item12{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.914), rgba(0, 0, 0, 0)), url("profile.png"); 
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+ }
+
+
+/*end body of customer dashboard*/
+
 .nameH {
     color: #f2eaea;
     align-content: center;
@@ -456,9 +693,9 @@ header {
     font-size: 20px;
 }
 
-.right-label {
+/* .right-label {
 
-}
+} */
 
 .right-sizeForm {
     margin-bottom: 20px;
