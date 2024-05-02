@@ -1,6 +1,6 @@
 {% extends 'baseCustomer.html' %}
 
-{% block title %}Products{% endblock %}
+{% block title %}Products Details{% endblock %}
 
 {% block body %}
 <style>
@@ -55,14 +55,22 @@
     margin-bottom: 10px;
 }
 </style>
-<h1>Products</h1>
-<div class="product-grid">
-    {% for product in product_data %}
-        <div class="product">
-            <img src="{{ product.image }}" alt="{{ product.title }}">
-            <h2>{{ product.title }}</h2>
-            <a href="{{ url_for('product_details', product_id=product.product_id) }}">View Details</a>
-        </div>
-    {% endfor %}
+<h1>Product Details</h1>
+<div class="product-details">
+    <h2>{{ product_data[1] }}</h2>
+    <p>Price: {{ product_data[6] }}</p>
+    <p>Description: {{ product_data[2] }}</p>
+    <p>Warranty Period: {{ product_data[3] }}</p>
+    <p>Category: {{ product_data[4] }}</p>
+    <p>Number Available: {{ product_data[5] }}</p>
+    <div class="images">
+        {% for image in images %}
+            <img src="{{ image[0] }}" alt="{{ product_data[1] }}">
+        {% endfor %}
+    </div>
+    <form action="{{ url_for('add_to_cart') }}" method="post">
+        <input type="hidden" name="product_id" value="{{ product_data[0] }}">
+        <input type="submit" value="Add to Cart">
+    </form>
 </div>
 {% endblock %}

@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request
+from flask import Flask, redirect, render_template, request, url_for
 from sqlalchemy import create_engine, text
 import ctypes
 
 
-conn_str = "mysql://root:MySQL@localhost/ecommerce"
+conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -24,14 +24,14 @@ def loginUserGo():
     username = request.form['Username']
     password = request.form['Password']
 
-    query = text("SELECT User_ID FROM Users WHERE Username = :username OR Email = :username AND Password = :password AND Type = 'User'")
+    query = text("SELECT User_ID FROM Users WHERE Username = :username AND Password = :password AND Type = 'User' OR Email = :username AND Password = :password AND Type = 'User'")
     result = conn.execute(query, {'username': username, 'password': password}).fetchone()
 
     if result:
         global userID
         userID = result[0]
         
-        return render_template('/baseCustomer.html')
+        return render_template('userLanding.html')
     else:
         return render_template('index.html')
 
@@ -57,6 +57,10 @@ def signupGo():
     conn.execute(query, {"result": result[0], "First_Name": first, "Last_Name": last})
     conn.commit()
 
+    query = text("INSERT INTO Carts (User_ID, Total_Price) VALUES (:User_ID, 0)")
+    conn.execute(query, {"User_ID": result[0]})
+    conn.commit()
+
     return render_template('index.html')
 
 @app.route('/loginEmp.html', methods=['GET'])
@@ -78,30 +82,12 @@ def loginEmpGo():
         query = text("SELECT Type FROM Users WHERE Username = :username AND Password = :password")
         result2 = conn.execute(query, {'username': username, 'password': password}).fetchone()
         
-        if result2[0] == "ADMIN":
+        if result2[0] == "Admin":
             return render_template('adminLanding.html')
         else:
             return render_template('empLanding.html')
     else:
         return render_template('index.html')
-    
-@app.route('/products.html')
-def products():
-    query = text('''
-        SELECT p.Product_ID, p.Title, p.Description, p.Price, 
-            (SELECT Image FROM Images WHERE Product_ID = p.Product_ID LIMIT 1) AS Image
-        FROM Products p;
-    ''')    
-    data = conn.execute(query)
-    product_data = []
-    for row in data:
-        product_info = {
-            'title': row[1],
-            'price': '{:.2f}'.format(row[3]),
-            'image': row[4]
-        }
-        product_data.append(product_info)
-    return render_template('products.html', product_data=product_data)
 
 @app.route('/adminLanding.html')
 def adminLanding():
@@ -112,11 +98,135 @@ def addItem():
     return render_template('add_item.html')
 
 @app.route('/add_item.html', methods=['POST'])
-def addItemGo():    
-    return render_template('add_item.html')
+def addItemGo():
+    title = request.form['Title']
+    description = request.form['Description']
+    images = request.form['Images']
+    warranty = request.form['Warranty']
+    category = request.form['Category']
+    colors = request.form['Colors']
+    sizes = request.form['Sizes']
+    number = request.form['Number']
+    price = request.form['Price']
 
+    query = text("INSERT INTO Products (Title, Description, Warranty_Period, Category, Number_Available, Price, User_ID) VALUES (:Title, :Description, :Warranty, :Category, :Number, :Price, :User_ID)")
+    conn.execute(query, {'Title': title, 'Description': description, 'Warranty': warranty, 'Category': category, 'Number': number, 'Price': price, 'User_ID': AcctID})
+    conn.commit()
 
-    # -------------------------- CUSTOMER PAGE ------------------------------------------
+    product_id = conn.execute(text("SELECT MAX(Product_ID) FROM Products")).scalar()
+
+    for image in images.split(', '):
+        query = text("INSERT INTO Images (Product_ID, Image) VALUES (:Product_ID, :Image)")
+        conn.execute(query, {'Product_ID': product_id, 'Image': image})
+        conn.commit()
+
+    for color in colors.split(', '):
+        query = text("INSERT INTO Colors (Product_ID, Color) VALUES (:Product_ID, :Color)")
+        conn.execute(query, {'Product_ID': product_id, 'Color': color})
+        conn.commit()
+
+    for size in sizes.split(', '):
+        query = text("INSERT INTO Sizes (Product_ID, Size) VALUES (:Product_ID, :Size)")
+        conn.execute(query, {'Product_ID': product_id, 'Size': size})
+        conn.commit()
+
+    return render_template('empLanding.html')
+
+@app.route('/add_itemAdmin.html', methods=['GET'])
+def addItemAdmin():
+    return render_template('add_itemAdmin.html')
+
+@app.route('/add_itemAdmin.html', methods=['POST'])
+def addItemAdminGo():
+    title = request.form['Title']
+    description = request.form['Description']
+    images = request.form['Images']
+    warranty = request.form['Warranty']
+    category = request.form['Category']
+    colors = request.form['Colors']
+    sizes = request.form['Sizes']
+    number = request.form['Number']
+    price = request.form['Price']
+    id = request.form['ID']
+
+    query = text("SELECT Type FROM Users WHERE User_ID = :id")
+    type = conn.execute(query, {"id": id}).fetchone()[0]
+    if type == "Vendor":
+        query = text("INSERT INTO Products (Title, Description, Warranty_Period, Category, Number_Available, Price, User_ID) VALUES (:Title, :Description, :Warranty, :Category, :Number, :Price, :User_ID)")
+        conn.execute(query, {'Title': title, 'Description': description, 'Warranty': warranty, 'Category': category, 'Number': number, 'Price': price, 'User_ID': id})
+        conn.commit()
+
+        product_id = conn.execute(text("SELECT MAX(Product_ID) FROM Products")).scalar()
+
+        for image in images.split(', '):
+            query = text("INSERT INTO Images (Product_ID, Image) VALUES (:Product_ID, :Image)")
+            conn.execute(query, {'Product_ID': product_id, 'Image': image})
+            conn.commit()
+
+        for color in colors.split(', '):
+            query = text("INSERT INTO Colors (Product_ID, Color) VALUES (:Product_ID, :Color)")
+            conn.execute(query, {'Product_ID': product_id, 'Color': color})
+            conn.commit()
+
+        for size in sizes.split(', '):
+            query = text("INSERT INTO Sizes (Product_ID, Size) VALUES (:Product_ID, :Size)")
+            conn.execute(query, {'Product_ID': product_id, 'Size': size})
+            conn.commit()
+
+        return render_template('adminLanding.html')
+    else:
+        return render_template('add_itemAdmin.html')
+
+@app.route('/itemList.html')
+def itemList():
+    query = text('''
+        SELECT p.Product_ID, p.Title, p.Description, p.Price 
+        FROM Products p;
+    ''')    
+    data = conn.execute(query)
+    product_data = []
+    for row in data:
+        product_info = {
+            'product_id': row[0],
+            'title': row[1],
+            'description': row[2],
+            'price': '{:.2f}'.format(row[3]),
+        }
+        product_data.append(product_info)
+    return render_template('itemList.html', product_data=product_data)
+
+@app.route('/edit_product/<product_id>', methods=['GET', 'POST'])
+def edit_product(product_id):
+    if request.method == 'GET':
+        query = text('''
+            SELECT p.Product_ID, p.Title, p.Description, p.Price, p.Warranty_Period, p.Category, p.Number_Available, p.User_ID,
+                (SELECT Image FROM Images WHERE Product_ID = p.Product_ID LIMIT 1) AS Image
+            FROM Products p
+            WHERE p.Product_ID = :product_id;
+        ''')
+        product_data = conn.execute(query, {'product_id': product_id}).fetchone()
+
+        return render_template('edit_product.html', product_data=product_data)
+
+    elif request.method == 'POST':
+        title = request.form['Title']
+        description = request.form['Description']
+        price = request.form['Price']
+        warranty = request.form['Warranty']
+        category = request.form['Category']
+        number = request.form['Number']
+
+        query = text('''
+            UPDATE Products
+            SET Title = :title, Description = :description, Price = :price, Warranty_Period = :warranty, Category = :category, Number_Available = :number
+            WHERE Product_ID = :product_id;
+        ''')
+        conn.execute(query, {'title': title, 'description': description, 'price': price, 'warranty': warranty, 'category': category, 'number': number, 'product_id': product_id})
+        conn.commit()
+
+        return redirect(url_for('itemList'))
+
+# -------------------------- CUSTOMER PAGE ------------------------------------------
 
 @app.route('/baseCustomer.html')
 def baseCustomer():
@@ -151,6 +261,10 @@ def account():
     print(account)
     return render_template('/account.html', account=account)
 
+@app.route('/view_accounts.html')
+def view_accounts():
+    users = conn.execute(text('SELECT * FROM Users')).fetchall()
+    return render_template('view_accounts.html', users=users)
 
 @app.route('/dashboard.html')
 def dashboard():
@@ -175,14 +289,167 @@ def chatting(User_id):
         # chatStarted = conn.execute(text("SELECT * FROM CHATS"))
     return render_template(f'/chatting.html', chatting=chatStarted)
 
+@app.route('/products')
+def products():
+    query = text('''
+        SELECT p.Product_ID, p.Title, MIN(i.Image) AS Image
+        FROM Products p
+        JOIN Images i ON p.Product_ID = i.Product_ID
+        GROUP BY p.Product_ID, p.Title;
+    ''')
+    data = conn.execute(query)
+    global product_data
+    product_data = []
+    for row in data:
+        product_info = {
+            'product_id': row[0],
+            'title': row[1],
+            'image': row[2]
+        }
+        product_data.append(product_info)
+    return render_template('products.html', product_data=product_data)
+
+@app.route('/product_details/<product_id>')
+def product_details(product_id):
+    query = text('''
+        SELECT *
+        FROM Products
+        WHERE Product_ID = :product_id;
+    ''')
+    product_data = conn.execute(query, {'product_id': product_id}).fetchone()
+
+    query = text('''
+        SELECT Image
+        FROM Images
+        WHERE Product_ID = :product_id;
+    ''')
+    images = conn.execute(query, {'product_id': product_id}).fetchall()
+    return render_template('productDetails.html', product_data=product_data, images=images)
+
+@app.route('/add_to_cart', methods=['POST'])
+def add_to_cart():
+    product_id = request.form['product_id']
+    user_id = userID
+    query = text('''
+        SELECT Price
+        FROM Products
+        WHERE Product_ID = :product_id;
+    ''')
+    price = conn.execute(query, {'product_id': product_id}).fetchone()[0]
+
+    query = text('''
+        SELECT Total_Price
+        FROM Carts
+        WHERE User_ID = :user_id;
+    ''')
+    price2 = conn.execute(query, {'user_id': user_id}).fetchone()[0]
+
+    totalPrice = float(price) + float(price2)
+
+    query = text('''
+        UPDATE Carts SET Total_Price = :totalPrice WHERE User_ID = :user_id;
+    ''')
+    conn.execute(query, {'user_id': user_id, 'totalPrice': totalPrice})
+    conn.commit()
+
+    query = text( '''SELECT Cart_ID FROM Carts WHERE User_ID = :user_id''' )
+    cart_id = conn.execute(query, {'user_id': user_id}).fetchone()[0]
+
+    query = text('''SELECT Title FROM Products WHERE Product_ID = :product_id;''')
+    title = conn.execute(query, {'product_id': product_id}).fetchone()[0]
+
+    query = text('''
+        INSERT INTO Cart_Items (Cart_ID, Title, Price)
+        VALUES (:cart_id, :title, :price);
+    ''')
+    conn.execute(query, {'cart_id': cart_id, 'title': title, 'price': price})
+    conn.commit()
+
+    return redirect(url_for('products'))
+
+@app.route('/delete_product/<product_id>', methods=['POST'])
+def delete_product(product_id):
+    query = text('''
+        DELETE FROM Images
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Sizes
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Colors
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Products
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    return redirect(url_for('itemList'))
+
+@app.route('/itemListVendor.html')
+def itemListVendor():
+    query = text('''
+        SELECT p.Product_ID, p.Title, p.Description, p.Price 
+        FROM Products p WHERE User_ID = :AcctID;
+    ''')
+    data = conn.execute(query, {"AcctID": AcctID})
+    product_data = []
+    for row in data:
+        product_info = {
+            'product_id': row[0],
+            'title': row[1],
+            'description': row[2],
+            'price': '{:.2f}'.format(row[3]),
+        }
+        product_data.append(product_info)
+    return render_template('itemListVendor.html', product_data=product_data)
+
+@app.route('/delete_product_vendor/<product_id>', methods=['POST'])
+def delete_product_vendor(product_id):
+    query = text('''
+        DELETE FROM Images
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Sizes
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Colors
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Products
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    return redirect(url_for('itemListVendor'))
 
 # --------------------------------------- END CUSTOMER -----------------------------------------
-
-
-
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)

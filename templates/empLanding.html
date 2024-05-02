@@ -1,10 +1,86 @@
-{% extends 'base.html' %}
+{% extends 'base.html'%}
 
-{% block vendor %} <!--Displays their specific menu bar from logbase.html-->
+{% block admin %}
     <li style="padding: 5px"><a href="/">Logout</a></li>
 {% endblock %}
 
 {% block body %}
-    <h1>Successful Vendor Login</h1>
-{% endblock %}
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
 
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 2rem 0;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin-bottom: 2rem;
+    width: 30%;
+}
+
+.card h2 {
+    margin-top: 0;
+}
+
+.card p {
+    margin-bottom: 0;
+}
+
+.button {
+    background-color: #333;
+    border: none;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 0.5rem;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #444;
+}
+</style>
+<div class="container">
+    <div class="header">
+        <h1>Vendor Landing Page</h1>
+    </div>
+    <div class="content">
+        <div class="card">
+            <h2>Add Item</h2>
+            <p>Add a new item to the store.</p>
+            <a href="/add_item.html" class="button">Add Item</a>
+        </div>
+        <div class="card">
+            <h2>Manage Products</h2>
+            <p>View and manage products.</p>
+            <a href="/itemListVendor.html" class="button">Edit Products</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

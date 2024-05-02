@@ -81,7 +81,7 @@
     }
 </style>
 <h1>Add A Product</h1>
-<form action="/add_item.html" method="POST">
+<form action="/add_itemAdmin.html" method="POST">
     <label for="Title">Product Name:</label>
     <input type="text" class="input" name="Title" placeholder="Product Name" required>
 
@@ -124,6 +124,11 @@
 
     <label for="Price">Price:</label>
     <input type="number" class="input" min="0" step="0.01" name="Price" placeholder="Price" required>
+
+    <br><br>
+
+    <label for="ID">Vendor ID:</label>
+    <input type="number" class="input" name="ID" min="0" placeholder="Vendor ID" required>
 
     <br><br><br>
 
