@@ -1,0 +1,11 @@
+{% extends 'baseCustomer.html' %}
+
+{% block body %}
+
+    <div class="chatbox">
+        {% for j in chatting%}
+            {{j[0]}}
+        {% endfor %}
+    </div>
+
+{% endblock %}

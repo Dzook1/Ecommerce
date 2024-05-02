@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from sqlalchemy import create_engine, text
+import ctypes
 
 
 conn_str = "mysql://root:MySQL@localhost/ecommerce"
@@ -119,7 +120,7 @@ def addItemGo():
 
 @app.route('/baseCustomer.html')
 def baseCustomer():
-    return render_template('baseCustomer.html')
+    return render_template('/baseCustomer.html')
 
 @app.route('/orders.html', methods=['GET'])
 def orders():
@@ -127,25 +128,52 @@ def orders():
     print(order)
     return render_template('orders.html', orders=order)
 
+
 @app.route('/orderDetails/<ORDER_ID>', methods=['GET'])
 def orderDetails(ORDER_ID):
     allOrderDetails = conn.execute(text(f'SELECT * FROM ORDER_ITEMS WHERE ORDER_ID = {ORDER_ID}')).all()
     print(allOrderDetails)
     return render_template('/orderDetails.html', orderDetails=allOrderDetails)
 
-@app.route('/cart.html')
+
+@app.route('/cart.html', methods=["GET", "POST"])
 def cart():
     cart = conn.execute(text(f'SELECT * FROM CARTS NATURAL JOIN CART_ITEMS WHERE USER_ID = {userID}')).all()
+    # conn.execute(text(f'INSERT * INTO ORDERS WHERE USER_ID = {userID}'))
+    # conn.execute(text(f'INSERT * INTO ORDER_ITEMS WHERE USER_ID = {userID}'))
     print(cart)
     return render_template('/cart.html', cart=cart)
+
 
 @app.route('/account.html', methods=["GET"])
 def account():
     account = conn.execute(text(f'SELECT * FROM USERS WHERE USER_ID = {userID}')).all()
     print(account)
-    return render_template(f'/account.html', account=account)
+    return render_template('/account.html', account=account)
 
 
+@app.route('/dashboard.html')
+def dashboard():
+    # def Mbox(title,text,style):
+    #     return ctypes.windll.user32.MessageBoxW(0, text, title, style) 
+    # Mbox("Your Title", "Your Text", 0)
+    return render_template('/dashboard.html')
+
+
+@app.route('/chats.html', methods=["GET"])
+def chats():
+    vendors = conn.execute(text('SELECT * FROM USERS WHERE TYPE = "VENDOR"')).all()
+    return render_template('/chats.html', chats=vendors)
+
+@app.route('/chatting/<User_id>', methods=["POST", "GET"])
+def chatting(User_id):
+    # If chat doesn't already exist: ?
+    start = conn.execute(text(f"INSERT INTO CHATS (Sender_id, Receiver_id, Content) VALUES ({userID}, {User_id}, 'Chat has Started.')"))
+    chatStarted = conn.execute(text(f"SELECT * FROM chats WHERE Sender_id = {userID}  AND Receiver_ID = {User_id}")).all()
+    print(chatStarted)
+    # else:?
+        # chatStarted = conn.execute(text("SELECT * FROM CHATS"))
+    return render_template(f'/chatting.html', chatting=chatStarted)
 
 
 # --------------------------------------- END CUSTOMER -----------------------------------------
