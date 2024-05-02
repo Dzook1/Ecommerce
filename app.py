@@ -31,7 +31,7 @@ def loginUserGo():
         global userID
         userID = result[0]
         
-        return render_template('userLanding.html')
+        return render_template('baseCustomer.html')
     else:
         return render_template('index.html')
 
@@ -448,6 +448,31 @@ def delete_product_vendor(product_id):
     conn.commit()
 
     return redirect(url_for('itemListVendor'))
+
+@app.route('/complaintUser.html')
+def complaintUser():
+    render_template('complaintUser.html')
+
+@app.route('/productFilter.html/<category>')
+def productFilter(category):
+    query = text('''
+        SELECT p.Product_ID, p.Title, MIN(i.Image) AS Image
+        FROM Products p
+        JOIN Images i ON p.Product_ID = i.Product_ID
+        WHERE p.Category LIKE :category
+        GROUP BY p.Product_ID, p.Title;
+    ''')
+    data = conn.execute(query,  {'category': category + '%'})
+    global product_data
+    product_data = []
+    for row in data:
+        product_info = {
+            'product_id': row[0],
+            'title': row[1],
+            'image': row[2]
+        }
+        product_data.append(product_info)
+    return render_template('productFilter.html', product_data=product_data)
 
 # --------------------------------------- END CUSTOMER -----------------------------------------
 

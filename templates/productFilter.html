@@ -1,0 +1,66 @@
+{% extends 'baseCustomer.html' %}
+
+{% block body %}
+<style>
+    body {
+    font-family: Arial, sans-serif;
+}
+
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.product {
+    width: 30%;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.product img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product h2 {
+    margin: 10px 0;
+}
+
+.product-details {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.product-details h2 {
+    margin-bottom: 20px;
+}
+
+.product-details p {
+    margin-bottom: 10px;
+}
+
+.images {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.images img {
+    width: 30%;
+    margin-bottom: 10px;
+}
+</style>
+<h1>Products</h1>
+<div class="product-grid">
+    {% for product in product_data %}
+        <div class="product">
+            <img src="{{ product.image }}" alt="{{ product.title }}">
+            <h2>{{ product.title }}</h2>
+            <a href="{{ url_for('product_details', product_id=product.product_id) }}">View Details</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
