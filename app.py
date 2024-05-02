@@ -30,7 +30,7 @@ def loginUserGo():
         global userID
         userID = result[0]
         
-        return render_template('userLanding.html')
+        return render_template('baseCustomer.html')
     else:
         return render_template('index.html')
 
