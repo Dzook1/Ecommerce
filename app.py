@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, text
 import ctypes
 
 
-conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
+conn_str = "mysql://root:cset155@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -252,7 +252,7 @@ def cart():
     # conn.execute(text(f'INSERT * INTO ORDERS WHERE USER_ID = {userID}'))
     # conn.execute(text(f'INSERT * INTO ORDER_ITEMS WHERE USER_ID = {userID}'))
     print(cart)
-    return render_template('/cart.html', cart=cart)
+    return render_template('cart.html', cart=cart)
 
 
 @app.route('/account.html', methods=["GET"])
