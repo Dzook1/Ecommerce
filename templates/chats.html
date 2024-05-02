@@ -1,0 +1,12 @@
+{% extends 'baseCustomer.html' %}
+
+{% block body %}
+    <h2 style="text-align: center; animation: FadeIn; animation-duration: 3s;">~ CHAT WITH A VENDOR ~</h2>
+    {% for i in chats %}
+        <p>
+            Vendor Name: {{i[1]}} {{i[2]}}
+            <a href="/chatting/{{i[0]}}" style="text-decoration: none; color:red;">(ID: {{i[0]}})</a>
+        </p>
+        <br>
+    {% endfor %}
+{% endblock %}
