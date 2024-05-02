@@ -2,7 +2,7 @@ from flask import Flask, redirect, render_template, request, url_for
 from sqlalchemy import create_engine, text
 
 
-conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
+conn_str = "mysql://root:cset155@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -247,7 +247,7 @@ def orderDetails(ORDER_ID):
 def cart():
     cart = conn.execute(text(f'SELECT * FROM CARTS NATURAL JOIN CART_ITEMS WHERE USER_ID = {userID}')).all()
     print(cart)
-    return render_template('/cart.html', cart=cart)
+    return render_template('cart.html', cart=cart)
 
 @app.route('/account.html', methods=["GET"])
 def account():
