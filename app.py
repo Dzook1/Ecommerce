@@ -232,29 +232,40 @@ def edit_product(product_id):
 def baseCustomer():
     return render_template('/baseCustomer.html')
 
-@app.route('/search', methods=['POST'])
+@app.route('/search', methods=['GET', 'POST'])
 def search():
-    search_term = request.form.get('search')
-    query = text('''
-        SELECT p.Product_ID, p.Title, p.Price, MIN(i.Image) AS Image
-        FROM Products p
-        JOIN Images i ON p.Product_ID = i.Product_ID
-        WHERE p.Title LIKE :search_term
-        GROUP BY p.Product_ID, p.Title
-    ''')
-    data = conn.execute(query, {'search_term': f'%{search_term}%'}).fetchall()
-    global product_data
-    product_data = []
-    for row in data:
-        product_info = {
-            'product_id': row[0],
-            'title': row[1],
-            'image': row[2]
-        }
-        product_data.append(product_info)
-    return render_template('products.html', product_data=product_data)
+    if request.method == 'POST':
+        search_term = request.form.get('search')
+        if search_term:
+            query = text(f'''
+                SELECT p.Product_ID, p.Title, p.Description, p.Price, 
+                    (SELECT Image FROM Images WHERE Product_ID = p.Product_ID LIMIT 1) AS Image
+                FROM Products p
+                WHERE p.Title LIKE :search_term;
+            ''')
+            result = conn.execute(query, {'search_term': f'%{search_term}%'}).fetchall()
+            if result:
+                product_data = []
+                for row in result:
+                    product_info = {
+                        'title': row[1],
+                        'description': row[2],
+                        'price': '{:.2f}'.format(row[3]),
+                        'image': row[4],
+                        'Product_ID': row[0]
+                    }
+                    product_data.append(product_info)
+                return render_template('products.html', product_data=product_data)
+            else:
+                return render_template('no_results.html')
+        else:
+            return render_template('baseCustomer.html')
+    else:
+        return render_template('baseCustomer.html')
     
-        
+@app.route('/no_results.html')
+def no_results():
+    return render_template('no_results.html')
 
 @app.route('/orders.html', methods=['GET'])
 def orders():
