@@ -31,7 +31,7 @@ def loginUserGo():
         global userID
         userID = result[0]
         
-        return render_template('userLanding.html')
+        return render_template('baseCustomer.html')
     else:
         return render_template('index.html')
 
@@ -231,6 +231,30 @@ def edit_product(product_id):
 @app.route('/baseCustomer.html')
 def baseCustomer():
     return render_template('/baseCustomer.html')
+
+@app.route('/search', methods=['POST'])
+def search():
+    search_term = request.form.get('search')
+    query = text('''
+        SELECT p.Product_ID, p.Title, p.Price, MIN(i.Image) AS Image
+        FROM Products p
+        JOIN Images i ON p.Product_ID = i.Product_ID
+        WHERE p.Title LIKE :search_term
+        GROUP BY p.Product_ID, p.Title
+    ''')
+    data = conn.execute(query, {'search_term': f'%{search_term}%'}).fetchall()
+    global product_data
+    product_data = []
+    for row in data:
+        product_info = {
+            'product_id': row[0],
+            'title': row[1],
+            'image': row[2]
+        }
+        product_data.append(product_info)
+    return render_template('products.html', product_data=product_data)
+    
+        
 
 @app.route('/orders.html', methods=['GET'])
 def orders():

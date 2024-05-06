@@ -8,8 +8,16 @@
     .body{
         text-align:center;
         background-color: #EADAC0;
-        margin: 20px;
     }
+
+    .loginBox {
+      background-color: whitesmoke;
+      width: 35%;
+      margin: 0 auto;
+      border: 2px solid black;
+      padding: 20px;
+    }
+
     .input_field {
       width: 60%;
       padding: 12px 20px;
@@ -34,15 +42,23 @@
     .input_submit:hover {
       background-color: #62606B;
     }
+
+    .loginH {
+      font-size: 40px;
+      margin-top: 80px;
+      padding: 10px;
+    }
 </style>
 {% extends 'base.html' %}
 {% block body %}
     <div class="body">
-        <h1>Employee Login</h1>
+      <h1 class="loginH">Employee Login</h1>
+      <div class="loginBox">
         <form action="/loginEmp.html" method="POST">
             <input type="text" name="Username" placeholder="Username" class='input_field' required>
             <input type="password" name="Password" class='input_field' placeholder="Password" required>
             <input type="submit" value="Login" class='input_submit'>
         </form>
+      </div>
     </div>
 {% endblock %}

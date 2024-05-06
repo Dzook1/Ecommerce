@@ -8,8 +8,17 @@
     .body{
         text-align:center;
         background-color: #EADAC0;
-        margin: 20px;
     }
+
+    .signupBox {
+      background-color: whitesmoke;
+      width: 40%;
+      margin: 0 auto;
+      border: 2px solid black;
+      padding: 5px;
+      margin-bottom: 40px;
+    }
+
     .input_field {
       width: 60%;
       padding: 12px 20px;
@@ -34,13 +43,20 @@
     .input_submit:hover {
       background-color: #62606B;
     }
+
+    .signupH {
+      margin-top: 40px;
+      margin-bottom: 10px;
+      font-size: 40px;
+    }
 </style>
 
 {% extends 'base.html' %}
 {% block body %}
     <div class='body'>
-        <h1>Signup Page</h1>
-        <form action="/signup.html" method="POST">
+        <h1 class=signupH>Signup Page</h1>
+        <div class="signupBox">
+          <form action="/signup.html" method="POST">
             <input type="text" name="First_Name" placeholder="First Name" class='input_field' required>
             <input type="text" name="Last_Name" placeholder="Last Name" class='input_field' required>
             <input type="email" name="Email" placeholder="Email" class='input_field' required>
@@ -48,5 +64,6 @@
             <input type="password" name="Password" placeholder="Password" class='input_field' required>
             <input type="submit" value="Signup" class='input_submit'>
         </form>
+        </div>
     <div class='body'>
 {% endblock %}
