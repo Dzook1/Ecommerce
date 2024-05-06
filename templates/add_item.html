@@ -80,8 +80,27 @@
         text-align: center;
     }
 </style>
+<script>
+    function validateCategory(category) {
+        const validCategories = ['Food', 'Apparel', 'Electronics', 'Books', 'Toys', 'General'];
+        return validCategories.includes(category);
+    }
+
+    function validateForm() {
+        const categoryInput = document.querySelector('input[name="Category"]');
+        const category = categoryInput.value;
+
+        if (!validateCategory(category)) {
+            alert('Invalid category. Please enter one of the following categories: Food, Apparel, Electronics, Books, Toys, General.');
+            categoryInput.focus();
+            return false;
+        }
+
+        return true;
+    }
+</script>
 <h1>Add A Product</h1>
-<form action="/add_item.html" method="POST">
+<form action="/add_item.html" method="POST" onsubmit="return validateForm()">
     <label for="Title">Product Name:</label>
     <input type="text" class="input" name="Title" placeholder="Product Name" required>
 
