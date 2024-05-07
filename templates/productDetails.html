@@ -43,7 +43,7 @@ body {
         </div>
 
         <div class="right">
-            <h1 class="right-price">${{ product_data[6] }}</h1>
+            <h1 class="right-price">${{ '%.2f'|format(product_data[6]) }}</h1>
             <p class="right-description">{{ product_data[2] }}</p>
             <p class=right-warranty>Warranty Period: {{ product_data[3] }}</p>
             <h3 class="right-mainLabel">Sizes</h3>
