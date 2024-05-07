@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, text
 import ctypes
 
 
-conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
+conn_str = "mysql://root:cset155@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -254,6 +254,41 @@ def edit_product(product_id):
 def baseCustomer():
     return render_template('/baseCustomer.html')
 
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        search_term = request.form.get('search')
+        if search_term:
+            query = text(f'''
+                SELECT p.Product_ID, p.Title, p.Description, p.Price, 
+                    (SELECT Image FROM Images WHERE Product_ID = p.Product_ID LIMIT 1) AS Image
+                FROM Products p
+                WHERE p.Title LIKE :search_term;
+            ''')
+            result = conn.execute(query, {'search_term': f'%{search_term}%'}).fetchall()
+            if result:
+                global product_data
+                product_data = []
+                for row in result:
+                    product_info = {
+                        'product_id': row[0],
+                        'title': row[1],
+                        'price': '{:.2f}'.format(row[3]),
+                        'image': row[4]
+                    }
+                    product_data.append(product_info)
+                return render_template('products.html', product_data=product_data)
+            else:
+                return render_template('no_results.html')
+        else:
+            return render_template('baseCustomer.html')
+    else:
+        return render_template('baseCustomer.html')
+    
+@app.route('/no_results.html')
+def no_results():
+    return render_template('no_results.html')
+
 @app.route('/orders.html', methods=['GET'])
 def orders():
     order = conn.execute(text(f'SELECT * FROM ORDERS WHERE USER_ID = {userID}')).all()
@@ -265,6 +300,14 @@ def orderDetails(ORDER_ID):
     allOrderDetails = conn.execute(text(f'SELECT * FROM ORDER_ITEMS WHERE ORDER_ID = {ORDER_ID}')).all()
     print(allOrderDetails)
     return render_template('/orderDetails.html', orderDetails=allOrderDetails)
+
+@app.route('/cart.html', methods=["GET", "POST"])
+def cart():
+    cart = conn.execute(text(f'SELECT * FROM CARTS NATURAL JOIN CART_ITEMS WHERE USER_ID = {userID}')).all()
+    # conn.execute(text(f'INSERT * INTO ORDERS WHERE USER_ID = {userID}'))
+    # conn.execute(text(f'INSERT * INTO ORDER_ITEMS WHERE USER_ID = {userID}'))
+    print(cart)
+    return render_template('cart.html', cart=cart)
 
 @app.route('/account.html', methods=["GET"])
 def account():
@@ -303,7 +346,7 @@ def chatting(User_id):
 @app.route('/products')
 def products():
     query = text('''
-        SELECT p.Product_ID, p.Title, MIN(i.Image) AS Image
+        SELECT p.Product_ID, p.Title, p.Price, MIN(i.Image) AS Image
         FROM Products p
         JOIN Images i ON p.Product_ID = i.Product_ID
         GROUP BY p.Product_ID, p.Title;
@@ -315,7 +358,8 @@ def products():
         product_info = {
             'product_id': row[0],
             'title': row[1],
-            'image': row[2]
+            'price': '{:.2f}'.format(row[2]),
+            'image': row[3]
         }
         product_data.append(product_info)
     return render_template('products.html', product_data=product_data)
@@ -467,7 +511,7 @@ def complaintUser():
 @app.route('/productFilter.html/<category>')
 def productFilter(category):
     query = text('''
-        SELECT p.Product_ID, p.Title, MIN(i.Image) AS Image
+        SELECT p.Product_ID, p.Title, p.Price, MIN(i.Image) AS Image
         FROM Products p
         JOIN Images i ON p.Product_ID = i.Product_ID
         WHERE p.Category LIKE :category
@@ -480,7 +524,8 @@ def productFilter(category):
         product_info = {
             'product_id': row[0],
             'title': row[1],
-            'image': row[2]
+            'price': '{:.2f}'.format(row[2]),
+            'image': row[3]
         }
         product_data.append(product_info)
     return render_template('productFilter.html', product_data=product_data)
