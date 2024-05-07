@@ -116,8 +116,23 @@
 
     <br><br>
 
-    <label for="Warranty">Warranty Period:</label>
-    <input type="text" class="input" name="Warranty" placeholder="Warranty Period" required>
+    <label for="WarrantyYR">Warranty Period (Years):</label>
+    <input type="number" class="input" name="WarrantyYR" min="0" placeholder="0-?" required>
+
+    <br><br>
+
+    <label for="WarrantyMN">Warranty Period (Months):</label>
+    <input type="number" class="input" name="WarrantyMN" min="0" max="11" placeholder="0-11" required>
+
+    <br><br>
+
+    <label for="DiscountAmt">Discount Amount:</label>
+    <input type="number" class="input" name="DiscountAmt" min="0" max="99" placeholder="Enter Percent As Number" required>
+
+    <br><br>
+
+    <label for="DiscountLength">Discount Period:</label>
+    <input type="date" class="input" name="DiscountLength" placeholder="Discount Period" required>
 
     <br><br>
 

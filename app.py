@@ -102,18 +102,29 @@ def addItemGo():
     title = request.form['Title']
     description = request.form['Description']
     images = request.form['Images']
-    warranty = request.form['Warranty']
+    warrantyYR = request.form['WarrantyYR']
+    warrantyMN = request.form['WarrantyMN']
     category = request.form['Category']
     colors = request.form['Colors']
     sizes = request.form['Sizes']
     number = request.form['Number']
     price = request.form['Price']
+    discount = request.form['DiscountAmt']
+    discountLength = request.form['DiscountLength']
 
-    query = text("INSERT INTO Products (Title, Description, Warranty_Period, Category, Number_Available, Price, User_ID) VALUES (:Title, :Description, :Warranty, :Category, :Number, :Price, :User_ID)")
-    conn.execute(query, {'Title': title, 'Description': description, 'Warranty': warranty, 'Category': category, 'Number': number, 'Price': price, 'User_ID': AcctID})
+    query = text("INSERT INTO Products (Title, Description, Category, Number_Available, Price, User_ID) VALUES (:Title, :Description, :Category, :Number, :Price, :User_ID)")
+    conn.execute(query, {'Title': title, 'Description': description, 'Category': category, 'Number': number, 'Price': price, 'User_ID': AcctID})
     conn.commit()
 
     product_id = conn.execute(text("SELECT MAX(Product_ID) FROM Products")).scalar()
+
+    query = text("INSERT INTO Warranty VALUES (:Product_ID, :WarrantyYR, :WarrantyMN)")
+    conn.execute(query, {'Product_ID': product_id, 'WarrantyYR': warrantyYR, 'WarrantyMN': warrantyMN})
+    conn.commit()
+
+    query = text("INSERT INTO Discount VALUES (:Product_ID, :discountLength, :discount)")
+    conn.execute(query, {'Product_ID': product_id, 'discountLength': discountLength, 'discount': discount})
+    conn.commit()
 
     for image in images.split(', '):
         query = text("INSERT INTO Images (Product_ID, Image) VALUES (:Product_ID, :Image)")
@@ -141,22 +152,33 @@ def addItemAdminGo():
     title = request.form['Title']
     description = request.form['Description']
     images = request.form['Images']
-    warranty = request.form['Warranty']
+    warrantyYR = request.form['WarrantyYR']
+    warrantyMN = request.form['WarrantyMN']
     category = request.form['Category']
     colors = request.form['Colors']
     sizes = request.form['Sizes']
     number = request.form['Number']
     price = request.form['Price']
     id = request.form['ID']
+    discount = request.form['DiscountAmt']
+    discountLength = request.form['DiscountLength']
 
     query = text("SELECT Type FROM Users WHERE User_ID = :id")
     type = conn.execute(query, {"id": id}).fetchone()[0]
     if type == "Vendor":
-        query = text("INSERT INTO Products (Title, Description, Warranty_Period, Category, Number_Available, Price, User_ID) VALUES (:Title, :Description, :Warranty, :Category, :Number, :Price, :User_ID)")
-        conn.execute(query, {'Title': title, 'Description': description, 'Warranty': warranty, 'Category': category, 'Number': number, 'Price': price, 'User_ID': id})
+        query = text("INSERT INTO Products (Title, Description, Category, Number_Available, Price, User_ID) VALUES (:Title, :Description, :Category, :Number, :Price, :User_ID)")
+        conn.execute(query, {'Title': title, 'Description': description, 'Category': category, 'Number': number, 'Price': price, 'User_ID': id})
         conn.commit()
 
         product_id = conn.execute(text("SELECT MAX(Product_ID) FROM Products")).scalar()
+
+        query = text("INSERT INTO Warranty VALUES (:Product_ID, :WarrantyYR, :WarrantyMN)")
+        conn.execute(query, {'Product_ID': product_id, 'WarrantyYR': warrantyYR, 'WarrantyMN': warrantyMN})
+        conn.commit()
+
+        query = text("INSERT INTO Discount VALUES (:Product_ID, :discountLength, :discount)")
+        conn.execute(query, {'Product_ID': product_id, 'discountLength': discountLength, 'discount': discount})
+        conn.commit()
 
         for image in images.split(', '):
             query = text("INSERT INTO Images (Product_ID, Image) VALUES (:Product_ID, :Image)")
@@ -273,13 +295,11 @@ def orders():
     print(order)
     return render_template('orders.html', orders=order)
 
-
 @app.route('/orderDetails/<ORDER_ID>', methods=['GET'])
 def orderDetails(ORDER_ID):
     allOrderDetails = conn.execute(text(f'SELECT * FROM ORDER_ITEMS WHERE ORDER_ID = {ORDER_ID}')).all()
     print(allOrderDetails)
     return render_template('/orderDetails.html', orderDetails=allOrderDetails)
-
 
 @app.route('/cart.html', methods=["GET", "POST"])
 def cart():
@@ -288,7 +308,6 @@ def cart():
     # conn.execute(text(f'INSERT * INTO ORDER_ITEMS WHERE USER_ID = {userID}'))
     print(cart)
     return render_template('cart.html', cart=cart)
-
 
 @app.route('/account.html', methods=["GET"])
 def account():

@@ -1,25 +1,4 @@
 {% extends 'baseCustomer.html' %}
 {% block body %}
-    <div class="cartbody">
-        <h2>Cart</h2>
-        <div class="cart">
-            <h2>Cart PRODUCTS</h2>
-            {% for i in cart %}
-                <div class="cart_productItems">
-                    <ul>
-                        <li style='width:fit-content;'>: {{i[0]}}</li>
-                        <ul>
-                            <li>: ${{i[1]}}</li>
-                            <li>: {{i[2]}}</li>
-                            <li>: {{i[3]}}</li>
-                        </ul>
-                        <br>
-                    </ul>
-                </div>
-            {% endfor %}
-        </div>
-        <form action="/cart.html" method="POST">
-            <input type="submit" value="Place Order" class='cart_input_submit'>
-        </form>
-    </div>
+
 {% endblock %}
