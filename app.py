@@ -245,14 +245,14 @@ def search():
             ''')
             result = conn.execute(query, {'search_term': f'%{search_term}%'}).fetchall()
             if result:
+                global product_data
                 product_data = []
                 for row in result:
                     product_info = {
+                        'product_id': row[0],
                         'title': row[1],
-                        'description': row[2],
                         'price': '{:.2f}'.format(row[3]),
-                        'image': row[4],
-                        'Product_ID': row[0]
+                        'image': row[4]
                     }
                     product_data.append(product_info)
                 return render_template('products.html', product_data=product_data)
@@ -327,7 +327,7 @@ def chatting(User_id):
 @app.route('/products')
 def products():
     query = text('''
-        SELECT p.Product_ID, p.Title, MIN(i.Image) AS Image
+        SELECT p.Product_ID, p.Title, p.Price, MIN(i.Image) AS Image
         FROM Products p
         JOIN Images i ON p.Product_ID = i.Product_ID
         GROUP BY p.Product_ID, p.Title;
@@ -339,7 +339,8 @@ def products():
         product_info = {
             'product_id': row[0],
             'title': row[1],
-            'image': row[2]
+            'price': '{:.2f}'.format(row[2]),
+            'image': row[3]
         }
         product_data.append(product_info)
     return render_template('products.html', product_data=product_data)
@@ -491,7 +492,7 @@ def complaintUser():
 @app.route('/productFilter.html/<category>')
 def productFilter(category):
     query = text('''
-        SELECT p.Product_ID, p.Title, MIN(i.Image) AS Image
+        SELECT p.Product_ID, p.Title, p.Price, MIN(i.Image) AS Image
         FROM Products p
         JOIN Images i ON p.Product_ID = i.Product_ID
         WHERE p.Category LIKE :category
@@ -504,7 +505,8 @@ def productFilter(category):
         product_info = {
             'product_id': row[0],
             'title': row[1],
-            'image': row[2]
+            'price': '{:.2f}'.format(row[2]),
+            'image': row[3]
         }
         product_data.append(product_info)
     return render_template('productFilter.html', product_data=product_data)
