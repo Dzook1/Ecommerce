@@ -79,6 +79,9 @@
         margin-top: 5px;
         text-align: center;
     }
+    .submit {
+        margin-top: 20px;
+    }
 </style>
 <script>
     function validateCategory(category) {
@@ -100,6 +103,7 @@
     }
 </script>
 <h1>Add A Product</h1>
+
 <form action="/add_item.html" method="POST" onsubmit="return validateForm()">
     <label for="Title">Product Name:</label>
     <input type="text" class="input" name="Title" placeholder="Product Name" required>
@@ -159,8 +163,6 @@
     <label for="Price">Price:</label>
     <input type="number" class="input" min="0" step="0.01" name="Price" placeholder="Price" required>
 
-    <br><br><br>
-
-    <input type="submit" class="input" value="Add Product">
+    <input type="submit" class="input submit" value="Add Product">
 </form>
 {% endblock %}

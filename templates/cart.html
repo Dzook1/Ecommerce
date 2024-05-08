@@ -1,4 +1,267 @@
 {% extends 'baseCustomer.html' %}
+{% block title %}Cart{% endblock %}
 {% block body %}
+    <style>
+        .cartBox {
+            background-color: whitesmoke;
+            width: 80%;
+            min-height: 500px;
+            margin: 0 auto;
+            border: 2px solid black;
+            margin-bottom: 50px;
+        }
 
+        .heading {
+            border-bottom: 1px solid black;
+            padding: 5px;
+            margin: 10px;
+        }
+
+        .cart-item {
+            display: flex;
+            color: black;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            margin: 10px;
+        }
+
+        .cart-item-info {
+            max-width: 500px;
+            word-wrap: break-word;
+        }
+
+        .imageBox {
+            width: 25%;
+            height: 200px;
+            padding: 5px;
+        }
+
+        .image {
+            object-fit: contain;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .title {
+            font-size: 20px;
+        }
+
+        .category {
+            color: gray;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            padding: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .quantityDelete {
+            display: flex;
+        }
+
+        .quantity {
+            margin-right: 10px;
+            width: 50px;
+            padding: 5px;
+        }
+
+        .delete {
+            margin-right: 10px;
+            width: 50px;
+            padding: 5px;
+        }
+
+        .delete:hover {
+            cursor: pointer;
+        }
+
+        .totalPriceBox {
+            text-align: right;
+            padding: 5px;
+            font-size: 20px;
+        }
+
+        .totalPrice {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .placeOrder {
+            background-color: rgb(47, 159, 47);
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+        }
+
+        .placeOrder:hover {
+            cursor: pointer;
+            background-color: rgb(98, 185, 98);
+        }
+
+        .placeOrderBox {
+            width: 25%;
+            height: 30px;
+            margin: 0 auto;
+            margin-bottom: 10px;
+        }
+
+        .sizeColor {
+            display: flex;
+            color: gray;
+            margin-bottom: 10px;
+        }
+
+        .size {
+            margin-right: 10px;
+        }
+    </style>
+
+    <div class="cartBox">
+        <h1 class="heading">Cart</h1>
+
+        <div class="cart-item">
+            <div class="imageBox">
+                <img src="https://m.media-amazon.com/images/I/61w5K7IjpoL._SX522_.jpg" alt="" class="image">
+            </div>
+            <div class="cart-item-info">
+                <p class="title">Playstation 5 Console-Marvel's Spider-Man 2 Bundle</p>
+                <p class="category">Electronics</p>
+                <div class="sizeColor">
+                    <p class="size">Size: n/a</p>
+                    <p class="color">Color: n/a</p>
+                </div>
+                <div class="quantityDelete">
+                    <input type="number" class="quantity" min="1" max="99" value="1">
+                    <form class="deleteForm">
+                        <input type="submit" value="Delete" class="delete">
+                    </form>
+                </div>
+            </div>
+            <p class="price">$547.78</p>
+
+        </div>
+
+        <div class="cart-item">
+            <div class="imageBox">
+                <img src="https://m.media-amazon.com/images/I/61w5K7IjpoL._SX522_.jpg" alt="" class="image">
+            </div>
+            <div class="cart-item-info">
+                <p class="title">Playstation 5 Console-Marvel's Spider-Man 2 Bundle</p>
+                <p class="category">Electronics</p>
+                <div class="sizeColor">
+                    <p class="size">Size: n/a</p>
+                    <p class="color">Color: n/a</p>
+                </div>
+                <div class="quantityDelete">
+                    <input type="number" class="quantity" min="1" max="99" value="1">
+                    <form class="deleteForm">
+                        <input type="submit" value="Delete" class="delete">
+                    </form>
+                </div>
+            </div>
+            <p class="price">$547.78</p>
+
+        </div>
+
+        <div class="cart-item">
+            <div class="imageBox">
+                <img src="https://m.media-amazon.com/images/I/61w5K7IjpoL._SX522_.jpg" alt="" class="image">
+            </div>
+            <div class="cart-item-info">
+                <p class="title">Playstation 5 Console-Marvel's Spider-Man 2 Bundle</p>
+                <p class="category">Electronics</p>
+                <div class="sizeColor">
+                    <p class="size">Size: n/a</p>
+                    <p class="color">Color: n/a</p>
+                </div>
+                <div class="quantityDelete">
+                    <input type="number" class="quantity" min="1" max="99" value="1">
+                    <form class="deleteForm">
+                        <input type="submit" value="Delete" class="delete">
+                    </form>
+                </div>
+            </div>
+            <p class="price">$547.78</p>
+
+        </div>
+
+        <div class="cart-item">
+            <div class="imageBox">
+                <img src="https://m.media-amazon.com/images/I/61w5K7IjpoL._SX522_.jpg" alt="" class="image">
+            </div>
+            <div class="cart-item-info">
+                <p class="title">Playstation 5 Console-Marvel's Spider-Man 2 Bundle</p>
+                <p class="category">Electronics</p>
+                <div class="sizeColor">
+                    <p class="size">Size: n/a</p>
+                    <p class="color">Color: n/a</p>
+                </div>
+                <div class="quantityDelete">
+                    <input type="number" class="quantity" min="1" max="99" value="1">
+                    <form class="deleteForm">
+                        <input type="submit" value="Delete" class="delete">
+                    </form>
+                </div>
+            </div>
+            <p class="price">$547.78</p>
+
+        </div>
+
+        <div class="cart-item">
+            <div class="imageBox">
+                <img src="https://m.media-amazon.com/images/I/61w5K7IjpoL._SX522_.jpg" alt="" class="image">
+            </div>
+            <div class="cart-item-info">
+                <p class="title">Playstation 5 Console-Marvel's Spider-Man 2 Bundle</p>
+                <p class="category">Electronics</p>
+                <div class="sizeColor">
+                    <p class="size">Size: n/a</p>
+                    <p class="color">Color: n/a</p>
+                </div>
+                <div class="quantityDelete">
+                    <input type="number" class="quantity" min="1" max="99" value="1">
+                    <form class="deleteForm">
+                        <input type="submit" value="Delete" class="delete">
+                    </form>
+                </div>
+            </div>
+            <p class="price">$547.78</p>
+
+        </div>
+
+        <div class="cart-item">
+            <div class="imageBox">
+                <img src="https://m.media-amazon.com/images/I/61w5K7IjpoL._SX522_.jpg" alt="" class="image">
+            </div>
+            <div class="cart-item-info">
+                <p class="title">Playstation 5 Console-Marvel's Spider-Man 2 Bundle</p>
+                <p class="category">Electronics</p>
+                <div class="sizeColor">
+                    <p class="size">Size: n/a</p>
+                    <p class="color">Color: n/a</p>
+                </div>
+                <div class="quantityDelete">
+                    <input type="number" class="quantity" min="1" max="99" value="1">
+                    <form class="deleteForm">
+                        <input type="submit" value="Delete" class="delete">
+                    </form>
+                </div>
+            </div>
+            <p class="price">$547.78</p>
+
+        </div>
+
+        
+
+        <p class="totalPriceBox">Total Price (1 Items): <span class="totalPrice">$547.78</span></p>
+
+        <form action="/cart.html" method="POST" class="placeOrderBox">
+            <input type="submit" value="Proceed to Checkout" class='placeOrder'>
+        </form>
+    </div>
 {% endblock %}
