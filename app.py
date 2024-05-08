@@ -420,6 +420,7 @@ def product_details(product_id):
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
     product_id = request.form['product_id']
+    
     user_id = userID
     query = text('''
         SELECT Price
