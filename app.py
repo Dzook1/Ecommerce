@@ -4,7 +4,6 @@ from sqlalchemy import create_engine, text
 import ctypes
 from datetime import date
 
-
 conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
@@ -409,10 +408,12 @@ def product_details(product_id):
     
     if discounts:
         discount = discounts[0]
-        discounted_price = Decimal(product_data.Price) - Decimal(discount.Discount_Amount) / Decimal(100)
+        if discount.Discount_Amount != 0:
+            discounted_price = Decimal(product_data.Price) - Decimal(product_data.Price) * (Decimal(discount.Discount_Amount) / Decimal(100))
+        else:
+            discounted_price = None
     else:
         discounted_price = None
-
 
     return render_template('productDetails.html', product_data=product_data, images=images, warranties=warranties, colors=colors, sizes=sizes, discounts=discounts, discounted_price=discounted_price,current_date=date.today())
 
@@ -474,6 +475,20 @@ def delete_product(product_id):
     conn.commit()
 
     query = text('''
+        DELETE FROM Warranty
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Discount
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
         DELETE FROM Colors
         WHERE Product_ID = :product_id;
     ''')
@@ -525,6 +540,20 @@ def delete_product_vendor(product_id):
 
     query = text('''
         DELETE FROM Colors
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Warranty
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Discount
         WHERE Product_ID = :product_id;
     ''')
     conn.execute(query, {'product_id': product_id})
