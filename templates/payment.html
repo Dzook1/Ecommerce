@@ -2,8 +2,271 @@
 {% block title %}Payment{% endblock %}
 {% block body %}
 <style>
+    .box {
+        width: 95%;
+        min-height: 500px;
+        margin: 0 auto;
+        background-color: whitesmoke;
+        border: 2px solid black;
+        padding: 20px;
+        margin-bottom: 50px;
+    }
 
+    .cancel {
+        color: black;
+        font-size: 20px;
+    }
+    
+    .cancel:hover {
+        color: blue;
+    }
+
+    .heading {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .payment {
+        margin: 0 auto;
+        width: 41%;
+        height: 250px;
+        padding: 10px;
+        border: 1px solid gray;
+        border-radius: 20px;
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
+
+    .line2 {
+        display: flex;
+    }
+
+    label {
+        margin-bottom: 10px;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .name {
+        width: 98%;
+        height: 40px;
+        padding: 5px;
+        background-color: rgb(233, 233, 233);
+        border-radius: 5px;
+        font-size: 20px;
+    }
+
+    .number {
+        height: 40px;
+        padding: 5px;
+        background-color: rgb(233, 233, 233);
+        border-radius: 5px;
+        font-size: 20px;
+        margin-right: 5px;
+    }
+
+    .expiration {
+        height: 40px;
+        padding: 5px;
+        background-color: rgb(233, 233, 233);
+        border-radius: 5px;
+        font-size: 20px;
+        margin-right: 5px;
+    }
+
+    .cvv {
+        width: 75%;
+        height: 40px;
+        padding: 5px;
+        background-color: rgb(233, 233, 233);
+        border-radius: 5px;
+        font-size: 20px;
+        margin-right: 5px;
+    }
+
+    .zip {
+        height: 40px;
+        padding: 5px;
+        background-color: rgb(233, 233, 233);
+        border-radius: 5px;
+        font-size: 20px;
+        width: 32%;
+    }
+
+    .totalPriceBox {
+        text-align: center;
+        padding: 5px;
+        font-size: 20px;
+        margin: 20px 0 0 0;
+    }
+
+    .totalPrice {
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .cart-item {
+        display: flex;
+        color: black;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid lightgray;
+        border-bottom: 1px solid lightgray;
+        margin: 10px;
+    }
+
+    .cart-item-info {
+        max-width: 500px;
+        word-wrap: break-word;
+    }
+
+    .imageBox {
+        width: 25%;
+        height: 200px;
+        padding: 5px;
+    }
+
+    .image {
+        object-fit: contain;
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .category {
+        color: gray;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .price {
+        padding: 10px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .quantityDelete {
+        display: flex;
+    }
+
+    .quantity {
+        margin-right: 10px;
+        width: 50px;
+        padding: 5px;
+    }
+
+    .delete {
+        margin-right: 10px;
+        width: 50px;
+        padding: 5px;
+    }
+
+    .delete:hover {
+        cursor: pointer;
+    }
+
+    .sizeColor {
+        display: flex;
+        color: gray;
+        margin-bottom: 10px;
+    }
+
+    .size {
+        margin-right: 10px;
+    }
+
+    .placeOrder {
+        background-color: rgb(47, 159, 47);
+        width: 100%;
+        height: 100%;
+        border-radius: 15px;
+    }
+
+    .placeOrder:hover {
+        cursor: pointer;
+        background-color: rgb(98, 185, 98);
+    }
+
+    .placeOrderBox {
+        width: 25%;
+        height: 30px;
+        margin: 0 auto;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
 </style>
 
+<div class="box">
+    <a href="/cart.html" class="cancel">Cancel</a>
+    <h1 class="heading">Payment Details</h1>
+    <div class="payment">
+        <div class="field">
+            <label for="name">Cardholder Name</label>
+            <input class="name" type="text" maxlength="20" placeholder="Name" required>
+        </div>
 
+        <div class="line2">
+            <div class=field>
+                <label for="number">Card Number</label>
+                <input class="number" type="text" maxlength="19" placeholder="1111 1111 1111 1111" required>
+            </div>
+            <div class="field">
+                <label for="expiration">Expiration</label>
+                <input class="expiration" type="text" maxlength="5" placeholder="MM/YY" required>
+            </div>
+            <div class="field">
+                <label for="cvv">CVV</label>
+                <input class="cvv" type="text" maxlength="3" placeholder="123" required>
+            </div>
+        </div>
+        
+        <div class="field">
+            <label for="zip">Postal Code</label>
+            <input class="zip" type="text" maxlength="5" placeholder="ZIP Code" required>
+        </div>
+    </div>
+
+    <p class="totalPriceBox">Total Price (2 Items): <span class="totalPrice">$1,095.56</span></p>
+
+    <div class="cart-item">
+        <div class="imageBox">
+            <img src="https://m.media-amazon.com/images/I/61w5K7IjpoL._SX522_.jpg" alt="" class="image">
+        </div>
+        <div class="cart-item-info">
+            <p class="title">Playstation 5 Console-Marvel's Spider-Man 2 Bundle</p>
+            <p class="category">Electronics</p>
+            <div class="sizeColor">
+                <p class="size">Size: n/a</p>
+                <p class="color">Color: n/a</p>
+            </div>
+        </div>
+        <p class="price">$547.78</p>
+    </div>
+
+    <div class="cart-item">
+        <div class="imageBox">
+            <img src="https://m.media-amazon.com/images/I/61w5K7IjpoL._SX522_.jpg" alt="" class="image">
+        </div>
+        <div class="cart-item-info">
+            <p class="title">Playstation 5 Console-Marvel's Spider-Man 2 Bundle</p>
+            <p class="category">Electronics</p>
+            <div class="sizeColor">
+                <p class="size">Size: n/a</p>
+                <p class="color">Color: n/a</p>
+            </div>
+        </div>
+        <p class="price">$547.78</p>
+    </div>
+
+    <form action="/payment.html" method="POST" class="placeOrderBox">
+        <input type="submit" value="Place Order" class='placeOrder'>
+    </form>
+</div>
 {% endblock %}
