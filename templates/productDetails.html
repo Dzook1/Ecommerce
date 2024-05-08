@@ -41,11 +41,11 @@ body {
                 {% endfor %}
             </div>
         </div>
-
+ 
         <div class="right">
-            <h1 class="right-price">${{ '%.2f'|format(product_data[6]) }}</h1>
+            <h1 class="right-price">${{ '%.2f'|format(product_data[5]) }}</h1>
             <p class="right-description">{{ product_data[2] }}</p>
-            <p class=right-warranty>Warranty Period: {{ product_data[3] }}</p>
+            <p class=right-warranty>Warranty Period: </p>
             <h3 class="right-mainLabel">Sizes</h3>
             <div class="radio-buttons">
                 <label class="radio-button">
@@ -82,7 +82,7 @@ body {
                     <span class="radio-label">Option 3</span>
                 </label>
             </div>
-            <p class=right-stock>Number Available: {{ product_data[5] }}</p>
+            <p class=right-stock>Number Available: {{ product_data[4] }}</p>
             <div class="rightFlex">
                 <input type="number" class="right-quantity" min="1" max="99" value="1">
                 <form action="{{ url_for('add_to_cart') }}" method="post">
