@@ -35,54 +35,40 @@ body {
                     <img src="https://th.bing.com/th?id=OIP.-cF734Gc6-NyrrQvpWiyawHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="" class="left-img">
                 </div> -->
                 {% for image in images %}
-                <div class="left-imgDiv">
-                    <img src="{{ image[0] }}" alt="{{ product_data[1] }}" class="left-img">
-                </div>
+                    <div class="left-imgDiv">
+                        <img src="{{ image[0] }}" alt="{{ product_data[1] }}" class="left-img">
+                    </div>
                 {% endfor %}
             </div>
         </div>
 
         <div class="right">
-            <h1 class="right-price">${{ '%.2f'|format(product_data[6]) }}</h1>
+            {% if discounted_price %}
+                <p>Discounted Price: {{ discounted_price }}</p>
+            {% endif %}
             <p class="right-description">{{ product_data[2] }}</p>
-            <p class=right-warranty>Warranty Period: {{ product_data[3] }}</p>
+            <p class=right-warranty>Warranty Period: {{ warranties.Warranty_Year }} Years {{ warranties.Warranty_Month }} Months</p>
             <h3 class="right-mainLabel">Sizes</h3>
             <div class="radio-buttons">
-                <label class="radio-button">
-                    <input type="radio" name="size" value="option1">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 1</span>
-                </label>
-                <label class="radio-button">
-                    <input type="radio" name="size" value="option2">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 2</span>
-                </label>
-                <label class="radio-button">
-                    <input type="radio" name="size" value="option3">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 3</span>
-                </label>
+                {% for size in sizes %}
+                    <label class="radio-button">
+                        <input type="radio" name="size" value="{{ size[0] }}">
+                        <div class="radio-circle"></div>
+                        <span class="radio-label">{{ size[0] }}</span>
+                    </label>
+                {% endfor %}
             </div>
             <h3 class="right-mainLabel">Colors</h3>
             <div class="radio-buttons">
-                <label class="radio-button">
-                    <input type="radio" name="color" value="option1">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 1</span>
-                </label>
-                <label class="radio-button">
-                    <input type="radio" name="color" value="option2">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 2</span>
-                </label>
-                <label class="radio-button">
-                    <input type="radio" name="color" value="option3">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 3</span>
-                </label>
+                {% for color in colors %}
+                    <label class="radio-button">
+                        <input type="radio" name="color" value="{{ color[0] }}">
+                        <div class="radio-circle"></div>
+                        <span class="radio-label">{{ color[0] }}</span>
+                    </label>
+                {% endfor %}
             </div>
-            <p class=right-stock>Number Available: {{ product_data[5] }}</p>
+            <p class=right-stock>Number Available: {{ product_data[4] }}</p>
             <div class="rightFlex">
                 <input type="number" class="right-quantity" min="1" max="99" value="1">
                 <form action="{{ url_for('add_to_cart') }}" method="post">
