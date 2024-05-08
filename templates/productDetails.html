@@ -43,8 +43,9 @@ body {
         </div>
 
         <div class="right">
+            <p class="right-price">${{ '%.2f'|format(product_data[5]) }}</p>
             {% if discounted_price %}
-                <p>Discounted Price: {{ discounted_price }}</p>
+                <p>Discounted Price: ${{ '%.2f'|format(discounted_price) }}</p>
             {% endif %}
             <p class="right-description">{{ product_data[2] }}</p>
             <p class=right-warranty>Warranty Period: {{ warranties.Warranty_Year }} Years {{ warranties.Warranty_Month }} Months</p>
