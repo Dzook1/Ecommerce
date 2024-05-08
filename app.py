@@ -422,6 +422,10 @@ def add_to_cart():
 
     return redirect(url_for('products'))
 
+@app.route('/payment.html')
+def payment():
+    return render_template('payment.html')
+
 @app.route('/delete_product/<product_id>', methods=['POST'])
 def delete_product(product_id):
     query = text('''
