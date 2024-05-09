@@ -318,7 +318,14 @@ def cart():
                  ''')
     cart_items = conn.execute(query, {'cart_id': cart_id}).fetchall()
 
-    return render_template('cart.html', cart_items=cart_items)
+    query = text(f'''
+        SELECT Total_Price 
+        FROM Carts
+        WHERE Cart_ID = :cart_id
+                 ''')
+    cart_price = conn.execute(query, {'cart_id': cart_id}).fetchone()[0]
+
+    return render_template('cart.html', cart_items=cart_items, cart_price=cart_price)
 
 @app.route('/account.html', methods=["GET"])
 def account():
@@ -447,21 +454,21 @@ def add_to_cart():
                 WHERE Product_ID = :product_id;
             ''')
             price = conn.execute(query, {'product_id': product_id}).fetchone()[0]
-            price = (Decimal(price) - Decimal(price) * (Decimal(discount.Discount_Amount) / Decimal(100))) * int(amount)
+            price = Decimal(price) - Decimal(price) * (Decimal(discount.Discount_Amount) / Decimal(100))
         else:
             query = text('''
                 SELECT Price
                 FROM Products
                 WHERE Product_ID = :product_id;
             ''')
-            price = conn.execute(query, {'product_id': product_id}).fetchone()[0] * int(amount)
+            price = conn.execute(query, {'product_id': product_id}).fetchone()[0]
     else:
         query = text('''
             SELECT Price
             FROM Products
             WHERE Product_ID = :product_id;
         ''')
-        price = conn.execute(query, {'product_id': product_id}).fetchone()[0] * int(amount)
+        price = conn.execute(query, {'product_id': product_id}).fetchone()[0]
     
     query = text('''
         SELECT Total_Price
@@ -470,7 +477,7 @@ def add_to_cart():
     ''')
     price2 = conn.execute(query, {'user_id': user_id}).fetchone()[0]
     
-    totalPrice = float(price) + float(price2)
+    totalPrice = float(price) * int(amount) + float(price2)
 
     query = text('''
         SELECT Title

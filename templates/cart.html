@@ -124,29 +124,32 @@
     <div class="cartBox">
         <h1 class="heading">Cart</h1>
 
-        <div class="cart-item">
-            <div class="imageBox">
-                <img src="https://m.media-amazon.com/images/I/61w5K7IjpoL._SX522_.jpg" alt="" class="image">
-            </div>
-            <div class="cart-item-info">
-                <p class="title">Playstation 5 Console-Marvel's Spider-Man 2 Bundle</p>
-                <p class="category">Electronics</p>
-                <div class="sizeColor">
-                    <p class="size">Size: n/a</p>
-                    <p class="color">Color: n/a</p>
-                </div>
-                <div class="quantityDelete">
-                    <input type="number" class="quantity" min="1" max="99" value="1">
-                    <form class="deleteForm">
-                        <input type="submit" value="Delete" class="delete">
-                    </form>
-                </div>
-            </div>
-            <p class="price">$547.78</p>
+        {% for item in cart_items %}
 
-        </div>
+            <div class="cart-item">
+                <div class="imageBox">
+                    <img src="{{ item[7] }}" alt="{{ item[3] }}" class="image">
+                </div>
+                <div class="cart-item-info">
+                    <p class="title">{{ item[3] }}</p>
+                    <div class="sizeColor">
+                        <p class="size">Size: {{ item[6] }}</p>
+                        <p class="color">Color: {{ item[5] }}</p>
+                    </div>
+                    <div class="quantityDelete">
+                        <input type="number" class="quantity" min="1" max="99" value="{{ item[4] }}">
+                        <form class="deleteForm">
+                            <input type="submit" value="Delete" class="delete">
+                        </form>
+                    </div>
+                </div>
+                <p class="price">${{ item[8] }}</p>
+
+            </div>
+
+        {% endfor %}
         
-        <p class="totalPriceBox">Total Price (6 Items): <span class="totalPrice">$547.78</span></p>
+        <p class="totalPriceBox">Total Price: <span class="totalPrice">${{ cart_price }}</span></p>
 
         <form action="/cart.html" method="POST" class="placeOrderBox">
             <input type="submit" value="Proceed to Checkout" class='placeOrder'>
