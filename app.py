@@ -292,15 +292,32 @@ def no_results():
 
 @app.route('/orders.html', methods=['GET'])
 def orders():
-    order = conn.execute(text(f'SELECT * FROM ORDERS WHERE USER_ID = {userID}')).all()
-    print(order)
-    return render_template('orders.html', orders=order)
+    query = text('''
+        SELECT *
+        FROM Orders
+        WHERE User_ID = :userID
+    ''')
+    orders = conn.execute(query, {'userID': userID}).fetchall()
 
-@app.route('/orderDetails.html', methods=['GET'])
-def orderDetails():
-    # allOrderDetails = conn.execute(text(f'SELECT * FROM ORDER_ITEMS WHERE ORDER_ID = {ORDER_ID}')).all()
-    # print(allOrderDetails)
-    return render_template('/orderDetails.html')
+    return render_template('orders.html', orders=orders)
+
+@app.route('/orderDetails.html/<order_id>', methods=['POST'])
+def orderDetails(order_id):
+    query = text('''
+        SELECT *
+        FROM Orders
+        WHERE Order_ID = :order_id
+    ''')
+    order = conn.execute(query, {'order_id': order_id}).fetchall()
+
+    query = text('''
+        SELECT *
+        FROM Order_Items
+        WHERE Order_ID = :order_id
+    ''')
+    order_items = conn.execute(query, {'order_id': order_id}).fetchall()
+
+    return render_template('orderDetails.html', order=order, order_items=order_items)
 
 @app.route('/complaint.html')
 def complaint():
