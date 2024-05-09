@@ -420,23 +420,61 @@ def product_details(product_id):
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
     product_id = request.form['product_id']
-    
     user_id = userID
-    query = text('''
-        SELECT Price
-        FROM Products
-        WHERE Product_ID = :product_id;
-    ''')
-    price = conn.execute(query, {'product_id': product_id}).fetchone()[0]
+    color = request.form['color']
+    size = request.form['size']
+    amount = request.form['amount']
 
+    query = text("SELECT * FROM Discount WHERE Product_ID =:product_id AND Discount_Period >= CURRENT_DATE")
+    discounts = conn.execute(query, {'product_id': product_id, 'current_date': date.today()}).fetchall()
+    
+    if discounts:
+        discount = discounts[0]
+        if discount.Discount_Amount != 0:
+            query = text('''
+                SELECT Price
+                FROM Products
+                WHERE Product_ID = :product_id;
+            ''')
+            price = conn.execute(query, {'product_id': product_id}).fetchone()[0]
+            price = (Decimal(price) - Decimal(price) * (Decimal(discount.Discount_Amount) / Decimal(100))) * int(amount)
+        else:
+            query = text('''
+                SELECT Price
+                FROM Products
+                WHERE Product_ID = :product_id;
+            ''')
+            price = conn.execute(query, {'product_id': product_id}).fetchone()[0] * int(amount)
+    else:
+        query = text('''
+            SELECT Price
+            FROM Products
+            WHERE Product_ID = :product_id;
+        ''')
+        price = conn.execute(query, {'product_id': product_id}).fetchone()[0] * int(amount)
+    
     query = text('''
         SELECT Total_Price
         FROM Carts
         WHERE User_ID = :user_id;
     ''')
     price2 = conn.execute(query, {'user_id': user_id}).fetchone()[0]
-
+    
     totalPrice = float(price) + float(price2)
+
+    query = text('''
+        SELECT Title
+        FROM Products
+        WHERE Product_ID = :product_id;
+    ''')
+    title = conn.execute(query, {'product_id': product_id}).fetchone()[0]
+
+    query = text('''
+        SELECT Cart_ID
+        FROM Carts
+        WHERE User_ID = :user_id;
+    ''')
+    cart_id = conn.execute(query, {'user_id': user_id}).fetchone()[0]
 
     query = text('''
         UPDATE Carts SET Total_Price = :totalPrice WHERE User_ID = :user_id;
@@ -444,17 +482,11 @@ def add_to_cart():
     conn.execute(query, {'user_id': user_id, 'totalPrice': totalPrice})
     conn.commit()
 
-    query = text( '''SELECT Cart_ID FROM Carts WHERE User_ID = :user_id''' )
-    cart_id = conn.execute(query, {'user_id': user_id}).fetchone()[0]
-
-    query = text('''SELECT Title FROM Products WHERE Product_ID = :product_id;''')
-    title = conn.execute(query, {'product_id': product_id}).fetchone()[0]
-
     query = text('''
-        INSERT INTO Cart_Items (Cart_ID, Title, Price)
-        VALUES (:cart_id, :title, :price);
+        INSERT INTO Cart_Items (Cart_ID, Product_ID, Title, Price, Amount, Color, Size)
+        VALUES (:cart_id, :product_id, :title, :price, :amount, :color, :size);
     ''')
-    conn.execute(query, {'cart_id': cart_id, 'title': title, 'price': price})
+    conn.execute(query, {'cart_id': cart_id, 'product_id': product_id, 'title': title, 'price': price, 'amount': amount, 'color': color, 'size': size})
     conn.commit()
 
     return redirect(url_for('products'))
