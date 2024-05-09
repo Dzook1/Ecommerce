@@ -66,8 +66,9 @@
 
         .quantity {
             margin-right: 10px;
-            width: 50px;
+            width: 80px;
             padding: 5px;
+            color: gray;
         }
 
         .delete {
@@ -137,13 +138,13 @@
                         <p class="color">Color: {{ item[5] }}</p>
                     </div>
                     <div class="quantityDelete">
-                        <input type="number" class="quantity" min="1" max="99" value="{{ item[4] }}">
-                        <form class="deleteForm">
+                        <p class="quantity">Quantity: {{ item[4] }}</p>
+                        <form class="deleteForm" action="{{ url_for('delete_product_cart', cart_item_id=item[0]) }}" method="post">
                             <input type="submit" value="Delete" class="delete">
                         </form>
                     </div>
                 </div>
-                <p class="price">${{ item[8] }}</p>
+                <p class="price">Unit Price: ${{ item[8] }}</p>
 
             </div>
 

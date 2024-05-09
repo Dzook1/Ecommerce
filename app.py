@@ -327,6 +327,123 @@ def cart():
 
     return render_template('cart.html', cart_items=cart_items, cart_price=cart_price)
 
+@app.route('/cart.html', methods=["POST"])
+def cartGo():
+    query = text('''
+        SELECT Cart_ID
+        FROM Carts
+        WHERE User_ID = :user_id
+    ''')
+    cart_id = conn.execute(query, {'user_id': userID}).fetchone()[0]
+
+    query = text('''
+        SELECT Total_Price
+        FROM Carts
+        WHERE User_ID = :user_id
+    ''')
+    price = conn.execute(query, {'user_id': userID}).fetchone()[0]
+
+    query = text('''
+        SELECT *
+        FROM Cart_Items
+        WHERE Cart_ID = :cart_id
+    ''')
+    cart_items = conn.execute(query, {'cart_id': cart_id}).fetchall()
+
+    return render_template('payment.html', cart_items=cart_items, price=price)
+
+@app.route('/payment.html', methods=["POST"])
+def paymentGo():
+    current_date = date.today()
+
+    query = text('''
+        SELECT Total_Price
+        FROM Carts
+        WHERE User_ID = :user_id
+    ''')
+    price = conn.execute(query, {'user_id': userID}).fetchone()[0]
+
+    query = text('''
+        INSERT INTO Orders (User_ID, Order_Date, Total_Price, Order_Status)
+        VALUES (:user_id, :current_date, :price, "PENDING")
+    ''')
+    conn.execute(query, {'user_id': userID, 'current_date': current_date, 'price': price})
+    conn.commit()
+
+    query = text('''
+        SELECT MAX(Order_ID)
+        FROM Orders
+        WHERE User_ID = :user_id
+    ''')
+    OrderID = conn.execute(query, {'user_id': userID}).fetchone()[0]
+
+    query = text('''
+        SELECT Cart_ID
+        FROM Carts
+        WHERE User_ID = :user_id
+    ''')
+    CartID = conn.execute(query, {'user_id': userID}).fetchone()[0]
+
+    query = text('''
+        SELECT *
+        FROM Cart_Items
+        WHERE Cart_ID = :cart_id
+    ''')
+    cart_items = conn.execute(query, {'cart_id': CartID}).fetchall()
+
+    for item in cart_items:
+        product_id = item[1]
+        title = item[3]
+        amount = item[4]
+        color = item[5]
+        size = item[6]
+        image = item[7]
+        indPrice = Decimal(item[8]) * int(amount)
+
+        query = text('''
+            SELECT Warranty_Year
+            FROM Warranty
+            WHERE Product_ID = :product_id
+        ''')
+        warranty_years = conn.execute(query, {'product_id': product_id}).fetchone()[0]
+
+        query = text('''
+            SELECT Warranty_Month
+            FROM Warranty
+            WHERE Product_ID = :product_id
+        ''')
+        warranty_months = conn.execute(query, {'product_id': product_id}).fetchone()[0]
+
+        if (current_date.month + warranty_months) > 12:
+            expiry_date = current_date.replace(year=current_date.year + warranty_years + 1, month=current_date.month + warranty_months - 12)
+        else:
+            expiry_date = current_date.replace(year=current_date.year + warranty_years, month=current_date.month + warranty_months)
+
+        query = text('''
+            INSERT INTO Order_Items (Order_ID, Title, Expiry, Amount, Color, Size, Image, Price)
+            VALUES (:OrderID, :title, :expiry_date, :amount, :color, :size, :image, :indPrice)
+        ''')
+        conn.execute(query, {'OrderID': OrderID, 'title': title, 'expiry_date': expiry_date, 'amount': amount, 'color': color, 'size': size, 'image': image, 'indPrice': indPrice})
+        conn.commit()
+
+    query = text('''
+        DELETE FROM Cart_Items
+        WHERE Cart_ID = :CartID
+    ''')
+    conn.execute(query, {'CartID': CartID})
+    conn.commit()
+
+    query = text('''
+        UPDATE Carts
+        SET Total_Price = 0
+        WHERE User_ID = :userID
+    ''')
+    conn.execute(query, {'userID': userID})
+    conn.commit()
+
+    return render_template('baseCustomer.html')
+
+
 @app.route('/account.html', methods=["GET"])
 def account():
     account = conn.execute(text(f'SELECT * FROM USERS WHERE USER_ID = {userID}')).all()
@@ -518,6 +635,74 @@ def add_to_cart():
 @app.route('/payment.html')
 def payment():
     return render_template('payment.html')
+
+@app.route('/delete_product_cart/<cart_item_id>', methods=['POST'])
+def delete_product_cart(cart_item_id):
+    query = text('''
+        SELECT Price
+        FROM Cart_Items
+        WHERE Cart_Item_ID = :cart_item_id;
+    ''')
+    price = conn.execute(query, {'cart_item_id': cart_item_id}).fetchone()[0]
+
+    query = text('''
+        SELECT Amount
+        FROM Cart_Items
+        WHERE Cart_Item_ID = :cart_item_id;
+    ''')
+    amount = conn.execute(query, {'cart_item_id': cart_item_id}).fetchone()[0]
+
+    price = Decimal(price) * int(amount)
+
+    query = text('''
+        SELECT Total_Price
+        FROM Carts
+        WHERE User_ID = :user_id
+    ''')
+    price2 = conn.execute(query, {'user_id': userID}).fetchone()[0]
+
+    price3 = Decimal(price2) - Decimal(price)
+
+    if price3 < 0:
+        price3 = 0
+
+    query = text('''
+        UPDATE Carts
+        SET Total_Price = :price3
+        WHERE User_ID = :user_id
+    ''')
+    conn.execute(query, {'price3': price3, 'user_id': userID})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Cart_Items
+        WHERE Cart_Item_ID = :cart_item_id;
+    ''')
+    conn.execute(query, {'cart_item_id': cart_item_id})
+    conn.commit()
+
+    query = text(f'''
+        SELECT Cart_ID
+        FROM Carts
+        WHERE User_ID = :user_id
+                ''')
+    cart_id = conn.execute(query, {'user_id': userID}).fetchone()[0]
+
+    query = text(f'''
+        SELECT * 
+        FROM Cart_Items
+        WHERE Cart_ID = :cart_id
+                 ''')
+    cart_items = conn.execute(query, {'cart_id': cart_id}).fetchall()
+
+    query = text(f'''
+        SELECT Total_Price 
+        FROM Carts
+        WHERE Cart_ID = :cart_id
+                 ''')
+    cart_price = conn.execute(query, {'cart_id': cart_id}).fetchone()[0]
+
+    return render_template('cart.html', cart_items=cart_items, cart_price=cart_price)
 
 @app.route('/delete_product/<product_id>', methods=['POST'])
 def delete_product(product_id):
