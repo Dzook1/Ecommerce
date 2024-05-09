@@ -302,13 +302,23 @@ def orderDetails(ORDER_ID):
     print(allOrderDetails)
     return render_template('/orderDetails.html', orderDetails=allOrderDetails)
 
-@app.route('/cart.html', methods=["GET", "POST"])
+@app.route('/cart.html', methods=["GET"])
 def cart():
-    cart = conn.execute(text(f'SELECT * FROM CARTS NATURAL JOIN CART_ITEMS WHERE USER_ID = {userID}')).all()
-    # conn.execute(text(f'INSERT * INTO ORDERS WHERE USER_ID = {userID}'))
-    # conn.execute(text(f'INSERT * INTO ORDER_ITEMS WHERE USER_ID = {userID}'))
-    print(cart)
-    return render_template('cart.html', cart=cart)
+    query = text(f'''
+        SELECT Cart_ID
+        FROM Carts
+        WHERE User_ID = :user_id
+                ''')
+    cart_id = conn.execute(query, {'user_id': userID}).fetchone()[0]
+
+    query = text(f'''
+        SELECT * 
+        FROM Cart_Items
+        WHERE Cart_ID = :cart_id
+                 ''')
+    cart_items = conn.execute(query, {'cart_id': cart_id}).fetchall()
+
+    return render_template('cart.html', cart_items=cart_items)
 
 @app.route('/account.html', methods=["GET"])
 def account():
@@ -470,6 +480,13 @@ def add_to_cart():
     title = conn.execute(query, {'product_id': product_id}).fetchone()[0]
 
     query = text('''
+        SELECT Image
+        FROM Images
+        WHERE Product_ID = :product_id;
+    ''')
+    image = conn.execute(query, {'product_id': product_id}).fetchone()[0]
+
+    query = text('''
         SELECT Cart_ID
         FROM Carts
         WHERE User_ID = :user_id;
@@ -483,10 +500,10 @@ def add_to_cart():
     conn.commit()
 
     query = text('''
-        INSERT INTO Cart_Items (Cart_ID, Product_ID, Title, Price, Amount, Color, Size)
-        VALUES (:cart_id, :product_id, :title, :price, :amount, :color, :size);
+        INSERT INTO Cart_Items (Cart_ID, Product_ID, Title, Price, Amount, Color, Size, Image)
+        VALUES (:cart_id, :product_id, :title, :price, :amount, :color, :size, :image);
     ''')
-    conn.execute(query, {'cart_id': cart_id, 'product_id': product_id, 'title': title, 'price': price, 'amount': amount, 'color': color, 'size': size})
+    conn.execute(query, {'cart_id': cart_id, 'product_id': product_id, 'title': title, 'price': price, 'amount': amount, 'color': color, 'size': size, 'image': image})
     conn.commit()
 
     return redirect(url_for('products'))
