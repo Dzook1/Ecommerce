@@ -90,6 +90,18 @@ def loginEmpGo():
     else:
         return render_template('index.html')
 
+@app.route('/pendingOrders.html')
+def vendorOrders():
+    return render_template('pendingOrders.html')
+
+@app.route('/confirmedOrders.html')
+def confirmedOrders():
+    return render_template('confirmedOrders.html')
+
+@app.route('/orderDetailsVendor.html')
+def orderDetailsVendor():
+    return render_template('orderDetailsVendor.html')
+
 @app.route('/adminLanding.html')
 def adminLanding():
     return render_template('adminLanding.html')
@@ -199,6 +211,10 @@ def addItemAdminGo():
         return render_template('adminLanding.html')
     else:
         return render_template('add_itemAdmin.html')
+    
+@app.route('/viewComplaints.html')
+def viewComplaints():
+    return render_template('viewComplaints.html')
 
 @app.route('/itemList.html')
 def itemList():
