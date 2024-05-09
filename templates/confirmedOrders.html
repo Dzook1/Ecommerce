@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% block title %}Confirmed Orders{% endblock %}
+{% block body %}
+<style>
+    .orderBox {
+        background-color: whitesmoke;
+        width: 95%;
+        min-height: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        margin-bottom: 50px;
+        border: 2px solid black;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);        
+
+    }
+
+    .heading {
+        text-align: center;
+        border: dashed 3px black;
+        padding: 10px;     
+        margin-bottom: 20px;   
+        margin-top: 20px;
+    }
+
+    .order {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid gray;
+        height: 150px;
+        padding: 30px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;    
+    }
+
+    .status {
+        font-size: 30px;
+        color: rgb(21, 79, 21);
+    }
+
+    .orderDetailsA {
+        font-size: 20px;
+    }
+
+    .editStatus {
+        width: 25%;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .editStatus label {
+        font-size: 20px;
+    }
+
+    .statusSelect {
+        height: 40px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .detail {
+        margin-bottom: 5px;
+        font-size: 15px;
+    }
+    
+
+    
+</style>
+
+<h1 class="heading">~~Confirmed Orders~~</h1>
+<div class="orderBox">
+
+    <div class="order">
+        <div>
+            <p class="status">Confirmed</p>
+            <p class="detail">Ordered By: Handsome Jack</p>
+            <p class="detail">Ordered On: 05/04/2024</p>
+            <p class="detail">Total Price: $99.99 (2 items)</p>
+        </div>
+        <a class="orderDetailsA" href="/orderDetailsVendor.html">Order Details</a>
+        <div class="editStatus">
+            <label for="status">Edit Status</label>
+            <select class="statusSelect">
+                <option value="confirmed">Confirmed</option>
+                <option value="handed_to_delivery_partner">Handed to delivery partner</option>
+                <option value="shipped">Shipped</option>
+                <option value="out_for_delivery">Out for delivery</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="order">
+        <div>
+            <p class="status">Confirmed</p>
+            <p class="detail">Ordered By: Handsome Jack</p>
+            <p class="detail">Ordered On: 05/04/2024</p>
+            <p class="detail">Total Price: $99.99 (2 items)</p>
+        </div>
+        <a class="orderDetailsA" href="/orderDetailsVendor.html">Order Details</a>
+        <div class="editStatus">
+            <label for="status">Edit Status</label>
+            <select class="statusSelect">
+                <option value="confirmed">Confirmed</option>
+                <option value="handed_to_delivery_partner">Handed to delivery partner</option>
+                <option value="shipped">Shipped</option>
+                <option value="out_for_delivery">Out for delivery</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="order">
+        <div>
+            <p class="status">Confirmed</p>
+            <p class="detail">Ordered By: Handsome Jack</p>
+            <p class="detail">Ordered On: 05/04/2024</p>
+            <p class="detail">Total Price: $99.99 (2 items)</p>
+        </div>
+        <a class="orderDetailsA" href="/orderDetailsVendor.html">Order Details</a>
+        <div class="editStatus">
+            <label for="status">Edit Status</label>
+            <select class="statusSelect">
+                <option value="confirmed">Confirmed</option>
+                <option value="handed_to_delivery_partner">Handed to delivery partner</option>
+                <option value="shipped">Shipped</option>
+                <option value="out_for_delivery">Out for delivery</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="order">
+        <div>
+            <p class="status">Confirmed</p>
+            <p class="detail">Ordered By: Handsome Jack</p>
+            <p class="detail">Ordered On: 05/04/2024</p>
+            <p class="detail">Total Price: $99.99 (2 items)</p>
+        </div>
+        <a class="orderDetailsA" href="/orderDetailsVendor.html">Order Details</a>
+        <div class="editStatus">
+            <label for="status">Edit Status</label>
+            <select class="statusSelect">
+                <option value="confirmed">Confirmed</option>
+                <option value="handed_to_delivery_partner">Handed to delivery partner</option>
+                <option value="shipped">Shipped</option>
+                <option value="out_for_delivery">Out for delivery</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="order">
+        <div>
+            <p class="status">Confirmed</p>
+            <p class="detail">Ordered By: Handsome Jack</p>
+            <p class="detail">Ordered On: 05/04/2024</p>
+            <p class="detail">Total Price: $99.99 (2 items)</p>
+        </div>
+        <a class="orderDetailsA" href="/orderDetailsVendor.html">Order Details</a>
+        <div class="editStatus">
+            <label for="status">Edit Status</label>
+            <select class="statusSelect">
+                <option value="confirmed">Confirmed</option>
+                <option value="handed_to_delivery_partner">Handed to delivery partner</option>
+                <option value="shipped">Shipped</option>
+                <option value="out_for_delivery">Out for delivery</option>
+            </select>
+        </div>
+    </div>
+
+</div>
+
+    
+{% endblock %}
