@@ -1,9 +1,10 @@
+from decimal import Decimal
 from flask import Flask, redirect, render_template, request, url_for
 from sqlalchemy import create_engine, text
 import ctypes
+from datetime import date
 
-
-conn_str = "mysql://root:cset155@localhost/ecommerce"
+conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -379,27 +380,101 @@ def product_details(product_id):
         WHERE Product_ID = :product_id;
     ''')
     images = conn.execute(query, {'product_id': product_id}).fetchall()
-    return render_template('productDetails.html', product_data=product_data, images=images)
+
+    query = text('''
+        SELECT Color
+        FROM Colors
+        WHERE  Product_ID = :product_id;
+    ''')
+    colors = conn.execute(query, {'product_id': product_id}).fetchall()
+
+    query = text('''
+        SELECT Size
+        FROM Sizes
+        WHERE  Product_ID = :product_id;
+    ''')
+    sizes = conn.execute(query, {'product_id': product_id}).fetchall()
+
+    query = text('''
+        SELECT Warranty_Year, Warranty_Month
+        FROM Warranty
+        WHERE Product_ID = :product_id
+    ''')
+
+    warranties = conn.execute(query,  {'product_id': product_id}).fetchone()
+
+    query = text("SELECT * FROM Discount WHERE Product_ID =:product_id AND Discount_Period >= CURRENT_DATE")
+    discounts = conn.execute(query, {'product_id': product_id, 'current_date': date.today()}).fetchall()
+    
+    if discounts:
+        discount = discounts[0]
+        if discount.Discount_Amount != 0:
+            discounted_price = Decimal(product_data.Price) - Decimal(product_data.Price) * (Decimal(discount.Discount_Amount) / Decimal(100))
+        else:
+            discounted_price = None
+    else:
+        discounted_price = None
+
+    return render_template('productDetails.html', product_data=product_data, images=images, warranties=warranties, colors=colors, sizes=sizes, discounts=discounts, discounted_price=discounted_price,current_date=date.today())
 
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
     product_id = request.form['product_id']
     user_id = userID
-    query = text('''
-        SELECT Price
-        FROM Products
-        WHERE Product_ID = :product_id;
-    ''')
-    price = conn.execute(query, {'product_id': product_id}).fetchone()[0]
+    color = request.form['color']
+    size = request.form['size']
+    amount = request.form['amount']
 
+    query = text("SELECT * FROM Discount WHERE Product_ID =:product_id AND Discount_Period >= CURRENT_DATE")
+    discounts = conn.execute(query, {'product_id': product_id, 'current_date': date.today()}).fetchall()
+    
+    if discounts:
+        discount = discounts[0]
+        if discount.Discount_Amount != 0:
+            query = text('''
+                SELECT Price
+                FROM Products
+                WHERE Product_ID = :product_id;
+            ''')
+            price = conn.execute(query, {'product_id': product_id}).fetchone()[0]
+            price = (Decimal(price) - Decimal(price) * (Decimal(discount.Discount_Amount) / Decimal(100))) * int(amount)
+        else:
+            query = text('''
+                SELECT Price
+                FROM Products
+                WHERE Product_ID = :product_id;
+            ''')
+            price = conn.execute(query, {'product_id': product_id}).fetchone()[0] * int(amount)
+    else:
+        query = text('''
+            SELECT Price
+            FROM Products
+            WHERE Product_ID = :product_id;
+        ''')
+        price = conn.execute(query, {'product_id': product_id}).fetchone()[0] * int(amount)
+    
     query = text('''
         SELECT Total_Price
         FROM Carts
         WHERE User_ID = :user_id;
     ''')
     price2 = conn.execute(query, {'user_id': user_id}).fetchone()[0]
-
+    
     totalPrice = float(price) + float(price2)
+
+    query = text('''
+        SELECT Title
+        FROM Products
+        WHERE Product_ID = :product_id;
+    ''')
+    title = conn.execute(query, {'product_id': product_id}).fetchone()[0]
+
+    query = text('''
+        SELECT Cart_ID
+        FROM Carts
+        WHERE User_ID = :user_id;
+    ''')
+    cart_id = conn.execute(query, {'user_id': user_id}).fetchone()[0]
 
     query = text('''
         UPDATE Carts SET Total_Price = :totalPrice WHERE User_ID = :user_id;
@@ -407,17 +482,11 @@ def add_to_cart():
     conn.execute(query, {'user_id': user_id, 'totalPrice': totalPrice})
     conn.commit()
 
-    query = text( '''SELECT Cart_ID FROM Carts WHERE User_ID = :user_id''' )
-    cart_id = conn.execute(query, {'user_id': user_id}).fetchone()[0]
-
-    query = text('''SELECT Title FROM Products WHERE Product_ID = :product_id;''')
-    title = conn.execute(query, {'product_id': product_id}).fetchone()[0]
-
     query = text('''
-        INSERT INTO Cart_Items (Cart_ID, Title, Price)
-        VALUES (:cart_id, :title, :price);
+        INSERT INTO Cart_Items (Cart_ID, Product_ID, Title, Price, Amount, Color, Size)
+        VALUES (:cart_id, :product_id, :title, :price, :amount, :color, :size);
     ''')
-    conn.execute(query, {'cart_id': cart_id, 'title': title, 'price': price})
+    conn.execute(query, {'cart_id': cart_id, 'product_id': product_id, 'title': title, 'price': price, 'amount': amount, 'color': color, 'size': size})
     conn.commit()
 
     return redirect(url_for('products'))
@@ -437,6 +506,20 @@ def delete_product(product_id):
 
     query = text('''
         DELETE FROM Sizes
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Warranty
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Discount
         WHERE Product_ID = :product_id;
     ''')
     conn.execute(query, {'product_id': product_id})
@@ -494,6 +577,20 @@ def delete_product_vendor(product_id):
 
     query = text('''
         DELETE FROM Colors
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Warranty
+        WHERE Product_ID = :product_id;
+    ''')
+    conn.execute(query, {'product_id': product_id})
+    conn.commit()
+
+    query = text('''
+        DELETE FROM Discount
         WHERE Product_ID = :product_id;
     ''')
     conn.execute(query, {'product_id': product_id})

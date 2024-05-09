@@ -13,79 +13,47 @@ body {
 <section class="productDiv">
     <div class="productDiv-box">
         <div class="left">
-            <!-- <a class="left-a" href="/products.html">Back</a> -->
             <h1 class="left-title">{{ product_data[1] }}</h1>
             <div class="left-imgGrid">
-                <!-- <div class="left-imgDiv topDiv">
-                    <img src="https://th.bing.com/th?id=OIP.qN9J4Gj796xk9V68PYOLagHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="" class="left-img">
-                </div>
-                <div class="left-imgDiv topDiv">
-                    <img src="https://th.bing.com/th?id=OIP.-cF734Gc6-NyrrQvpWiyawHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="" class="left-img">
-                </div>
-                <div class="left-imgDiv topDiv">
-                    <img src="https://th.bing.com/th?id=OIP.-cF734Gc6-NyrrQvpWiyawHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="" class="left-img">
-                </div>
-                <div class="left-imgDiv">
-                    <img src="https://th.bing.com/th?id=OIP.-cF734Gc6-NyrrQvpWiyawHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="" class="left-img">
-                </div>
-                <div class="left-imgDiv">
-                    <img src="https://th.bing.com/th?id=OIP.-cF734Gc6-NyrrQvpWiyawHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="" class="left-img">
-                </div>
-                <div class="left-imgDiv">
-                    <img src="https://th.bing.com/th?id=OIP.-cF734Gc6-NyrrQvpWiyawHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="" class="left-img">
-                </div> -->
                 {% for image in images %}
-                <div class="left-imgDiv">
-                    <img src="{{ image[0] }}" alt="{{ product_data[1] }}" class="left-img">
-                </div>
+                    <div class="left-imgDiv">
+                        <img src="{{ image[0] }}" alt="{{ product_data[1] }}" class="left-img">
+                    </div>
                 {% endfor %}
             </div>
         </div>
  
         <div class="right">
-            <h1 class="right-price">${{ '%.2f'|format(product_data[5]) }}</h1>
+            <p class="right-price">${{ '%.2f'|format(product_data[5]) }}</p>
+            {% if discounted_price %}
+                <p>Discounted Price: ${{ '%.2f'|format(discounted_price) }}</p>
+            {% endif %}
             <p class="right-description">{{ product_data[2] }}</p>
-            <p class=right-warranty>Warranty Period: </p>
-            <h3 class="right-mainLabel">Sizes</h3>
-            <div class="radio-buttons">
-                <label class="radio-button">
-                    <input type="radio" name="size" value="option1">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 1</span>
-                </label>
-                <label class="radio-button">
-                    <input type="radio" name="size" value="option2">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 2</span>
-                </label>
-                <label class="radio-button">
-                    <input type="radio" name="size" value="option3">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 3</span>
-                </label>
-            </div>
-            <h3 class="right-mainLabel">Colors</h3>
-            <div class="radio-buttons">
-                <label class="radio-button">
-                    <input type="radio" name="color" value="option1">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 1</span>
-                </label>
-                <label class="radio-button">
-                    <input type="radio" name="color" value="option2">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 2</span>
-                </label>
-                <label class="radio-button">
-                    <input type="radio" name="color" value="option3">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">Option 3</span>
-                </label>
-            </div>
-            <p class=right-stock>Number Available: {{ product_data[4] }}</p>
-            <div class="rightFlex">
-                <input type="number" class="right-quantity" min="1" max="99" value="1">
-                <form action="{{ url_for('add_to_cart') }}" method="post">
+            <p class=right-warranty>Warranty Period: {{ warranties.Warranty_Year }} Years {{ warranties.Warranty_Month }} Months</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post">
+                <h3 class="right-mainLabel">Sizes</h3>
+                <div class="radio-buttons">
+                    {% for size in sizes %}
+                        <label class="radio-button">
+                            <input type="radio" name="size" value="{{ size[0] }}" required>
+                            <div class="radio-circle"></div>
+                            <span class="radio-label">{{ size[0] }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+                <h3 class="right-mainLabel">Colors</h3>
+                <div class="radio-buttons">
+                    {% for color in colors %}
+                        <label class="radio-button">
+                            <input type="radio" name="color" value="{{ color[0] }}" required>
+                            <div class="radio-circle"></div>
+                            <span class="radio-label">{{ color[0] }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+                <p class=right-stock>Number Available: {{ product_data[4] }}</p>
+                <div class="rightFlex">
+                    <input type="number" class="right-quantity" name="amount" min="1" max="{{ product_data[4] }}" value="1">
                     <input type="hidden" name="product_id" value="{{ product_data[0] }}">
                     <input type="submit" value="Add to Cart" class="right-btn">
                 </form>
