@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, text
 import ctypes
 from datetime import date
 
-conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
+conn_str = "mysql://root:cset155@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -296,11 +296,15 @@ def orders():
     print(order)
     return render_template('orders.html', orders=order)
 
-@app.route('/orderDetails/<ORDER_ID>', methods=['GET'])
-def orderDetails(ORDER_ID):
-    allOrderDetails = conn.execute(text(f'SELECT * FROM ORDER_ITEMS WHERE ORDER_ID = {ORDER_ID}')).all()
-    print(allOrderDetails)
-    return render_template('/orderDetails.html', orderDetails=allOrderDetails)
+@app.route('/orderDetails.html', methods=['GET'])
+def orderDetails():
+    # allOrderDetails = conn.execute(text(f'SELECT * FROM ORDER_ITEMS WHERE ORDER_ID = {ORDER_ID}')).all()
+    # print(allOrderDetails)
+    return render_template('/orderDetails.html')
+
+@app.route('/complaint.html')
+def complaint():
+    return render_template('complaint.html')
 
 @app.route('/cart.html', methods=["GET"])
 def cart():
@@ -814,9 +818,6 @@ def delete_product_vendor(product_id):
 
     return redirect(url_for('itemListVendor'))
 
-@app.route('/complaintUser.html')
-def complaintUser():
-    render_template('complaintUser.html')
 
 @app.route('/productFilter.html/<category>')
 def productFilter(category):
