@@ -218,11 +218,11 @@ def itemList():
         product_data.append(product_info)
     return render_template('itemList.html', product_data=product_data)
 
-@app.route('/edit_product/<product_id>', methods=['GET', 'POST'])
+@app.route('/edit_product/<int:product_id>', methods=['GET', 'POST'])
 def edit_product(product_id):
     if request.method == 'GET':
         query = text('''
-            SELECT p.Product_ID, p.Title, p.Description, p.Price, p.Warranty_Period, p.Category, p.Number_Available, p.User_ID,
+            SELECT p.Product_ID, p.Title, p.Description, p.Price, p.Category, p.Number_Available, p.User_ID,
                 (SELECT Image FROM Images WHERE Product_ID = p.Product_ID LIMIT 1) AS Image
             FROM Products p
             WHERE p.Product_ID = :product_id;
@@ -235,16 +235,15 @@ def edit_product(product_id):
         title = request.form['Title']
         description = request.form['Description']
         price = request.form['Price']
-        warranty = request.form['Warranty']
         category = request.form['Category']
         number = request.form['Number']
 
         query = text('''
             UPDATE Products
-            SET Title = :title, Description = :description, Price = :price, Warranty_Period = :warranty, Category = :category, Number_Available = :number
+            SET Title = :title, Description = :description, Price = :price, Category = :category, Number_Available = :number
             WHERE Product_ID = :product_id;
         ''')
-        conn.execute(query, {'title': title, 'description': description, 'price': price, 'warranty': warranty, 'category': category, 'number': number, 'product_id': product_id})
+        conn.execute(query, {'title': title, 'description': description, 'price': price, 'category': category, 'number': number, 'product_id': product_id})
         conn.commit()
 
         return redirect(url_for('itemList'))
@@ -319,9 +318,32 @@ def orderDetails(order_id):
 
     return render_template('orderDetails.html', order=order, order_items=order_items)
 
-@app.route('/complaint.html')
-def complaint():
-    return render_template('complaint.html')
+@app.route('/complaint.html/<order_item_id>')
+def complaint(order_item_id):
+    query = text('''
+        SELECT *
+        FROM Order_Items
+        WHERE Order_Item_ID = :order_item_id
+    ''')
+    items = conn.execute(query, {'order_item_id': order_item_id}).fetchall()
+
+    return render_template('complaint.html', items=items)
+
+@app.route('/complaint.html', methods=['POST'])
+def complaintGo():
+    current_date = date.today()
+    title = request.form['title']
+    description = request.form['description']
+    demand = request.form['demand']
+
+    query = text('''
+        INSERT INTO Complaints
+        VALUES (:userID, :current_date, :title, :description, :demand)
+    ''')
+    conn.execute(query, {'userID': userID, 'current_date': current_date, 'title': title, 'description': description, 'demand': demand})
+    conn.commit()
+
+    return render_template('baseCustomer.html')
 
 @app.route('/cart.html', methods=["GET"])
 def cart():
