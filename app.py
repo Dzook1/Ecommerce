@@ -1,10 +1,9 @@
 from decimal import Decimal
 from flask import Flask, redirect, render_template, request, url_for
 from sqlalchemy import create_engine, text
-import ctypes
 from datetime import date
 
-conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
+conn_str = "mysql://root:MySQL@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -35,6 +34,7 @@ def loginUserGo():
         return render_template('baseCustomer.html')
     else:
         return render_template('index.html')
+
 
 @app.route('/signup.html', methods=['GET'])
 def signup():
@@ -83,12 +83,52 @@ def loginEmpGo():
         query = text("SELECT Type FROM Users WHERE Username = :username AND Password = :password")
         result2 = conn.execute(query, {'username': username, 'password': password}).fetchone()
         
-        if result2[0] == "Admin":
-            return render_template('adminLanding.html')
+        if result2[0] == "ADMIN":
+            return redirect(url_for('adminLanding'))
         else:
-            return render_template('empLanding.html')
+            return redirect(url_for('empLanding')) # rendering the template wasnt showing/display info on the page properly until the page was reloaded. -serena
     else:
         return render_template('index.html')
+
+
+# -------------------------- EMPLOYEE/VENDOR PAGES ------------------------------------------
+
+
+@app.route('/empLanding.html', methods=["GET"])
+def empLanding():
+    listing = conn.execute(text(f"SELECT * FROM USERS WHERE USER_ID = {AcctID}")).all()
+    return render_template('/empLanding.html', listing=listing)
+
+
+@app.route('/empDashboard.html')
+def empDash():
+    return render_template('/empDashboard.html')
+
+
+@app.route('/empChat.html')
+def empChats():
+    empChat = conn.execute(text(f"SELECT * FROM CHATS WHERE emp_ID = {AcctID}")).all()
+    print("empChat:", empChat)
+    return render_template('/empChat.html', empChat=empChat)
+
+
+@app.route('/empChatting/<User_id>', methods=["GET", "POST"])
+def empChatting(User_id):
+    ChatID = conn.execute(text(f"SELECT CHAT_ID FROM CHATS WHERE cust_ID = {User_id} AND emp_ID = {AcctID}")).all()
+    accessing = conn.execute(text(f"SELECT * FROM CHATS WHERE cust_ID = {User_id} AND emp_ID = {AcctID}")).all()
+    starting = conn.execute(text(f"SELECT * FROM MESSAGES NATURAL JOIN CHATS WHERE CHAT_ID = {accessing[0][0]}")).all()
+    print("ChatID", ChatID)
+    print("accessing", accessing)
+    print("starting", starting)
+    if request.method == "POST":
+        chattin = conn.execute(text(f"INSERT INTO MESSAGES (CONTENT, CHAT_ID, Sender_ID, Receiver_ID) VALUES ((:toVendor), {accessing[0][0]}, {accessing[0][2]}, {accessing[0][1]})"), request.form)
+        starting = conn.execute(text(f"SELECT * FROM MESSAGES NATURAL JOIN CHATS WHERE CHAT_ID = {accessing[0][0]}")).all()
+        print("chattin:", chattin)
+        print("starting", starting)
+        conn.commit()
+        return render_template(f'/empChatting.html', chat=accessing, ugh=starting, AcctID=AcctID)
+    return render_template(f'/empChatting.html', chat=accessing, ugh=starting, AcctID=AcctID)
+
 
 @app.route('/pendingOrders.html')
 def vendorOrders():
@@ -102,13 +142,30 @@ def confirmedOrders():
 def orderDetailsVendor():
     return render_template('orderDetailsVendor.html')
 
+
+# -------------------------- END ------------------------------------------
+
+# -------------------------- ADMIN PAGE ------------------------------------------
+
+
 @app.route('/adminLanding.html')
 def adminLanding():
-    return render_template('adminLanding.html')
+    adminlisting = conn.execute(text(f"SELECT * FROM USERS WHERE USER_ID = {AcctID}")).all()
+    return render_template('/adminLanding.html', listing=adminlisting)
+
+@app.route('/adminDashboard.html')
+def adminDash():
+    return render_template('/adminDashboard.html')
+
+# -------------------------- END ------------------------------------------
+
+
+
 
 @app.route('/add_item.html', methods=['GET'])
 def addItem():
     return render_template('add_item.html')
+
 
 @app.route('/add_item.html', methods=['POST'])
 def addItemGo():
@@ -516,26 +573,46 @@ def view_accounts():
 
 @app.route('/dashboard.html')
 def dashboard():
-    # def Mbox(title,text,style):
-    #     return ctypes.windll.user32.MessageBoxW(0, text, title, style) 
-    # Mbox("Your Title", "Your Text", 0)
     return render_template('/dashboard.html')
 
 
 @app.route('/chats.html', methods=["GET"])
 def chats():
     vendors = conn.execute(text('SELECT * FROM USERS WHERE TYPE = "VENDOR"')).all()
+    print(vendors)
     return render_template('/chats.html', chats=vendors)
 
-@app.route('/chatting/<User_id>', methods=["POST", "GET"])
-def chatting(User_id):
-    # If chat doesn't already exist: ?
-    start = conn.execute(text(f"INSERT INTO CHATS (Sender_id, Receiver_id, Content) VALUES ({userID}, {User_id}, 'Chat has Started.')"))
-    chatStarted = conn.execute(text(f"SELECT * FROM chats WHERE Sender_id = {userID}  AND Receiver_ID = {User_id}")).all()
-    print(chatStarted)
-    # else:?
-        # chatStarted = conn.execute(text("SELECT * FROM CHATS"))
-    return render_template(f'/chatting.html', chatting=chatStarted)
+
+@app.route('/chatting/<User_id>', methods=["GET", "POST"])
+def chat(User_id):
+    ChatID = conn.execute(text(f"SELECT CHAT_ID FROM CHATS WHERE cust_ID = {userID} AND emp_ID = {User_id}")).all()
+    if len(ChatID) > 0:
+        accessing = conn.execute(text(f"SELECT * FROM CHATS WHERE cust_ID = {userID} AND emp_ID = {User_id}")).all()
+        starting = conn.execute(text(f"SELECT * FROM MESSAGES NATURAL JOIN CHATS WHERE CHAT_ID = {accessing[0][0]}")).all()
+        print("accessing", accessing)
+        print("starting", starting)
+        if request.method == "POST":
+            chattin = conn.execute(text(f"INSERT INTO MESSAGES (CONTENT, CHAT_ID, Sender_ID, Receiver_ID) VALUES ((:toVendor), {accessing[0][0]}, {accessing[0][1]}, {accessing[0][2]})"), request.form)
+            starting = conn.execute(text(f"SELECT * FROM MESSAGES NATURAL JOIN CHATS WHERE CHAT_ID = {accessing[0][0]}")).all()
+            print("chattin:", chattin)
+            print("starting", starting)
+            conn.commit()
+            return render_template(f'/chatting.html', chat=accessing, ugh=starting, userID=userID)
+        return render_template(f'/chatting.html', chat=accessing, ugh=starting, userID=userID)
+
+    else:
+        conn.execute(text(f"INSERT INTO CHATS (cust_ID, emp_ID) VALUES ({userID}, {User_id})"))
+        accessing = conn.execute(text(f"SELECT * FROM CHATS WHERE cust_ID = {userID} AND emp_ID = {User_id}")).all()
+        conn.commit()
+        return render_template(f'/chatting.html', chat=accessing, userID=userID)
+
+
+
+# --------------------------------------- END CUSTOMER -----------------------------------------
+
+
+# --------------------------------------- Products PAGE -----------------------------------------
+
 
 @app.route('/products')
 def products():
@@ -874,6 +951,8 @@ def delete_product_vendor(product_id):
     return redirect(url_for('itemListVendor'))
 
 
+# --------------------------------------- END PRODUCTS -----------------------------------------
+
 @app.route('/productFilter.html/<category>')
 def productFilter(category):
     query = text('''
@@ -896,7 +975,6 @@ def productFilter(category):
         product_data.append(product_info)
     return render_template('productFilter.html', product_data=product_data)
 
-# --------------------------------------- END CUSTOMER -----------------------------------------
 
 if __name__ == '__main__':
     app.run(debug=True)
