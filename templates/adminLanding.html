@@ -1,91 +1,137 @@
 {% extends 'base.html'%}
 
-{% block admin %} <!--Displays their specific menu bar from logbase.html-->
-    <li style="padding: 5px"><a href="/">Logout</a></li>
+{% block website %}<a href="/adminLanding.html" style='text-decoration: none; align-content: center; font-size: 20px; color: #f2eaea; font-family: Anta;'>E-Commi</a>{% endblock %}
+{% block logo %}<a href="/adminLanding.html" class="cartA"><img src="../static/logo.png" alt="Cart Logo" style="text-align: center;" class="logo"></a>{% endblock %}
+
+{% block employee %}
+<div class="header-line2">
+    <a href="/adminLanding.html" class="line2-a" style='text-decoration: none;'>Home</a>
+    <a href="/adminDashboard.html" class="line2-a" style='text-decoration: none;'>Dashboard</a>
+    <a href="/" class="line2-a" style='text-decoration: none;'>Logout</a>
+</div>
 {% endblock %}
 
 {% block body %}
+
 <style>
     body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f2f2f2;
-}
+        background-color: #f2f2f2;
+    }
+    .text .txt1{
+        color: black;
+        font-size: 40%;
+    }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
-.header {
-    background-color: #333;
-    color: #fff;
-    padding: 1rem;
-    text-align: center;
-}
-
-.content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 2rem 0;
-}
-
-.card {
-    background-color: #fff;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
-    margin-bottom: 2rem;
-    width: 30%;
-}
-
-.card h2 {
-    margin-top: 0;
-}
-
-.card p {
-    margin-bottom: 0;
-}
-
-.button {
-    background-color: #333;
-    border: none;
-    color: #fff;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    text-decoration: none;
-    display: inline-block;
-    margin: 0 0.5rem;
-    cursor: pointer;
-}
-
-.button:hover {
-    background-color: #444;
-}
 </style>
-<div class="container">
-    <div class="header">
-        <h1>Admin Landing Page</h1>
+
+<div class="empcontain">
+    <div class="empitem it1">
+        <div class="image1">
+            <img src="../static/person.jpeg" style="text-align: center; width: 125px; border-radius: 100%; border: 5px solid rosybrown;">
+            <p style="text-align:center">ID: {{listing[0][0]}}</p>
+        </div>
+        <div class="text txt1">
+            {% for i in listing %}
+                <p style="text-align: center;">{{i[6]}}</p>
+                <br>
+                <p>{{i[1]}} {{i[2]}}</p>
+                <p>Username: {{i[3]}}</p>
+                <p>Email: {{i[4]}}</p>
+            {% endfor %}
+        </div>
+        <br>
+        <div class="dayscontain">
+            <div class="days">
+                <p style="font-size: 20px;">16</p>
+                <p style="font-size: 10px;">Days of Leave</p>
+            </div>
+            <div class="days">
+                <p style="font-size: 20px;">5</p>
+                <p style="font-size: 10px;">Sick Days</p>
+            </div>
+            <div class="days">
+                <p style="font-size: 20px;">1</p>
+                <p style="font-size: 10px;">Unexcused Leaves</p>
+            </div>
+        </div>
     </div>
-    <div class="content">
-        <div class="card">
-            <h2>Add Item</h2>
-            <p>Add a new item to the store.</p>
-            <a href="/add_itemAdmin.html" class="button">Add Item</a>
+
+    <div class="empitem it2">
+        <div class="notice not2">
+            <p>Notifications<p>
         </div>
-        <div class="card">
-            <h2>View Accounts</h2>
-            <p>View and manage user accounts.</p>
-            <a href="/view_accounts.html" class="button">View Accounts</a>
-        </div>
-        <div class="card">
-            <h2>Manage Products</h2>
-            <p>View and manage products.</p>
-            <a href="/itemList.html" class="button">Edit Products</a>
+        <br><br>
+        <div class="text txt2">
+            <p>No Notifications<p>
         </div>
     </div>
+
+    <div class="empitem it3">
+        <div class="image3">
+            <img src="../static/mental.png">
+            <p>Mental Health Awareness Month</p>
+        </div>
+        <div class="text txt3">
+            <p>May is Mental Health Awareness Month. Since its inception in 1949, Mental Health Awareness Month has been a cornerstone of addressing the challenges faced by millions of Americans living with mental health conditions. Throughout the month, NAMI actively participates in this national movement, dedicated to eradicating stigma, extending support, fostering public education and advocating for policies that prioritize the well-being of individuals and families affected by mental illness.</p>
+        </div>
+    </div>
+
+    <div class="empitem it4">
+        <div class="notice not4">
+            <p>Employee Links<p>
+        </div>
+        <br>
+        <div class="textlink">
+            <div class="txt41">
+                <a href="#" style="text-decoration: none; color: grey;"><p>Careers</p></a>
+                <a href="#" style="text-decoration: none; color: grey;"><p>Services</p></a>
+            </div>
+            <div class="txt42">
+                <a href="#" style="text-decoration: none; color: grey;"><p>About</p></a>
+                <a href="#" style="text-decoration: none; color: grey;"><p>News & Events</p></a>
+            </div>
+            <div class="txt43">
+                <a href="#" style="text-decoration: none; color: grey;"><p>Banned Users</p></a>
+                <a href="#" style="text-decoration: none; color: grey;"><p>Tech Support</p></a>
+            </div>
+            <div class="txt43">
+                <a href="#" style="text-decoration: none; color: grey;"><p>Products</p></a>
+                <a href="#" style="text-decoration: none; color: grey;"><p>Insurance Info</p></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="empitem it5">
+        <a href="#" style="text-decoration: none;">
+            <div class="buttonit5">
+                <p>Timesheet<p>
+            </div>
+        </a>
+    </div>
+
+    <div class="empitem it6">
+        <a href="#" style="text-decoration: none;">
+            <div class="buttonit6">
+                <p>Schedule<p>
+            </div>
+        </a>
+        <a href="#" style="text-decoration: none;">
+            <div class="buttonit6">
+                <p>Paystubs<p>
+            </div>
+        </a>
+        <a href="#" style="text-decoration: none;">
+            <div class="buttonit6">
+                <p>Resources<p>
+            </div>
+        </a>
+        <a href="#" style="text-decoration: none;">
+            <div class="buttonit6">
+                <p>Help<p>
+            </div>
+        </a>
+    </div>
+
 </div>
+
 {% endblock %}

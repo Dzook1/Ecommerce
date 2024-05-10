@@ -121,7 +121,7 @@ html {
     min-height: 100%;
 }
 body {
-    font-family: 'Anta';
+    font-family: 'Roboto';
     font-weight: 400;
     margin: 0;
     font-size: 14px;
@@ -244,6 +244,380 @@ height: 100%;
 /* end*/
 
 
+/* employee landing page*/
+
+.empcontain{
+    display: grid;
+    height: 100vh;
+    grid-gap: 10px;
+    grid-template-columns: 250px 275px auto auto;
+    margin: 10px;
+    animation: fadeIn;
+    animation-duration: 2s;
+}
+.empitem{
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #051d30;
+    display: flex;
+    align-items:center;
+    flex-direction:column;
+}
+
+.empitem:nth-of-type(6) {
+    grid-column-start: 3;
+    grid-column-end: 5;
+}
+.empitem:nth-of-type(2) {
+    grid-row-start: span 2;
+}
+.image1{
+margin: 30px;
+height: fit-content;
+}
+.dayscontain{
+    display:grid;
+    grid-template-rows: auto auto auto;
+    width: 90%;
+    grid-gap: 5px;
+    text-align:center;
+    align-items:center;
+    border: #051d30;
+    color:white;
+}
+.days{
+    padding: 10px 0 10px 0;
+    background: #051d30;
+}
+
+
+.notice{
+    padding: 10px;
+    font-size: 20px;
+    color: white;
+    background-color: rosybrown;
+    width:100%;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    text-align: center;
+    align-items: center;
+}
+.txt2{
+    color: grey;
+}
+
+
+.it5{
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+.buttonit5{
+    text-decoration: none;
+    color: black;
+    padding: 10px 30px;
+    background-color:rosybrown;
+    border-radius:10px;
+}
+.buttonit5:hover{
+    color: white;
+    background-color:rgb(137, 103, 103);
+}
+
+.it6{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-evenly;
+    align-items:center;
+    text-align:center;
+}
+
+.buttonit6{
+    text-decoration: none;
+    color: black;
+    padding: 10px 30px;
+    background-color:rosybrown;
+    border-radius:10px;
+}
+.buttonit6:hover{
+    color: white;
+    background-color:rgb(137, 103, 103);
+}
+
+.not4{
+    color: white;
+    background-color: #051d30;
+}
+
+.textlink{
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+.txt41 a, .txt42 a, .txt43 a, .txt44 a{
+    display: flex;
+    flex-direction: column;
+    padding: 4px;
+}
+
+.image3{
+margin: 30px;
+height: fit-content;
+}
+.image3 img{
+    text-align: center;
+    width:400px;
+    border: 3px solid #051d30;
+    border-radius:10px;
+    padding: 20px;
+}
+.image3 p{
+    margin:10px;
+    font-size:20px;
+    text-align:center;
+    font-weight: 300;
+}
+.txt3{
+    text-indent: 3em;
+    margin:15px;
+}
+
+
+@media screen and (max-width: 1300px) {
+    .empcontain{
+        display: grid;
+        height: 100vh;
+        grid-gap: 10px;
+        grid-template-columns: 250px 150px auto auto;
+        margin: 10px;
+        animation: fadeIn;
+        animation-duration: 2s;
+    }
+
+    .buttonit5{
+        text-decoration: none;
+        color: black;
+        padding: 30px 50px;
+        background-color:rosybrown;
+        border-radius:10px;
+    }
+    .buttonit5:hover{
+        color: white;
+        background-color:rgb(137, 103, 103);
+    }
+
+    .it6{
+        display: flex;
+        flex-direction: column;
+        justify-content:space-evenly;
+        align-items:center;
+        text-align:center;
+    }
+    
+    .buttonit6{
+        text-decoration: none;
+        color: black;
+        padding: 10px 30px;
+        background-color:rosybrown;
+        border-radius:10px;
+    }
+    .buttonit6:hover{
+        color: white;
+        background-color:rgb(137, 103, 103);
+    }
+    .it3{
+        text-align:center;
+        align-items:center;
+    }
+    .image3{
+        margin: 7px;
+        height: fit-content;
+    }
+    .image3 img{
+        text-align: center;
+        width:175px;
+        border: 3px solid #051d30;
+        border-radius:10px;
+        padding: 20px;
+    }
+    .image3 p{
+    font-size:20px;
+    text-align:center;
+    font-weight: 300;
+    }
+}
+
+
+@media screen and (max-width: 900px) {
+    .empcontain{
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        grid-gap: 10px;
+        grid-template-columns: auto;
+        grid-template-rows: auto;
+        margin: 10px;
+    }
+    .empitem{
+        flex-direction:row;
+        background: #fff;
+        height: 100vh;
+    }
+    .empitem:nth-of-type(1) {
+        height: 200vh;
+    }
+    .dayscontain{
+    display: flex;
+    flex-direction: column;
+    grid-gap: 5px;
+    text-align:center;
+    align-items:center;
+    border: #051d30;
+    color:white;
+    }
+    .days{
+        width: 80%;
+        background: #051d30;
+    }
+    .notice{
+        font-size: 15px;
+        font-weight:700;
+        color: black;
+        background-color: rosybrown;
+        width:20%;
+        border-bottom-left-radius: 10px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 0;
+        height:100%;
+        display:flex;
+        justify-content:center;
+        margin-right: 20px;
+    }
+
+    .buttonit5{
+        text-decoration: none;
+        color: black;
+        padding: 10px 150px;
+        background-color:rosybrown;
+        border-radius:10px;
+    }
+    .buttonit5:hover{
+        color: white;
+        background-color:rgb(137, 103, 103);
+    }
+
+    .not4{
+        color: white;
+        background-color: #051d30;
+    }
+    .textlink {
+        width: 90%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+
+    }
+    .txt41 a, .txt42 a, .txt43 a, .txt44 a{
+        display: flex;
+        flex-direction: column;
+        padding: 3px;
+    }
+    .image3{
+        margin: 10px;
+    }
+    .image3 img{
+        text-align: center;
+        width:125px;
+        border: 3px solid #051d30;
+        border-radius:10px;
+        padding: 20px;
+    }
+
+}
+
+
+/* end*/
+
+/*start of customer chat*/
+.chat{
+    font-family: Roboto;
+    margin: 0 10%;
+    background-color: white;
+    border-radius:10px;
+    width: 80%;
+    box-shadow: 0 0 20px  rgba(0, 0, 0, 0.836);
+    padding:20px;
+}
+.chatbox{
+    overflow-y:scroll;
+    display:flex;
+    flex-direction:column-reverse;
+    position: relative;
+    max-height:350px;
+}
+.messages{
+    display:flex;
+    flex-flow:column nowrap;
+    position: relative;
+    background-color:white;
+
+    max-height:100%;
+}
+
+
+.message {
+    width: 50%;
+    padding: 10px 10px 5px 10px;
+    margin: 10px 0;
+    border-radius: 20px;
+    word-break:break-word;
+}
+.vend{
+    background-color:rgba(128, 128, 128);
+    align-self:flex-end;
+    color:white
+}
+.cust{
+    background-color:rgba(128, 128, 128);
+    align-self:flex-start;
+
+}
+
+.messageSend{
+    border: 3px black;
+    border-radius:20px;
+}
+
+.messageSend form{
+    display:flex;
+    padding:20px
+}
+
+.messageBar {
+    width: 100%;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    margin: 8px 0;
+    padding:10px
+}
+
+.messageSubmit {
+    width: 10%;
+    background-color: #51919f;
+    color: white;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+}
+
+
+/*end of customer chat*/
 
 
 

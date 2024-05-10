@@ -1,0 +1,50 @@
+{% extends 'base.html'%}
+
+{% block website %}<a href="/empLanding.html" style='text-decoration: none; align-content: center; font-size: 20px; color: #f2eaea; font-family: Anta;'>E-Commi</a>{% endblock %}
+{% block logo %}<a href="/empLanding.html" class="cartA"><img src="../static/logo.png" alt="Cart Logo" style="text-align: center;" class="logo"></a>{% endblock %}
+
+{% block employee %}
+<div class="header-line2">
+    <a href="/empLanding.html" class="line2-a" style='text-decoration: none;'>Home</a>
+    <a href="/empDashboard.html" class="line2-a" style='text-decoration: none;'>Dashboard</a>
+    <a href="/" class="line2-a" style='text-decoration: none;'>Logout</a>
+</div>
+{% endblock %}
+
+{% block body %}
+    <div>
+        <p>Chat Started (ID: {{chat[0][0]}})</p>
+        <p>Chatting with Customer: ID {{chat[0][1]}}</p>
+        <p>Vendor User ID: {{chat[0][2]}}</p>
+    </div>
+    <br><br><br>
+    <div class="chat">
+        <div class="chatbox">
+            <div class="ugh2">
+                <div class="messages">
+                    {% for i in ugh %}
+                        {% if i[3] == AcctID %}
+                            <div class="message vend" style="align-self:right;">
+                                <p style="font-size:12px;">{{i[2]}}</p>
+                                <p style="font-size:8px; text-align:right;">(Me) Vendor ID: {{i[3]}}</p>
+                            </div>
+                        {% else %}
+                            <div class="message cust" style="background-color:rgba(128, 128, 128, 0.381);">
+                                <p style="font-size:12px;">{{i[2]}}</p>
+                                <p style="font-size:8px; text-align:right;">Customer ID: {{i[3]}}</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="messageSend">
+            <form action="/empChatting/{{chat[0][1]}}" method='POST'> <!-- double check method as get in case program does work.-->
+                <input style="text-align: center" type="text" name="toVendor" placeholder="Chat Message" class="messageBar"> <br>
+                <input type="submit" value="➤" class="messageSubmit">
+            </form>
+        </div>
+    </div>
+<br>
+
+{% endblock %}

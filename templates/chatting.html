@@ -1,11 +1,39 @@
-{% extends 'baseCustomer.html' %}
+{% extends 'baseCustomer.html'%}
 
 {% block body %}
-
-    <div class="chatbox">
-        {% for j in chatting%}
-            {{j[0]}}
-        {% endfor %}
+    <div>
+        <p>Chat Started (ID: {{chat[0][0]}})</p>
+        <p>Chatting with Vendor: ID {{chat[0][2]}}</p>
+        <p>Customer User ID: {{chat[0][1]}}</p>
     </div>
+    <br><br><br>
+    <div class="chat">
+        <div class="chatbox">
+            <div class="ugh2">
+                <div class="messages">
+                    {% for i in ugh %}
+                        {% if i[3] == userID %}
+                            <div class="message vend" style="align-self:right;">
+                                <p style="font-size:12px;">{{i[2]}}</p>
+                                <p style="font-size:8px; text-align:right;">(Me) Customer ID: {{i[3]}}</p>
+                            </div>
+                        {% else %}
+                            <div class="message cust" style="background-color:rgba(128, 128, 128, 0.381);">
+                                <p style="font-size:12px;">{{i[2]}}</p>
+                                <p style="font-size:8px; text-align:right;">Vendor ID: {{i[3]}}</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="messageSend">
+            <form action="/chatting/{{chat[0][2]}}" method='POST'> <!-- double check method as get in case program does work.-->
+                <input style="text-align: center" type="text" name="toVendor" placeholder="Chat Message" class="messageBar"> <br>
+                <input type="submit" value="➤" class="messageSubmit">
+            </form>
+        </div>
+    </div>
+<br>
 
 {% endblock %}
