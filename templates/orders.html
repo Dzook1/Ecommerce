@@ -1,20 +1,77 @@
 {% extends 'baseCustomer.html' %}
-
-
+{% block title %}Your Orders{% endblock %}
 {% block body %}
-    {% for i in orders %}
-        <a href="/orderDetails/{{i[0]}}" style='text-decoration: none; width:fit-content;'>
-            <div class="orders">
-                <ul>
-                    <li style='width:fit-content;'>ORDER_ID: {{i[0]}}</li>
-                    <ul>
-                        <li>TOTAL OF ORDER: ${{i[3]}}</li>
-                        <li>DATE: {{i[2]}}</li>
-                        <li>STATUS: {{i[4]}}</li>
-                    </ul>
-                    <br>
-                </ul>
-            </div> 
-        </a>
-    {% endfor %}
+    <style>
+        .orderBox {
+            background-color: whitesmoke;
+            width: 95%;
+            min-height: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            margin-bottom: 50px;
+            border: 2px solid black;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);        
+
+        }
+
+        .heading {
+            text-align: center;
+            border: dashed 3px black;
+            padding: 10px;     
+            margin-bottom: 20px;   
+        }
+
+        .order {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid gray;
+            height: 150px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;    
+        }
+
+        .imageBox {
+            display: flex;
+            width: 300px;
+            height: 100px;
+        }
+
+        .image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border: 1px solid black;
+            margin-right: 5px;
+        }
+
+        .status {
+            font-size: 30px;
+            color: rgb(21, 79, 21);
+        }
+
+        .orderDetailsA {
+            font-size: 20px;
+        }
+    </style>
+
+    <h1 class="heading">~~Your Orders~~</h1>
+    <div class="orderBox">
+
+        {% for order in orders %}
+
+        <div class="order">
+            <div>
+                <p class="status">{{ order[4] }}</p>
+                <p class="date">Ordered On: {{ order[2] }}</p>
+            </div>
+            <form action="{{ url_for('orderDetails', order_id=order[0]) }}" method="post">
+                <input type="submit" value="Order Details" class="orderDetailsA">
+            </form>
+        </div>
+
+        {% endfor %}
+
+    </div> 
 {% endblock %}

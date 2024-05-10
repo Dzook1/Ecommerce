@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% block title %}Order Details{% endblock %}
+{% block body %}
+<style>
+    .orderDetailsBox {
+        width: 95%;
+        min-height: 500px;
+        background-color: whitesmoke;
+        margin: 0 auto;
+        border: 2px solid black;
+        padding: 20px;
+        margin-bottom: 50px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .heading {
+        text-align: center;
+    }
+
+    .orderDetails {
+        width: 500px;
+        height: 150px;
+        margin: 0 auto;
+        border: 2px solid black;
+        border-radius: 10px;
+        padding: 10px;
+        font-size: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .detailsFlex {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .label {
+        color: gray;
+    }
+
+    .total {
+        word-wrap: break-word;
+    } 
+
+    .cartBox {
+        background-color: whitesmoke;
+        width: 80%;
+        min-height: 500px;
+        margin: 0 auto;
+        border: 2px solid black;
+        margin-bottom: 50px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .cart-item {
+        display: flex;
+        color: black;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid lightgray;
+        border-bottom: 1px solid lightgray;
+        margin: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .cart-item-info {
+        max-width: 500px;
+        word-wrap: break-word;
+    }
+
+    .imageBox {
+        width: 25%;
+        height: 200px;
+        padding: 5px;
+    }
+
+    .image {
+        object-fit: contain;
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .category {
+        color: gray;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .price {
+        padding: 10px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .itemsH {
+        margin-top: 20px;
+    }
+</style>
+
+<div class="orderDetailsBox">
+    <h1 class="heading">View Order Details</h1>
+    <div class="orderDetails">
+        <div class="detailsFlex">
+            <p class="label">Ordered by</p>
+            <p class="date">Handsome Jack</p>
+        </div>
+        <div class="detailsFlex">
+            <p class="label">Order date</p>
+            <p class="date">05/03/2024</p>
+        </div>
+        <div class="detailsFlex">
+            <p class="label">Order id</p>
+            <p class="id">1</p>
+        </div>
+        <div class="detailsFlex">
+            <p class="label">Order total</p>
+            <p class="total">$99.99 (2 items)</p>
+        </div>
+    </div>
+
+    <h1 class="heading itemsH">Items</h1>
+
+    <div class="cartBox">
+        <div class="cart-item">
+            <div class="imageBox">
+                <img src="https://m.media-amazon.com/images/I/61w5K7IjpoL._SX522_.jpg" alt="" class="image">
+            </div>
+            <div class="cart-item-info">
+                <p class="title">Playstation 5 Console-Marvel's Spider-Man 2 Bundle</p>
+                <p class="category">Electronics</p>
+                <div class="sizeColor">
+                    <p class="size">Size: n/a</p>
+                    <p class="color">Color: n/a</p>
+                </div>
+            </div>
+            <p class="price">$547.78</p>
+        </div>
+
+        <div class="cart-item">
+            <div class="imageBox">
+                <img src="https://m.media-amazon.com/images/I/61w5K7IjpoL._SX522_.jpg" alt="" class="image">
+            </div>
+            <div class="cart-item-info">
+                <p class="title">Playstation 5 Console-Marvel's Spider-Man 2 Bundle</p>
+                <p class="category">Electronics</p>
+                <div class="sizeColor">
+                    <p class="size">Size: n/a</p>
+                    <p class="color">Color: n/a</p>
+                </div>
+            </div>
+            <p class="price">$547.78</p>
+        </div>
+
+        <div class="cart-item">
+            <div class="imageBox">
+                <img src="https://m.media-amazon.com/images/I/61w5K7IjpoL._SX522_.jpg" alt="" class="image">
+            </div>
+            <div class="cart-item-info">
+                <p class="title">Playstation 5 Console-Marvel's Spider-Man 2 Bundle</p>
+                <p class="category">Electronics</p>
+                <div class="sizeColor">
+                    <p class="size">Size: n/a</p>
+                    <p class="color">Color: n/a</p>
+                </div>
+            </div>
+            <p class="price">$547.78</p>
+        </div>
+
+        <div class="cart-item">
+            <div class="imageBox">
+                <img src="https://m.media-amazon.com/images/I/61w5K7IjpoL._SX522_.jpg" alt="" class="image">
+            </div>
+            <div class="cart-item-info">
+                <p class="title">Playstation 5 Console-Marvel's Spider-Man 2 Bundle</p>
+                <p class="category">Electronics</p>
+                <div class="sizeColor">
+                    <p class="size">Size: n/a</p>
+                    <p class="color">Color: n/a</p>
+                </div>
+            </div>
+            <p class="price">$547.78</p>
+        </div>
+
+        <div class="cart-item">
+            <div class="imageBox">
+                <img src="https://m.media-amazon.com/images/I/61w5K7IjpoL._SX522_.jpg" alt="" class="image">
+            </div>
+            <div class="cart-item-info">
+                <p class="title">Playstation 5 Console-Marvel's Spider-Man 2 Bundle</p>
+                <p class="category">Electronics</p>
+                <div class="sizeColor">
+                    <p class="size">Size: n/a</p>
+                    <p class="color">Color: n/a</p>
+                </div>
+            </div>
+            <p class="price">$547.78</p>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% block title %}Pending Orders{% endblock %}
+{% block body %}
+<style>
+    .orderBox {
+        background-color: whitesmoke;
+        width: 95%;
+        min-height: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        margin-bottom: 50px;
+        border: 2px solid black;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);        
+
+    }
+
+    .heading {
+        text-align: center;
+        border: dashed 3px black;
+        padding: 10px;     
+        margin-bottom: 20px;   
+        margin-top: 20px;
+    }
+
+    .order {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid gray;
+        height: 150px;
+        padding: 30px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;    
+    }
+
+    .orderDetailsA {
+        font-size: 20px;
+    }
+
+    .detail {
+        margin-bottom: 10px;
+        font-size: 20px;
+    }
+    
+    .submit {
+        width: 100px;
+        height: 35px;
+        padding: 5px;
+        color: whitesmoke;
+        border: 2px solid black;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .submit:hover {
+        cursor: pointer;
+    }
+
+    .confirm {
+        background-color: green;
+    }
+
+    .confirm:hover {
+        background-color: lightgreen;
+    }
+
+    .deny {
+        background-color: red;
+    }
+
+    .deny:hover {
+        background-color: pink;
+    }
+    
+</style>
+
+<h1 class="heading">~~Pending Orders~~</h1>
+<div class="orderBox">
+
+    <div class="order">
+        <div>
+            <p class="detail">Ordered By: Handsome Jack</p>
+            <p class="detail">Ordered On: 05/04/2024</p>
+            <p class="detail">Total Price: $99.99 (2 items)</p>
+        </div>
+        <a class="orderDetailsA" href="/orderDetailsVendor.html">Order Details</a>
+        <div class="confirmDeny">
+            <form>
+                <input type="submit" class="confirm submit" value="Confirm">
+                <input type="submit" class="deny submit" value="Deny">
+            </form>
+        </div>
+    </div>
+
+    <div class="order">
+        <div>
+            <p class="detail">Ordered By: Handsome Jack</p>
+            <p class="detail">Ordered On: 05/04/2024</p>
+            <p class="detail">Total Price: $99.99 (2 items)</p>
+        </div>
+        <a class="orderDetailsA" href="/orderDetailsVendor.html">Order Details</a>
+        <div class="confirmDeny">
+            <form>
+                <input type="submit" class="confirm submit" value="Confirm">
+                <input type="submit" class="deny submit" value="Deny">
+            </form>
+        </div>
+    </div>
+
+    <div class="order">
+        <div>
+            <p class="detail">Ordered By: Handsome Jack</p>
+            <p class="detail">Ordered On: 05/04/2024</p>
+            <p class="detail">Total Price: $99.99 (2 items)</p>
+        </div>
+        <a class="orderDetailsA" href="/orderDetailsVendor.html">Order Details</a>
+        <div class="confirmDeny">
+            <form>
+                <input type="submit" class="confirm submit" value="Confirm">
+                <input type="submit" class="deny submit" value="Deny">
+            </form>
+        </div>
+    </div>
+
+    <div class="order">
+        <div>
+            <p class="detail">Ordered By: Handsome Jack</p>
+            <p class="detail">Ordered On: 05/04/2024</p>
+            <p class="detail">Total Price: $99.99 (2 items)</p>
+        </div>
+        <a class="orderDetailsA" href="/orderDetailsVendor.html">Order Details</a>
+        <div class="confirmDeny">
+            <form>
+                <input type="submit" class="confirm submit" value="Confirm">
+                <input type="submit" class="deny submit" value="Deny">
+            </form>
+        </div>
+    </div>
+
+</div>
+
+    
+{% endblock %}

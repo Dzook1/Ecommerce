@@ -1,14 +1,153 @@
 {% extends 'baseCustomer.html' %}
-
+{% block title %}Order Details{% endblock %}
 {% block body %}
+    <style>
+        .orderDetailsBox {
+            width: 95%;
+            min-height: 500px;
+            background-color: whitesmoke;
+            margin: 0 auto;
+            border: 2px solid black;
+            padding: 20px;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-        <ul>
-            -ITEMS IN ORDER-
-            <br><br>
-            {% for i in orderDetails %}
-                <li>CART_ITEM_ID: {{i[0]}} <br>TITLE: {{i[2]}} <br>PRICE: {{i[3]}}</li>
-                <br>
+        .heading {
+            text-align: center;
+        }
+
+        .orderDetails {
+            width: 500px;
+            height: 150px;
+            margin: 0 auto;
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .detailsFlex {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .label {
+            color: gray;
+        }
+
+        .total {
+            word-wrap: break-word;
+        } 
+
+        .cartBox {
+            background-color: whitesmoke;
+            width: 80%;
+            min-height: 500px;
+            margin: 0 auto;
+            border: 2px solid black;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item {
+            display: flex;
+            color: black;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid lightgray;
+            border-bottom: 1px solid lightgray;
+            margin: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item-info {
+            max-width: 500px;
+            word-wrap: break-word;
+        }
+
+        .imageBox {
+            width: 25%;
+            height: 200px;
+            padding: 5px;
+        }
+
+        .image {
+            object-fit: contain;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .title {
+            font-size: 20px;
+        }
+
+        .category {
+            color: gray;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            padding: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .itemsH {
+            margin-top: 20px;
+        }
+
+        .complaintA {
+            font-size: 18px;
+        }
+
+        .chatA {
+            font-size: 18px;
+        }
+
+    </style>
+
+    <div class="orderDetailsBox">
+        <h1 class="heading">View Order Details</h1>
+        <div class="orderDetails">
+            <div class="detailsFlex">
+                <p class="label">Order date</p>
+                <p class="date">{{ order[0][2] }}</p>
+            </div>
+            <div class="detailsFlex">
+                <p class="label">Order id</p>
+                <p class="id">{{ order[0][0] }}</p>
+            </div>
+            <div class="detailsFlex">
+                <p class="label">Order total</p>
+                <p class="total">${{ order[0][3] }}</p>
+            </div>
+        </div>
+
+        <h1 class="heading itemsH">Items</h1>
+
+        <div class="cartBox">
+            {% for item in order_items %}
+                <div class="cart-item">
+                    <div class="imageBox">
+                        <img src="{{ item[7] }}" alt="{{ item[2] }}" class="image">
+                    </div>
+                    <a href="{{ url_for('complaint', order_item_id=item[0]) }}" class="complaintA">File Complaint</a>
+                    <div class="cart-item-info">
+                        <p class="title">{{ item[2] }}</p>
+                        <div class="sizeColor">
+                            <p class="size">Size: {{ item[6] }}</p>
+                            <p class="color">Color: {{ item[5] }}</p>
+                        </div>
+                    </div>
+                    <p class="price">${{ item[8] }}</p>
+                </div>
             {% endfor %}
-        </ul>
-
+        </div>
+    </div>
 {% endblock %}
