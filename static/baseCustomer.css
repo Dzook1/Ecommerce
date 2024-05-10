@@ -100,7 +100,10 @@ header {
     grid-template-rows: auto;
     padding: 10px ;
     gap: 5%;
+    grid-gap:5%;
+    padding: 10px;
     width: 100%;
+    height: 500px;
 }
 .homegrid a{
     text-decoration: none;
@@ -135,7 +138,16 @@ header {
 }
 .home_descript{
     /* position: absolute; */
+
+.grid_item{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
 }
+
 
 .grid_item.item1{
     background-image: radial-gradient(rgba(0, 0, 0, 0.605), rgba(0, 0, 0, 0)), url("food.png"); 
@@ -173,6 +185,26 @@ header {
     background-size: cover;
     background-position: center;
  }
+
+.grid_item.item1:hover{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, .7)), url("food.png");
+}
+.grid_item.item2:hover{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, .7)), url("apparel.png");
+}
+.grid_item.item3:hover{
+   background-image: radial-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, .7)), url("electronics.png");
+}
+.grid_item.item4:hover{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, .7)), url("books.png");
+}
+.grid_item.item5:hover{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, .7)), url("toys.png");
+}
+.grid_item.item6:hover{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, .7)), url("general.png");
+}
+
 /*end body of customer home page*/
 
 /*body customer dashboard*/
