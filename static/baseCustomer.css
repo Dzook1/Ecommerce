@@ -98,76 +98,84 @@ header {
     display: grid;
     grid-template-columns: 30% 30% 30%;
     grid-template-rows: auto;
+    grid-gap:5%;
     padding: 10px;
-    gap: 5%;
     width: 100%;
+    height: 500px;
 }
 .homegrid a{
     text-decoration: none;
-    color: #f2eaea;
-}
-.grid_item{
-    border: 3px solid rosybrown;
-    font-size: small;
-    text-align: center;
-    padding: 50px;
+    border: 4px solid rosybrown;
+    color: #ffffff;
     border-radius: 10px;
 }
 
-.grid_item:hover{
-    background-color: #00000088;
+.grid_item{
+    display:flex;
+    justify-content:center;
+    align-items:center;
     width: 100%;
     height: 100%;
+    border-radius: 6px;
 }
+
 
 .grid_item.item1{
     background-image: radial-gradient(rgba(0, 0, 0, 0.605), rgba(0, 0, 0, 0)), url("food.png"); 
     background-repeat: no-repeat;
     background-size: cover;
-    text-align: center;
-    height: 200px;
-    align-content: center;
+    background-position: center;
  }
  .grid_item.item2{
     background-image: radial-gradient(rgba(0, 0, 0, 0.605), rgba(0, 0, 0, 0)), url("apparel.png"); 
     background-repeat: no-repeat;
     background-size: cover;
-    text-align: center;
-    height: 200px;
-    align-content: center;
+    background-position: center;
  }
 .grid_item.item3{
    background-image: radial-gradient(rgba(0, 0, 0, 0.605), rgba(0, 0, 0, 0)), url("electronics.png"); 
    background-repeat: no-repeat;
    background-size: cover;
-   text-align: center;
-   height: 200px;
-   align-content: center;
+   background-position: center;
 }
 .grid_item.item4{
     background-image: radial-gradient(rgba(0, 0, 0, 0.605), rgba(0, 0, 0, 0)), url("books.png"); 
     background-repeat: no-repeat;
     background-size: cover;
-    text-align: center;
-    height: 200px;
-    align-content: center;
+    background-position: center;
  }
  .grid_item.item5{
     background-image: radial-gradient(rgba(0, 0, 0, 0.605), rgba(0, 0, 0, 0)), url("toys.png"); 
     background-repeat: no-repeat;
     background-size: cover;
-    text-align: center;
-    height: 200px;
-    align-content: center;
+    background-position: center;
  }
  .grid_item.item6{
     background-image: radial-gradient(rgba(0, 0, 0, 0.605), rgba(0, 0, 0, 0)), url("general.png"); 
     background-repeat: no-repeat;
     background-size: cover;
-    text-align: center;
-    height: 200px;
-    align-content: center;
+    background-position: center;
  }
+
+.grid_item.item1:hover{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, .7)), url("food.png");
+}
+.grid_item.item2:hover{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, .7)), url("apparel.png");
+}
+.grid_item.item3:hover{
+   background-image: radial-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, .7)), url("electronics.png");
+}
+.grid_item.item4:hover{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, .7)), url("books.png");
+}
+.grid_item.item5:hover{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, .7)), url("toys.png");
+}
+.grid_item.item6:hover{
+    background-image: radial-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, .7)), url("general.png");
+}
+
 /*end body of customer home page*/
 
 /*body customer dashboard*/
@@ -199,8 +207,8 @@ header {
 
 .descript{
     position: absolute;
-    top: 50%;
-    left: 50%;
+    /* top: 50%;
+    left: 50%; */
 }
 .item{
     position: absolute;
@@ -212,6 +220,7 @@ header {
 
 .dash_item:hover{
 background-color: #00000088;
+border-radius: 6px;
 width: 100%;
 height: 100%;
 }
@@ -289,8 +298,115 @@ height: 100%;
     background-position: center;
  }
 
-
 /*end body of customer dashboard*/
+
+/*start of customer chat*/
+.chat{
+    font-family: Roboto;
+    margin: 0 10%;
+    background-color: white;
+    border-radius:10px;
+    width: 80%;
+    box-shadow: 0 0 20px  rgba(0, 0, 0, 0.836);
+    padding:20px;
+}
+.chatbox{
+    overflow-y:scroll;
+    display:flex;
+    flex-direction:column-reverse;
+    position: relative;
+    max-height:350px;
+}
+.messages{
+    display:flex;
+    flex-flow:column nowrap;
+    position: relative;
+    background-color:white;
+
+    max-height:100%;
+}
+
+
+.message {
+    width: 50%;
+    padding: 10px 10px 5px 10px;
+    margin: 10px 0;
+    border-radius: 20px;
+    word-break:break-word;
+}
+.vend{
+    background-color:rgba(128, 128, 128);
+    align-self:flex-end;
+    color:white
+}
+.cust{
+    background-color:rgba(128, 128, 128);
+    align-self:flex-start;
+
+}
+
+.messageSend{
+    border: 3px black;
+    border-radius:20px;
+}
+
+.messageSend form{
+    display:flex;
+    padding:20px
+}
+
+.messageBar {
+    width: 100%;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    margin: 8px 0;
+    padding:10px
+}
+
+.messageSubmit {
+    width: 10%;
+    background-color: #51919f;
+    color: white;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+}
+
+
+/*end of customer chat*/
+
+
+
+
+.vend_form{
+    display:flex;
+    justify-content:center;
+    text-align:center;
+}
+.input_field {
+    width: 75%;
+    padding: 12px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.input_submit {
+    width: 50%;
+    background-color: #51919f;
+    color: white;
+    padding: 7px 2px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.input_submit:hover {
+    background-color: #48828e;
+}
+
 
 .nameH {
     color: #f2eaea;
