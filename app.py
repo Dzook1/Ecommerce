@@ -92,6 +92,19 @@ def loginEmpGo():
 
 @app.route('/pendingOrders.html')
 def vendorOrders():
+    query = text('''
+        SELECT *
+        FROM Orders
+        WHERE Order_Status = "PENDING"
+    ''')
+    orders = conn.execute(query).fetchall()
+
+    return render_template('pendingOrders.html', orders=orders)
+
+@app.route('/confirmOrder/<int:order_id>', methods=['POST'])
+def confirmOrder(order_id):
+    print(order_id)
+
     return render_template('pendingOrders.html')
 
 @app.route('/confirmedOrders.html')
