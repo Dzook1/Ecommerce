@@ -3,7 +3,7 @@ from flask import Flask, redirect, render_template, request, url_for
 from sqlalchemy import create_engine, text
 from datetime import date
 
-conn_str = "mysql://root:MySQL@localhost/ecommerce"
+conn_str = "mysql://root:cset155@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -327,9 +327,29 @@ def edit_product(product_id):
 def baseCustomer():
     return render_template('/baseCustomer.html')
 
-@app.route('/review.html')
-def review():
-    return render_template('/review.html')
+@app.route('/review.html/<product_id>')
+def review(product_id):
+    query = text('''
+        SELECT *
+        FROM Reviews
+        WHERE Product_ID = :product_id
+    ''')
+    items = conn.execute(query, {'product_id': product_id}).fetchall()
+    return render_template('/review.html', items=items)
+
+@app.route('/review.html', methods=['POST'])
+def reviewGo():
+    current_date = date.today()
+    rating = request.form['rating']
+    description = request.form['description']
+
+    query = text('''
+        INSERT INTO Reviews
+        VALUES (:userID, :current_date, :rating, :description)
+    ''')
+    conn.execute(query, {'userID': userID, 'current_date': current_date, ':rating': rating, ':description': description})
+    conn.commit()
+    return render_template('baseCustomer.html')
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
