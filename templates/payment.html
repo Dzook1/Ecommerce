@@ -233,37 +233,23 @@
         </div>
     </div>
 
-    <p class="totalPriceBox">Total Price (2 Items): <span class="totalPrice">$1,095.56</span></p>
+    <p class="totalPriceBox">Total Price: <span class="totalPrice">${{ price }}</span></p>
 
-    <div class="cart-item">
-        <div class="imageBox">
-            <img src="https://m.media-amazon.com/images/I/61w5K7IjpoL._SX522_.jpg" alt="" class="image">
-        </div>
-        <div class="cart-item-info">
-            <p class="title">Playstation 5 Console-Marvel's Spider-Man 2 Bundle</p>
-            <p class="category">Electronics</p>
-            <div class="sizeColor">
-                <p class="size">Size: n/a</p>
-                <p class="color">Color: n/a</p>
+    {% for item in cart_items %}
+        <div class="cart-item">
+            <div class="imageBox">
+                <img src="{{ item[7] }}" alt="{{ item[3] }}" class="image">
             </div>
-        </div>
-        <p class="price">$547.78</p>
-    </div>
-
-    <div class="cart-item">
-        <div class="imageBox">
-            <img src="https://m.media-amazon.com/images/I/61w5K7IjpoL._SX522_.jpg" alt="" class="image">
-        </div>
-        <div class="cart-item-info">
-            <p class="title">Playstation 5 Console-Marvel's Spider-Man 2 Bundle</p>
-            <p class="category">Electronics</p>
-            <div class="sizeColor">
-                <p class="size">Size: n/a</p>
-                <p class="color">Color: n/a</p>
+            <div class="cart-item-info">
+                <p class="title">{{ item[3] }}</p>
+                <div class="sizeColor">
+                    <p class="size">Size: {{ item[6] }}</p>
+                    <p class="color">Color: {{ item[5] }}</p>
+                </div>
             </div>
+            <p class="price">${{ item[8] }}</p>
         </div>
-        <p class="price">$547.78</p>
-    </div>
+    {% endfor %}
 
     <form action="/payment.html" method="POST" class="placeOrderBox">
         <input type="submit" value="Place Order" class='placeOrder'>

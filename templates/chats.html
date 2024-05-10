@@ -2,11 +2,27 @@
 
 {% block body %}
     <h2 style="text-align: center; animation: FadeIn; animation-duration: 3s;">~ CHAT WITH A VENDOR ~</h2>
-    {% for i in chats %}
-        <p>
-            Vendor Name: {{i[1]}} {{i[2]}}
-            <a href="/chatting/{{i[0]}}" style="text-decoration: none; color:red;">(ID: {{i[0]}})</a>
-        </p>
-        <br>
-    {% endfor %}
+    <p style="text-align:center; font-size:10px;"><em>Current Vendors:</em></p><br>
+
+    <br>
+
+
+    <div class='dashgrid'>
+        {% for i in chats %}
+        <a href="/chatting/{{i[0]}}">
+          <div class="dash_item" style="height:125px">
+            <div class="item item1" style="background-color: white;">
+            </div>
+            <div class="discript">
+              <h3>Vendor: </h3>
+              <br>
+              <p style="font-size:15px;">{{i[1]}} {{i[2]}}</p>
+              <p style="font-size:8px;">(ID: {{i[0]}})</p>
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+    </div>
+    <br><br><br>
+
 {% endblock %}

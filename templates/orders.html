@@ -82,51 +82,19 @@
             </div>
             <a class="orderDetailsA" href="/orderDetails.html">Order Details</a>
         </div>
+        {% for order in orders %}
 
         <div class="order">
             <div>
-                <p class="status">Out For Delivery</p>
-                <p class="date">Ordered On: 05/04/2024</p>
+                <p class="status">{{ order[4] }}</p>
+                <p class="date">Ordered On: {{ order[2] }}</p>
             </div>
-            <div class="imageBox">
-                <img src="https://th.bing.com/th?id=OPHS.wNzO%2fck%2b%2bEMVIA474C474&w=220&h=220&c=17&o=5&pid=21.1" alt="" class="image">
-                <img src="https://th.bing.com/th?id=OPHS.wNzO%2fck%2b%2bEMVIA474C474&w=220&h=220&c=17&o=5&pid=21.1" alt="" class="image">
-                <img src="https://th.bing.com/th?id=OPHS.wNzO%2fck%2b%2bEMVIA474C474&w=220&h=220&c=17&o=5&pid=21.1" alt="" class="image">
-                <img src="https://th.bing.com/th?id=OPHS.wNzO%2fck%2b%2bEMVIA474C474&w=220&h=220&c=17&o=5&pid=21.1" alt="" class="image">
-                <img src="https://th.bing.com/th?id=OPHS.wNzO%2fck%2b%2bEMVIA474C474&w=220&h=220&c=17&o=5&pid=21.1" alt="" class="image">
-            </div>
-            <a class="orderDetailsA" href="/orderDetails.html">Order Details</a>
+            <form action="{{ url_for('orderDetails', order_id=order[0]) }}" method="post">
+                <input type="submit" value="Order Details" class="orderDetailsA">
+            </form>
         </div>
 
-        <div class="order">
-            <div>
-                <p class="status">Out For Delivery</p>
-                <p class="date">Ordered On: 05/04/2024</p>
-            </div>
-            <div class="imageBox">
-                <img src="https://th.bing.com/th?id=OPHS.wNzO%2fck%2b%2bEMVIA474C474&w=220&h=220&c=17&o=5&pid=21.1" alt="" class="image">
-                <img src="https://th.bing.com/th?id=OPHS.wNzO%2fck%2b%2bEMVIA474C474&w=220&h=220&c=17&o=5&pid=21.1" alt="" class="image">
-                <img src="https://th.bing.com/th?id=OPHS.wNzO%2fck%2b%2bEMVIA474C474&w=220&h=220&c=17&o=5&pid=21.1" alt="" class="image">
-                <img src="https://th.bing.com/th?id=OPHS.wNzO%2fck%2b%2bEMVIA474C474&w=220&h=220&c=17&o=5&pid=21.1" alt="" class="image">
-                <img src="https://th.bing.com/th?id=OPHS.wNzO%2fck%2b%2bEMVIA474C474&w=220&h=220&c=17&o=5&pid=21.1" alt="" class="image">
-            </div>
-            <a class="orderDetailsA" href="/orderDetails.html">Order Details</a>
-        </div>
-
-        <div class="order">
-            <div>
-                <p class="status">Out For Delivery</p>
-                <p class="date">Ordered On: 05/04/2024</p>
-            </div>
-            <div class="imageBox">
-                <img src="https://th.bing.com/th?id=OPHS.wNzO%2fck%2b%2bEMVIA474C474&w=220&h=220&c=17&o=5&pid=21.1" alt="" class="image">
-                <img src="https://th.bing.com/th?id=OPHS.wNzO%2fck%2b%2bEMVIA474C474&w=220&h=220&c=17&o=5&pid=21.1" alt="" class="image">
-                <img src="https://th.bing.com/th?id=OPHS.wNzO%2fck%2b%2bEMVIA474C474&w=220&h=220&c=17&o=5&pid=21.1" alt="" class="image">
-                <img src="https://th.bing.com/th?id=OPHS.wNzO%2fck%2b%2bEMVIA474C474&w=220&h=220&c=17&o=5&pid=21.1" alt="" class="image">
-                <img src="https://th.bing.com/th?id=OPHS.wNzO%2fck%2b%2bEMVIA474C474&w=220&h=220&c=17&o=5&pid=21.1" alt="" class="image">
-            </div>
-            <a class="orderDetailsA" href="/orderDetails.html">Order Details</a>
-        </div>
+        {% endfor %}
 
     </div> 
 {% endblock %}
