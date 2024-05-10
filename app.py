@@ -271,6 +271,10 @@ def edit_product(product_id):
 def baseCustomer():
     return render_template('/baseCustomer.html')
 
+@app.route('/review.html')
+def review():
+    return render_template('/review.html')
+
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
