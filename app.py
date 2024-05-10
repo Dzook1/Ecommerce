@@ -100,19 +100,46 @@ def vendorOrders():
 
     return render_template('pendingOrders.html', orders=orders)
 
-@app.route('/confirmOrder/<order_id>')
-def confirmOrder(order_id):
-    print(order_id)
+@app.route('/confirmOrder/<orders>', methods=['POST'])
+def confirmOrder(orders):
+    query = text('''
+        UPDATE Orders
+        SET Order_Status = "CONFIRMED"
+        WHERE Order_ID = :orders
+    ''')
+    conn.execute(query, {'orders': orders})
+    conn.commit()
 
-    return render_template('pendingOrders.html')
+    query = text('''
+        SELECT *
+        FROM Orders
+        WHERE Order_Status = "PENDING"
+    ''')
+    orders = conn.execute(query).fetchall()
+
+    return render_template('pendingOrders.html', orders=orders)
 
 @app.route('/confirmedOrders.html')
 def confirmedOrders():
     return render_template('confirmedOrders.html')
 
-@app.route('/orderDetailsVendor.html')
-def orderDetailsVendor():
-    return render_template('orderDetailsVendor.html')
+@app.route('/orderDetailsVendor/<orders>')
+def orderDetailsVendor(orders):
+    query = text('''
+        SELECT *
+        FROM Orders
+        WHERE Order_ID = :orders
+    ''')
+    order = conn.execute(query, {'orders': orders}).fetchall()
+
+    query = text('''
+        SELECT *
+        FROM Order_Items
+        WHERE Order_ID = :orders
+    ''')
+    order_items = conn.execute(query, {'orders': orders}).fetchall()
+
+    return render_template('orderDetailsVendor.html', order=order, order_items=order_items)
 
 @app.route('/adminLanding.html')
 def adminLanding():

@@ -82,9 +82,9 @@
                 <p class="detail">Ordered On: {{ order[2] }}</p>
                 <p class="detail">Total Price: ${{ order[3] }}</p>
             </div>
-            <a class="orderDetailsA" href="{{ url_for('orderDetailsVendor', order=order[1]) }}">Order Details</a>
+            <a class="orderDetailsA" href="{{ url_for('orderDetailsVendor', orders=order[0]) }}">Order Details</a>
             <div class="confirmDeny">
-                <form action="{{ url_for('confirmOrder', Order_ID=order[0]) }}">
+                <form action="{{ url_for('confirmOrder', orders=order[0])}}", method="post">
                     <input type="submit" class="confirm submit" value="Confirm">
                 </form>
             </div>
