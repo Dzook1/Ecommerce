@@ -1,7 +1,6 @@
 from decimal import Decimal
 from flask import Flask, redirect, render_template, request, url_for
 from sqlalchemy import create_engine, text
-import ctypes
 from datetime import date
 
 conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
@@ -101,7 +100,7 @@ def vendorOrders():
 
     return render_template('pendingOrders.html', orders=orders)
 
-@app.route('/confirmOrder/<int:order_id>', methods=['POST'])
+@app.route('/confirmOrder/<order_id>')
 def confirmOrder(order_id):
     print(order_id)
 
