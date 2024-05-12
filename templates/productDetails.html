@@ -41,6 +41,52 @@ body {
     margin-bottom: 10px;
     font-size: 20px;
 }
+
+.reviewBox {
+    background-color: rgb(129, 127, 127);
+    border: 2px solid black;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.heading {
+    text-align: center;
+    font-size: 40px;
+    letter-spacing: 2px;
+}
+
+.review {
+    background-color: rgb(41, 41, 180);
+    border: 3px solid black;
+    padding: 20px;
+    color: whitesmoke;
+    overflow: auto;
+    word-wrap: break-word;
+    letter-spacing: 1.1px;
+    margin-bottom: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-evenly;
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.name {
+}
+
+.date {
+}
+
+.rating {
+}
+
+.description {
+}
 </style>
 
 
@@ -109,7 +155,6 @@ body {
             <p class="description">{{ review[4] }}</p>
         </div>
     {% endfor %}
-    
 </section>
 
 
