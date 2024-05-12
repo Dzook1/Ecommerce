@@ -64,6 +64,7 @@
     <div class="reviewBox">
         <h1 class="heading">Review</h1>
         <form action="/review.html" class="review" method="post">
+            <input type="hidden" value="{{ product_id }}" name="product_id">
             <label for="rating">Rating (out of 5)</label>
             <input name="rating" type="text" placeholder="5/5" class="rating" maxlength="3" required>
             <label for="description">Description</label>

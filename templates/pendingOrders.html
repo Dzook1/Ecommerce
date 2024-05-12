@@ -75,67 +75,21 @@
 
 <h1 class="heading">~~Pending Orders~~</h1>
 <div class="orderBox">
-
-    <div class="order">
-        <div>
-            <p class="detail">Ordered By: Handsome Jack</p>
-            <p class="detail">Ordered On: 05/04/2024</p>
-            <p class="detail">Total Price: $99.99 (2 items)</p>
+    {% for order in orders %}
+        <div class="order">
+            <div>
+                <p class="detail">User ID: {{ order[1] }}</p>
+                <p class="detail">Ordered On: {{ order[2] }}</p>
+                <p class="detail">Total Price: ${{ order[3] }}</p>
+            </div>
+            <a class="orderDetailsA" href="{{ url_for('orderDetailsVendor', orders=order[0]) }}">Order Details</a>
+            <div class="confirmDeny">
+                <form action="{{ url_for('confirmOrder', orders=order[0])}}", method="post">
+                    <input type="submit" class="confirm submit" value="Confirm">
+                </form>
+            </div>
         </div>
-        <a class="orderDetailsA" href="/orderDetailsVendor.html">Order Details</a>
-        <div class="confirmDeny">
-            <form>
-                <input type="submit" class="confirm submit" value="Confirm">
-                <input type="submit" class="deny submit" value="Deny">
-            </form>
-        </div>
-    </div>
-
-    <div class="order">
-        <div>
-            <p class="detail">Ordered By: Handsome Jack</p>
-            <p class="detail">Ordered On: 05/04/2024</p>
-            <p class="detail">Total Price: $99.99 (2 items)</p>
-        </div>
-        <a class="orderDetailsA" href="/orderDetailsVendor.html">Order Details</a>
-        <div class="confirmDeny">
-            <form>
-                <input type="submit" class="confirm submit" value="Confirm">
-                <input type="submit" class="deny submit" value="Deny">
-            </form>
-        </div>
-    </div>
-
-    <div class="order">
-        <div>
-            <p class="detail">Ordered By: Handsome Jack</p>
-            <p class="detail">Ordered On: 05/04/2024</p>
-            <p class="detail">Total Price: $99.99 (2 items)</p>
-        </div>
-        <a class="orderDetailsA" href="/orderDetailsVendor.html">Order Details</a>
-        <div class="confirmDeny">
-            <form>
-                <input type="submit" class="confirm submit" value="Confirm">
-                <input type="submit" class="deny submit" value="Deny">
-            </form>
-        </div>
-    </div>
-
-    <div class="order">
-        <div>
-            <p class="detail">Ordered By: Handsome Jack</p>
-            <p class="detail">Ordered On: 05/04/2024</p>
-            <p class="detail">Total Price: $99.99 (2 items)</p>
-        </div>
-        <a class="orderDetailsA" href="/orderDetailsVendor.html">Order Details</a>
-        <div class="confirmDeny">
-            <form>
-                <input type="submit" class="confirm submit" value="Confirm">
-                <input type="submit" class="deny submit" value="Deny">
-            </form>
-        </div>
-    </div>
-
+    {% endfor %}
 </div>
 
     
