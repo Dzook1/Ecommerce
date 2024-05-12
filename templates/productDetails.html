@@ -4,9 +4,42 @@
 
 {% block body %}
 <style>
-    body {
+body {
     font-family: Roboto;
+}
 
+.reviewBox {
+    background-color: rgb(129, 127, 127);
+    border: 2px solid black;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.heading {
+    text-align: center;
+    font-size: 40px;
+    letter-spacing: 2px;
+}
+
+.review {
+    background-color: #152c3ff3;
+    border: 3px solid black;
+    padding: 20px;
+    color: whitesmoke;
+    overflow: auto;
+    word-wrap: break-word;
+    letter-spacing: 1.1px;
+    margin-bottom: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-evenly;
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    font-size: 20px;
 }
 </style>
 
@@ -62,4 +95,22 @@
             </div>
     </div>
 </section>
+
+<section class="reviewBox">
+    <h1 class="heading">Reviews</h1>
+
+    {% for review in reviews %}
+        <div class="review">
+            <div class="review-header">
+                <p class="name">User ID: {{ review[0] }}</p>
+                <p class="date">Date: {{ review[3] }}</p>
+                <p class="rating">Rating: {{ review[2] }}</p>
+            </div>
+            <p class="description">{{ review[4] }}</p>
+        </div>
+    {% endfor %}
+    
+</section>
+
+
 {% endblock %} 

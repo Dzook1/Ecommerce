@@ -92,10 +92,10 @@
                 <p class="description">{{ complaint[3] }}</p>
                 <p class="demand">{{ complaint[4] }}</p>
                 <a href="/">Chat with Customer</a>
-                <form action="" method="post">
+                <form action="{{ url_for('approveComplaint', complaint_id=complaint[6]) }}" method="post">
                     <input type="submit" class="confirm submit" value="Confirm">
                 </form>
-                <form action="" method="post">
+                <form action="{{ url_for('denyComplaint', complaint_id=complaint[6]) }}" method="post">
                     <input type="submit" class="deny submit" value="Deny">
                 </form>
             </div>
