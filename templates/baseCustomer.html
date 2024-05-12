@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Customer Landing{% endblock %}</title>
+    <title>{% block title %}Customer Home{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='baseCustomer.css') }}">
 
     <link
@@ -46,7 +46,6 @@
     {% block body %}
 
       <div class='homegrid'>
-        
         <a href="{{ url_for('productFilter', category='Food') }}">
           <div class="grid_item item1">
             <h2>Food</h2>
@@ -75,11 +74,11 @@
         <a href="{{ url_for('productFilter', category='General') }}">
           <div class="grid_item item6">
             <h2>General</h2>
-
           </div>
         </a>
       </div>
       <br><br><br>
+
 
 {% endblock %}
 
