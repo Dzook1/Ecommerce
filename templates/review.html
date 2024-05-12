@@ -2,9 +2,75 @@
 {% block title %}Review{% endblock %}
 {% block body %}
     <style>
+        .reviewBox {
+            background-color: whitesmoke;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 95%;
+            height: 500px;
+            margin: 0 auto;
+            border: 2px solid black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
 
+        .review {
+            border: 1px solid black;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            height: 400px;
+            background-color: rgb(221, 221, 221);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 20px;
+        }
+
+        label {
+            font-size: 20px;
+        }
+
+        .rating {
+            width: 5%;
+            height: 35px;
+            padding: 5px;
+            font-size: 15px;
+        }
+
+        .description {
+            padding: 5px;
+            font-size: 15px;
+            max-width: 100%;
+        }
+
+        .submit {
+            margin-right: 200px;
+            margin-left: 200px;
+            height: 30px;
+            border-radius: 10px;
+            background-color: rgb(186, 186, 0);
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .submit:hover {
+            cursor: pointer;
+            background-color: rgb(251, 251, 0);
+        }
     </style>
 
-    
+    <div class="reviewBox">
+        <h1 class="heading">Review</h1>
+        <form action="/review.html" class="review" method="post">
+            <input type="hidden" value="{{ product_id }}" name="product_id">
+            <label for="rating">Rating (out of 5)</label>
+            <input name="rating" type="text" placeholder="5/5" class="rating" maxlength="3" required>
+            <label for="description">Description</label>
+            <textarea name="description" class="description" cols="30" rows="10" maxlength="1000" required></textarea>
+            <input type="submit" class="submit" value="Submit">
+        </form>
+</div>
 
 {% endblock %} 

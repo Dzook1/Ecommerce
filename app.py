@@ -3,7 +3,7 @@ from flask import Flask, redirect, render_template, request, url_for
 from sqlalchemy import create_engine, text
 from datetime import date
 
-conn_str = "mysql://root:MySQL@localhost/ecommerce"
+conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -83,7 +83,7 @@ def loginEmpGo():
         query = text("SELECT Type FROM Users WHERE Username = :username AND Password = :password")
         result2 = conn.execute(query, {'username': username, 'password': password}).fetchone()
         
-        if result2[0] == "ADMIN":
+        if result2[0] == "Admin":
             return redirect(url_for('adminLanding'))
         else:
             return redirect(url_for('empLanding')) # rendering the template wasnt showing/display info on the page properly until the page was reloaded. -serena
@@ -251,7 +251,7 @@ def addItemGo():
         conn.execute(query, {'Product_ID': product_id, 'Size': size})
         conn.commit()
 
-    return render_template('empLanding.html')
+    return render_template('empDashboard.html')
 
 @app.route('/add_itemAdmin.html', methods=['GET'])
 def addItemAdmin():
@@ -305,13 +305,19 @@ def addItemAdminGo():
             conn.execute(query, {'Product_ID': product_id, 'Size': size})
             conn.commit()
 
-        return render_template('adminLanding.html')
+        return render_template('/adminDashboard.html')
     else:
         return render_template('add_itemAdmin.html')
     
 @app.route('/viewComplaints.html')
 def viewComplaints():
-    return render_template('viewComplaints.html')
+    query = text('''
+        SELECT *
+        FROM Complaints
+    ''')
+    complaints = conn.execute(query).fetchall()
+
+    return render_template('viewComplaints.html', complaints=complaints)
 
 @app.route('/itemList.html')
 def itemList():
@@ -366,10 +372,6 @@ def edit_product(product_id):
 @app.route('/baseCustomer.html')
 def baseCustomer():
     return render_template('/baseCustomer.html')
-
-@app.route('/review.html')
-def review():
-    return render_template('/review.html')
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
@@ -434,6 +436,26 @@ def orderDetails(order_id):
     order_items = conn.execute(query, {'order_id': order_id}).fetchall()
 
     return render_template('orderDetails.html', order=order, order_items=order_items)
+
+@app.route('/review.html/<product_id>')
+def review(product_id):
+    return render_template('review.html', product_id=product_id)
+
+@app.route('/review.html', methods=['POST'])
+def reviewGo():
+    current_date = date.today()
+    product_id = request.form['product_id']
+    rating = request.form['rating']
+    description = request.form['description']
+
+    query = text('''
+        INSERT INTO Reviews
+        VALUES (:userID, :product_id, :rating, :current_date, :description);
+    ''')
+    conn.execute(query, {'userID': userID, 'product_id': product_id, 'rating': rating, 'current_date': current_date, 'description': description})
+    conn.commit()
+
+    return render_template('baseCustomer.html')
 
 @app.route('/complaint.html/<order_item_id>')
 def complaint(order_item_id):
@@ -580,10 +602,10 @@ def paymentGo():
             expiry_date = current_date.replace(year=current_date.year + warranty_years, month=current_date.month + warranty_months)
 
         query = text('''
-            INSERT INTO Order_Items (Order_ID, Title, Expiry, Amount, Color, Size, Image, Price)
-            VALUES (:OrderID, :title, :expiry_date, :amount, :color, :size, :image, :indPrice)
+            INSERT INTO Order_Items (Order_ID, Title, Expiry, Amount, Color, Size, Image, Price, Product_ID)
+            VALUES (:OrderID, :title, :expiry_date, :amount, :color, :size, :image, :indPrice, :product_id)
         ''')
-        conn.execute(query, {'OrderID': OrderID, 'title': title, 'expiry_date': expiry_date, 'amount': amount, 'color': color, 'size': size, 'image': image, 'indPrice': indPrice})
+        conn.execute(query, {'OrderID': OrderID, 'title': title, 'expiry_date': expiry_date, 'amount': amount, 'color': color, 'size': size, 'image': image, 'indPrice': indPrice, 'product_id': product_id})
         conn.commit()
 
     query = text('''
