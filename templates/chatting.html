@@ -1,13 +1,11 @@
 {% extends 'baseCustomer.html'%}
 
 {% block body %}
-    <div>
-        <p>Chat Started (ID: {{chat[0][0]}})</p>
-        <p>Chatting with Vendor: ID {{chat[0][2]}}</p>
-        <p>Customer User ID: {{chat[0][1]}}</p>
-    </div>
-    <br><br><br>
     <div class="chat">
+        <div class="Chat_header">
+            <p>Chat (ID: {{chat[0][0]}}) started with Vendor (ID {{chat[0][2]}})</p>
+            <p>Your ID: {{chat[0][1]}}</p>
+        </div>
         <div class="chatbox">
             <div class="ugh2">
                 <div class="messages">

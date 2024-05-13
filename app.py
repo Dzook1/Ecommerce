@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, text
 from datetime import date
 
 
-conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
+conn_str = "mysql://root:cset155@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -572,28 +572,37 @@ def cart():
 
 @app.route('/cart.html', methods=["POST"])
 def cartGo():
-    query = text('''
-        SELECT Cart_ID
-        FROM Carts
-        WHERE User_ID = :user_id
-    ''')
+    query = text('''SELECT Cart_ID FROM Carts WHERE User_ID = :user_id''')
     cart_id = conn.execute(query, {'user_id': userID}).fetchone()[0]
 
-    query = text('''
-        SELECT Total_Price
-        FROM Carts
-        WHERE User_ID = :user_id
-    ''')
-    price = conn.execute(query, {'user_id': userID}).fetchone()[0]
-
-    query = text('''
-        SELECT *
-        FROM Cart_Items
-        WHERE Cart_ID = :cart_id
-    ''')
+    query = text('''SELECT * FROM Cart_Items WHERE Cart_ID = :cart_id''')
     cart_items = conn.execute(query, {'cart_id': cart_id}).fetchall()
 
-    return render_template('payment.html', cart_items=cart_items, price=price)
+    if not cart_items:
+        return redirect(url_for('cart'))
+    else:
+        query = text('''
+            SELECT Cart_ID
+            FROM Carts
+            WHERE User_ID = :user_id
+        ''')
+        cart_id = conn.execute(query, {'user_id': userID}).fetchone()[0]
+
+        query = text('''
+            SELECT Total_Price
+            FROM Carts
+            WHERE User_ID = :user_id
+        ''')
+        price = conn.execute(query, {'user_id': userID}).fetchone()[0]
+
+        query = text('''
+            SELECT *
+            FROM Cart_Items
+            WHERE Cart_ID = :cart_id
+        ''')
+        cart_items = conn.execute(query, {'cart_id': cart_id}).fetchall()
+
+        return render_template('payment.html', cart_items=cart_items, price=price)
 
 @app.route('/payment.html', methods=["POST"])
 def paymentGo():
@@ -744,7 +753,7 @@ def chat(User_id):
 @app.route('/products')
 def products():
     query = text('''
-        SELECT p.Product_ID, p.Title, p.Price, MIN(i.Image) AS Image
+        SELECT p.Product_ID, p.Title, p.Price, MIN(i.Image) AS Image, p.User_id
         FROM Products p
         JOIN Images i ON p.Product_ID = i.Product_ID
         GROUP BY p.Product_ID, p.Title;
@@ -757,7 +766,8 @@ def products():
             'product_id': row[0],
             'title': row[1],
             'price': '{:.2f}'.format(row[2]),
-            'image': row[3]
+            'image': row[3],
+            'user_id': row[4]
         }
         product_data.append(product_info)
     return render_template('products.html', product_data=product_data)
