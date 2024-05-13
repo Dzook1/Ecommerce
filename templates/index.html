@@ -1,8 +1,21 @@
 {% extends 'base.html' %}
 {% block title %}Home{% endblock %}
 {% block body %}
+<div class="homebodyHeader">
+  <a href="#" class="bar1">Commi Home</a>
+  <a href="#" class="bar1" style='text-decoration: none;'>Groceries</a>
+  <a href="#" class="bar1" style='text-decoration: none;'>Clothing & Apparel</a>
+  <a href="#" class="bar1" style='text-decoration: none;'>Electronics</a>
+  <a href="#" class="bar1" style='text-decoration: none;'>Books</a>
+  <a href="#" class="bar1" style='text-decoration: none;'>Toys & Entertainment</a>
+  <a href="#" class="bar1" style='text-decoration: none;'>General</a>
+  <a href="#" class="bar1" style='text-decoration: none;'>Shop by Style</a>
+</div>
+
 <div class="homebody">
-    <h1 class="home">E-Commi</h1>
+    <div class="line"></div>
+      <h1 class="home">E-Commi Home</h1>
+    <div class="line"></div>
     <div class='dashgrid'>
         <a href="#">
           <div class="dash_item">
@@ -59,7 +72,49 @@
           </div>  
         </a>    
     </div>
-    <br><br><br><br><br>
+</div>
+
+<div class="homebody">
+    <h1 class="home2" style="text-align: left;">New & Now</h1>
+  <div class='dashgrid2'>
+      <a href="#">
+        <div class="dash_item2">
+          <div class="item item12">
+          </div>
+          <div class="discript">
+            <h2>Home Decorum</h2>
+          </div>
+        </div>
+      </a> 
+      <a href="#">
+        <div class="dash_item2">
+          <div class="item item22">
+          </div>
+          <div class="discript">
+            <h2>Outside</h2>
+          </div>
+        </div>
+      </a>  
+      <a href="#">
+        <div class="dash_item2">
+          <div class="item item32">
+          </div>
+          <div class="discript">
+            <h2>Pillows & Throws</h2>
+          </div>
+        </div>  
+      </a>
+      <a href="#">
+        <div class="dash_item2">
+          <div class='item item42'>
+          </div>
+          <div class="discript">
+            <h2>Business Professional</h2>
+          </div>
+        </div>
+      </a>
+  </div>
+  <br><br><br><br><br>
 
 </div>
 {% endblock %}

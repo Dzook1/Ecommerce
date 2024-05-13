@@ -1,62 +1,67 @@
 {% extends 'baseCustomer.html' %}
 {% block title %}Your Orders{% endblock %}
 {% block body %}
-    <style>
-        .orderBox {
-            background-color: whitesmoke;
-            width: 95%;
-            min-height: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            margin-bottom: 50px;
-            border: 2px solid black;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);        
+<style>
+.orderBox {
+    background-color: whitesmoke;
+    width: 95%;
+    min-height: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-bottom: 50px;
+    border: 2px solid black;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+}
 
-        }
+.heading {
+    text-align: center;
+    padding: 10px;
+    font-family: Anta;
+}
 
-        .heading {
-            text-align: center;
-            border: dashed 3px black;
-            padding: 10px;     
-            margin-bottom: 20px;   
-        }
+.order {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid gray;
+    height: 150px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
 
-        .order {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid gray;
-            height: 150px;
-            padding: 30px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px;    
-        }
+.imageBox {
+    display: flex;
+    width: 300px;
+    height: 100px;
+}
 
-        .imageBox {
-            display: flex;
-            width: 300px;
-            height: 100px;
-        }
+.image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border: 1px solid black;
+    margin-right: 5px;
+}
 
-        .image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            border: 1px solid black;
-            margin-right: 5px;
-        }
+.status {
+    font-size: 30px;
+    color: rgb(21, 79, 21);
+}
 
-        .status {
-            font-size: 30px;
-            color: rgb(21, 79, 21);
-        }
+.orderDetailsA {
+    font-size: 20px;
+    padding:10px
+}
+</style>
 
-        .orderDetailsA {
-            font-size: 20px;
-        }
-    </style>
-
-    <h1 class="heading">~~Your Orders~~</h1>
+<div class="homebody">
+    <div class="line"></div>
+    <h1 class="heading">Your Orders</h1>
+    <div class="line"></div>
+</div>
+<br><br>
     <div class="orderBox">
         {% for order in orders %}
 
@@ -64,13 +69,18 @@
             <div>
                 <p class="status">{{ order[4] }}</p>
                 <p class="date">Ordered On: {{ order[2] }}</p>
+                <p style="font-size: 10px;">Order ID:{{ order[0] }}</p>
             </div>
             <form action="{{ url_for('orderDetails', order_id=order[0]) }}" method="post">
                 <input type="submit" value="Order Details" class="orderDetailsA">
             </form>
         </div>
+        <form action="{{ url_for('orderDetails', order_id=order[0]) }}" method="post">
+            <input type="submit" value="Order Details" class="orderDetailsA">
+        </form>
+    </div>
 
-        {% endfor %}
+    {% endfor %}
 
     </div> 
 {% endblock %}

@@ -753,7 +753,7 @@ def chat(User_id):
 @app.route('/products')
 def products():
     query = text('''
-        SELECT p.Product_ID, p.Title, p.Price, MIN(i.Image) AS Image
+        SELECT p.Product_ID, p.Title, p.Price, MIN(i.Image) AS Image, p.User_id
         FROM Products p
         JOIN Images i ON p.Product_ID = i.Product_ID
         GROUP BY p.Product_ID, p.Title;
@@ -766,7 +766,8 @@ def products():
             'product_id': row[0],
             'title': row[1],
             'price': '{:.2f}'.format(row[2]),
-            'image': row[3]
+            'image': row[3],
+            'user_id': row[4]
         }
         product_data.append(product_info)
     return render_template('products.html', product_data=product_data)
