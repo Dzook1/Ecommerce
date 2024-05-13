@@ -130,6 +130,23 @@ def empChatting(User_id):
         return render_template(f'/empChatting.html', chat=accessing, ugh=starting, AcctID=AcctID)
     return render_template(f'/empChatting.html', chat=accessing, ugh=starting, AcctID=AcctID)
 
+@app.route('/adminChatting/<User_id>', methods=["GET", "POST"])
+def adminChatting(User_id):
+    ChatID = conn.execute(text(f"SELECT CHAT_ID FROM CHATS WHERE cust_ID = {User_id} AND emp_ID = 1")).all()
+    accessing = conn.execute(text(f"SELECT * FROM CHATS WHERE cust_ID = {User_id} AND emp_ID = 1")).all()
+    starting = conn.execute(text(f"SELECT * FROM MESSAGES NATURAL JOIN CHATS WHERE CHAT_ID = {accessing[0][0]}")).all()
+    print("ChatID", ChatID)
+    print("accessing", accessing)
+    print("starting", starting)
+    if request.method == "POST":
+        chattin = conn.execute(text(f"INSERT INTO MESSAGES (CONTENT, CHAT_ID, Sender_ID, Receiver_ID) VALUES ((:toVendor), {accessing[0][0]}, {accessing[0][2]}, {accessing[0][1]})"), request.form)
+        starting = conn.execute(text(f"SELECT * FROM MESSAGES NATURAL JOIN CHATS WHERE CHAT_ID = {accessing[0][0]}")).all()
+        print("chattin:", chattin)
+        print("starting", starting)
+        conn.commit()
+        return render_template(f'/adminChatting.html', chat=accessing, ugh=starting, AcctID=AcctID)
+    return render_template(f'/adminChatting.html', chat=accessing, ugh=starting, AcctID=AcctID)
+
 
 @app.route('/pendingOrders.html')
 def vendorOrders():
@@ -484,7 +501,10 @@ def complaintGo():
     conn.execute(query, {'userID': userID, 'current_date': current_date, 'title': title, 'description': description, 'demand': demand})
     conn.commit()
 
-    return render_template('baseCustomer.html')
+    conn.execute(text(f"INSERT INTO CHATS (cust_ID, emp_ID) VALUES ({userID}, 1)"))
+    accessing = conn.execute(text(f"SELECT * FROM CHATS WHERE cust_ID = {userID} AND emp_ID = 1")).all()
+    conn.commit()
+    return render_template(f'/chatting.html', chat=accessing, userID=userID)
 
 
 @app.route('/approveComplaint.html/<complaint_id>', methods=['POST'])
