@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, text
 from datetime import date
 
 
-conn_str = "mysql://root:cset155@localhost/ecommerce"
+conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -742,7 +742,7 @@ def products():
         product_data.append(product_info)
     return render_template('products.html', product_data=product_data)
 
-@app.route('/product_details/<product_id>')
+@app.route('/product_details.html/<product_id>')
 def product_details(product_id):
     query = text('''
         SELECT *
@@ -761,7 +761,7 @@ def product_details(product_id):
     query = text('''
         SELECT Color
         FROM Colors
-        WHERE  Product_ID = :product_id;
+        WHERE Product_ID = :product_id;
     ''')
     colors = conn.execute(query, {'product_id': product_id}).fetchall()
 
