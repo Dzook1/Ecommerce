@@ -91,7 +91,7 @@
                 <p class="title">{{ complaint[2] }}</p>
                 <p class="description">{{ complaint[3] }}</p>
                 <p class="demand">{{ complaint[4] }}</p>
-                <a href="/">Chat with Customer</a>
+                <a href="{{ url_for('adminChatting', User_id=complaint[0]) }}">Chat with Customer</a>
                 <form action="{{ url_for('approveComplaint', complaint_id=complaint[6]) }}" method="post">
                     <input type="submit" class="confirm submit" value="Confirm">
                 </form>
