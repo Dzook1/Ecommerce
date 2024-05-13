@@ -85,117 +85,21 @@
     <h1 class="heading">~~Complaints~~</h1>
     <div class="grid">
 
-        <div class="complaint">
-            <p class="name">From: Handsome Jack</p>
-            <p class="title">Title</p>
-            <p class="description">Description</p>
-            <p class="id">Product ID: 1</p>
-            <p class="price">$Price</p>
-            <p class="demand">Demand</p>
-            <a href="/">Chat with Customer</a>
-            <form>
-                <input type="submit" class="confirm submit" value="Confirm">
-                <input type="submit" class="deny submit" value="Deny">
-            </form>
-        </div>
-
-        <div class="complaint">
-            <p class="name">From: Handsome Jack</p>
-            <p class="title">Title</p>
-            <p class="description">Description</p>
-            <p class="id">Product ID: 1</p>
-            <p class="price">$Price</p>
-            <p class="demand">Demand</p>
-            <a href="/">Chat with Customer</a>
-            <form>
-                <input type="submit" class="confirm submit" value="Confirm">
-                <input type="submit" class="deny submit" value="Deny">
-            </form>
-        </div>
-
-        <div class="complaint">
-            <p class="name">From: Handsome Jack</p>
-            <p class="title">Title</p>
-            <p class="description">Description</p>
-            <p class="id">Product ID: 1</p>
-            <p class="price">$Price</p>
-            <p class="demand">Demand</p>
-            <a href="/">Chat with Customer</a>
-            <form>
-                <input type="submit" class="confirm submit" value="Confirm">
-                <input type="submit" class="deny submit" value="Deny">
-            </form>
-        </div>
-
-        <div class="complaint">
-            <p class="name">From: Handsome Jack</p>
-            <p class="title">Title</p>
-            <p class="description">Description</p>
-            <p class="id">Product ID: 1</p>
-            <p class="price">$Price</p>
-            <p class="demand">Demand</p>
-            <a href="/">Chat with Customer</a>
-            <form>
-                <input type="submit" class="confirm submit" value="Confirm">
-                <input type="submit" class="deny submit" value="Deny">
-            </form>
-        </div>
-
-        <div class="complaint">
-            <p class="name">From: Handsome Jack</p>
-            <p class="title">Title</p>
-            <p class="description">Description</p>
-            <p class="id">Product ID: 1</p>
-            <p class="price">$Price</p>
-            <p class="demand">Demand</p>
-            <a href="/">Chat with Customer</a>
-            <form>
-                <input type="submit" class="confirm submit" value="Confirm">
-                <input type="submit" class="deny submit" value="Deny">
-            </form>
-        </div>
-
-        <div class="complaint">
-            <p class="name">From: Handsome Jack</p>
-            <p class="title">Title</p>
-            <p class="description">Description</p>
-            <p class="id">Product ID: 1</p>
-            <p class="price">$Price</p>
-            <p class="demand">Demand</p>
-            <a href="/">Chat with Customer</a>
-            <form>
-                <input type="submit" class="confirm submit" value="Confirm">
-                <input type="submit" class="deny submit" value="Deny">
-            </form>
-        </div>
-
-        <div class="complaint">
-            <p class="name">From: Handsome Jack</p>
-            <p class="title">Title</p>
-            <p class="description">Description</p>
-            <p class="id">Product ID: 1</p>
-            <p class="price">$Price</p>
-            <p class="demand">Demand</p>
-            <a href="/">Chat with Customer</a>
-            <form>
-                <input type="submit" class="confirm submit" value="Confirm">
-                <input type="submit" class="deny submit" value="Deny">
-            </form>
-        </div>
-
-        <div class="complaint">
-            <p class="name">From: Handsome Jack</p>
-            <p class="title">Title</p>
-            <p class="description">Description</p>
-            <p class="id">Product ID: 1</p>
-            <p class="price">$Price</p>
-            <p class="demand">Demand</p>
-            <a href="/">Chat with Customer</a>
-            <form>
-                <input type="submit" class="confirm submit" value="Confirm">
-                <input type="submit" class="deny submit" value="Deny">
-            </form>
-        </div>
+        {% for complaint in complaints %}
+            <div class="complaint">
+                <p class="name">User ID: {{ complaint[0] }}</p>
+                <p class="title">{{ complaint[2] }}</p>
+                <p class="description">{{ complaint[3] }}</p>
+                <p class="demand">{{ complaint[4] }}</p>
+                <a href="/">Chat with Customer</a>
+                <form action="{{ url_for('approveComplaint', complaint_id=complaint[6]) }}" method="post">
+                    <input type="submit" class="confirm submit" value="Confirm">
+                </form>
+                <form action="{{ url_for('denyComplaint', complaint_id=complaint[6]) }}" method="post">
+                    <input type="submit" class="deny submit" value="Deny">
+                </form>
+            </div>
+        {% endfor %}
 
     </div>
 {% endblock %}
