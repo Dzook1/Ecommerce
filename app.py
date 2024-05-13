@@ -4,7 +4,8 @@ from sqlalchemy import create_engine, text
 from datetime import date
 
 
-conn_str = "mysql://root:MySQL@localhost/ecommerce"
+
+conn_str = "mysql://root:Dougnang1@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
