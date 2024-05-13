@@ -12,13 +12,12 @@
 {% endblock %}
 
 {% block body %}
-    <div>
-        <p>Chat Started (ID: {{chat[0][0]}})</p>
-        <p>Chatting with Customer: ID {{chat[0][1]}}</p>
-        <p>Vendor User ID: {{chat[0][2]}}</p>
-    </div>
-    <br><br><br>
+    <br>
     <div class="chat">
+        <div class="Chat_header">
+            <p>Chat (ID: {{chat[0][0]}}) started with Customer (ID {{chat[0][1]}})</p>
+            <p>Your ID: {{chat[0][2]}}</p>
+        </div>
         <div class="chatbox">
             <div class="ugh2">
                 <div class="messages">
