@@ -1,8 +1,8 @@
 {% extends 'baseCustomer.html' %}
-{% block title %}Complaint{% endblock %}
+{% block title %}Review{% endblock %}
 {% block body %}
     <style>
-        .complaintBox {
+        .reviewBox {
             background-color: whitesmoke;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 95%;
@@ -15,7 +15,7 @@
             align-items: center;
         }
 
-        .complaint {
+        .review {
             border: 1px solid black;
             border-radius: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -32,8 +32,8 @@
             font-size: 20px;
         }
 
-        .title {
-            width: 40%;
+        .rating {
+            width: 5%;
             height: 35px;
             padding: 5px;
             font-size: 15px;
@@ -43,15 +43,6 @@
             padding: 5px;
             font-size: 15px;
             max-width: 100%;
-        }
-
-        .demand {
-            width: 130px;
-            padding: 5px;
-        }
-
-        .demand:hover {
-            cursor: pointer;
         }
 
         .submit {
@@ -70,20 +61,16 @@
         }
     </style>
 
-    <div class="complaintBox">
-        <h1 class="heading">Complaint</h1>
-        <form class="complaint" action="/complaint.html" method="post">
-            <label for="title">Title</label>
-            <input type="text" class="title" name="title" maxlength="60" required>
+    <div class="reviewBox">
+        <h1 class="heading">Review</h1>
+        <form action="/review.html" class="review" method="post">
+            <input type="hidden" value="{{ product_id }}" name="product_id">
+            <label for="rating">Rating (out of 5)</label>
+            <input name="rating" type="text" placeholder="5/5" class="rating" maxlength="3" required>
             <label for="description">Description</label>
             <textarea name="description" class="description" cols="30" rows="10" maxlength="1000" required></textarea>
-            <label for="demand">Demand</label>
-            <select name="demand" class="demand" required>
-                <option value="return">Return</option>
-                <option value="refund">Refund</option>
-                <option value="warranty">Warranty Claim</option>
-            </select>
-            <input type="submit" value="Confirm" class="submit">
+            <input type="submit" class="submit" value="Submit">
         </form>
-    </div>
-{% endblock %}
+</div>
+
+{% endblock %} 

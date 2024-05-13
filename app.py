@@ -3,7 +3,8 @@ from flask import Flask, redirect, render_template, request, url_for
 from sqlalchemy import create_engine, text
 from datetime import date
 
-conn_str = "mysql://root:MySQL@localhost/ecommerce"
+
+conn_str = "mysql://root:cset155@localhost/ecommerce"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -83,7 +84,7 @@ def loginEmpGo():
         query = text("SELECT Type FROM Users WHERE Username = :username AND Password = :password")
         result2 = conn.execute(query, {'username': username, 'password': password}).fetchone()
         
-        if result2[0] == "ADMIN":
+        if result2[0] == "Admin":
             return redirect(url_for('adminLanding'))
         else:
             return redirect(url_for('empLanding')) # rendering the template wasnt showing/display info on the page properly until the page was reloaded. -serena
@@ -129,18 +130,75 @@ def empChatting(User_id):
         return render_template(f'/empChatting.html', chat=accessing, ugh=starting, AcctID=AcctID)
     return render_template(f'/empChatting.html', chat=accessing, ugh=starting, AcctID=AcctID)
 
+@app.route('/adminChatting/<User_id>', methods=["GET", "POST"])
+def adminChatting(User_id):
+    ChatID = conn.execute(text(f"SELECT CHAT_ID FROM CHATS WHERE cust_ID = {User_id} AND emp_ID = 1")).all()
+    accessing = conn.execute(text(f"SELECT * FROM CHATS WHERE cust_ID = {User_id} AND emp_ID = 1")).all()
+    starting = conn.execute(text(f"SELECT * FROM MESSAGES NATURAL JOIN CHATS WHERE CHAT_ID = {accessing[0][0]}")).all()
+    print("ChatID", ChatID)
+    print("accessing", accessing)
+    print("starting", starting)
+    if request.method == "POST":
+        chattin = conn.execute(text(f"INSERT INTO MESSAGES (CONTENT, CHAT_ID, Sender_ID, Receiver_ID) VALUES ((:toVendor), {accessing[0][0]}, {accessing[0][2]}, {accessing[0][1]})"), request.form)
+        starting = conn.execute(text(f"SELECT * FROM MESSAGES NATURAL JOIN CHATS WHERE CHAT_ID = {accessing[0][0]}")).all()
+        print("chattin:", chattin)
+        print("starting", starting)
+        conn.commit()
+        return render_template(f'/adminChatting.html', chat=accessing, ugh=starting, AcctID=AcctID)
+    return render_template(f'/adminChatting.html', chat=accessing, ugh=starting, AcctID=AcctID)
+
 
 @app.route('/pendingOrders.html')
 def vendorOrders():
-    return render_template('pendingOrders.html')
+    query = text('''
+        SELECT *
+        FROM Orders
+        WHERE Order_Status = "PENDING"
+    ''')
+    orders = conn.execute(query).fetchall()
+
+    return render_template('pendingOrders.html', orders=orders)
+
+@app.route('/confirmOrder/<orders>', methods=['POST'])
+def confirmOrder(orders):
+    query = text('''
+        UPDATE Orders
+        SET Order_Status = "CONFIRMED"
+        WHERE Order_ID = :orders
+    ''')
+    conn.execute(query, {'orders': orders})
+    conn.commit()
+
+    query = text('''
+        SELECT *
+        FROM Orders
+        WHERE Order_Status = "PENDING"
+    ''')
+    orders = conn.execute(query).fetchall()
+
+    return render_template('pendingOrders.html', orders=orders)
 
 @app.route('/confirmedOrders.html')
 def confirmedOrders():
     return render_template('confirmedOrders.html')
 
-@app.route('/orderDetailsVendor.html')
-def orderDetailsVendor():
-    return render_template('orderDetailsVendor.html')
+@app.route('/orderDetailsVendor/<orders>')
+def orderDetailsVendor(orders):
+    query = text('''
+        SELECT *
+        FROM Orders
+        WHERE Order_ID = :orders
+    ''')
+    order = conn.execute(query, {'orders': orders}).fetchall()
+
+    query = text('''
+        SELECT *
+        FROM Order_Items
+        WHERE Order_ID = :orders
+    ''')
+    order_items = conn.execute(query, {'orders': orders}).fetchall()
+
+    return render_template('orderDetailsVendor.html', order=order, order_items=order_items)
 
 
 # -------------------------- END ------------------------------------------
@@ -265,13 +323,20 @@ def addItemAdminGo():
             conn.execute(query, {'Product_ID': product_id, 'Size': size})
             conn.commit()
 
-        return render_template('adminLanding.html')
+        return render_template('/adminDashboard.html')
     else:
         return render_template('add_itemAdmin.html')
     
 @app.route('/viewComplaints.html')
 def viewComplaints():
-    return render_template('viewComplaints.html')
+    query = text('''
+        SELECT *
+        FROM Complaints
+        WHERE Status = 'PENDING'
+    ''')
+    complaints = conn.execute(query).fetchall()
+
+    return render_template('viewComplaints.html', complaints=complaints)
 
 @app.route('/itemList.html')
 def itemList():
@@ -391,6 +456,26 @@ def orderDetails(order_id):
 
     return render_template('orderDetails.html', order=order, order_items=order_items)
 
+@app.route('/review.html/<product_id>')
+def review(product_id):
+    return render_template('review.html', product_id=product_id)
+
+@app.route('/review.html', methods=['POST'])
+def reviewGo():
+    current_date = date.today()
+    product_id = request.form['product_id']
+    rating = request.form['rating']
+    description = request.form['description']
+
+    query = text('''
+        INSERT INTO Reviews
+        VALUES (:userID, :product_id, :rating, :current_date, :description);
+    ''')
+    conn.execute(query, {'userID': userID, 'product_id': product_id, 'rating': rating, 'current_date': current_date, 'description': description})
+    conn.commit()
+
+    return render_template('baseCustomer.html')
+
 @app.route('/complaint.html/<order_item_id>')
 def complaint(order_item_id):
     query = text('''
@@ -410,13 +495,55 @@ def complaintGo():
     demand = request.form['demand']
 
     query = text('''
-        INSERT INTO Complaints
-        VALUES (:userID, :current_date, :title, :description, :demand)
+        INSERT INTO Complaints (User_ID, Date, Title, Description, Demand, Status)
+        VALUES (:userID, :current_date, :title, :description, :demand, "PENDING")
     ''')
     conn.execute(query, {'userID': userID, 'current_date': current_date, 'title': title, 'description': description, 'demand': demand})
     conn.commit()
 
-    return render_template('baseCustomer.html')
+    conn.execute(text(f"INSERT INTO CHATS (cust_ID, emp_ID) VALUES ({userID}, 1)"))
+    accessing = conn.execute(text(f"SELECT * FROM CHATS WHERE cust_ID = {userID} AND emp_ID = 1")).all()
+    conn.commit()
+    return render_template(f'/chatting.html', chat=accessing, userID=userID)
+
+
+@app.route('/approveComplaint.html/<complaint_id>', methods=['POST'])
+def approveComplaint(complaint_id):
+    query = text('''
+        UPDATE Complaints
+        SET Status = "APPROVED"
+        WHERE Complaint_ID = :complaint_id
+    ''')
+    conn.execute(query, {'complaint_id': complaint_id})
+    conn.commit()
+
+    query = text('''
+        SELECT *
+        FROM Complaints
+        WHERE Status = 'PENDING'
+    ''')
+    complaints = conn.execute(query).fetchall()
+
+    return render_template('viewComplaints.html', complaints=complaints)
+
+@app.route('/denyComplaint.html/<complaint_id>', methods=['POST'])
+def denyComplaint(complaint_id):
+    query = text('''
+        UPDATE Complaints
+        SET Status = "DENIED"
+        WHERE Complaint_ID = :complaint_id
+    ''')
+    conn.execute(query, {'complaint_id': complaint_id})
+    conn.commit()
+
+    query = text('''
+        SELECT *
+        FROM Complaints
+        WHERE Status = 'PENDING'
+    ''')
+    complaints = conn.execute(query).fetchall()
+
+    return render_template('viewComplaints.html', complaints=complaints)
 
 @app.route('/cart.html', methods=["GET"])
 def cart():
@@ -445,28 +572,37 @@ def cart():
 
 @app.route('/cart.html', methods=["POST"])
 def cartGo():
-    query = text('''
-        SELECT Cart_ID
-        FROM Carts
-        WHERE User_ID = :user_id
-    ''')
+    query = text('''SELECT Cart_ID FROM Carts WHERE User_ID = :user_id''')
     cart_id = conn.execute(query, {'user_id': userID}).fetchone()[0]
 
-    query = text('''
-        SELECT Total_Price
-        FROM Carts
-        WHERE User_ID = :user_id
-    ''')
-    price = conn.execute(query, {'user_id': userID}).fetchone()[0]
-
-    query = text('''
-        SELECT *
-        FROM Cart_Items
-        WHERE Cart_ID = :cart_id
-    ''')
+    query = text('''SELECT * FROM Cart_Items WHERE Cart_ID = :cart_id''')
     cart_items = conn.execute(query, {'cart_id': cart_id}).fetchall()
 
-    return render_template('payment.html', cart_items=cart_items, price=price)
+    if not cart_items:
+        return redirect(url_for('cart'))
+    else:
+        query = text('''
+            SELECT Cart_ID
+            FROM Carts
+            WHERE User_ID = :user_id
+        ''')
+        cart_id = conn.execute(query, {'user_id': userID}).fetchone()[0]
+
+        query = text('''
+            SELECT Total_Price
+            FROM Carts
+            WHERE User_ID = :user_id
+        ''')
+        price = conn.execute(query, {'user_id': userID}).fetchone()[0]
+
+        query = text('''
+            SELECT *
+            FROM Cart_Items
+            WHERE Cart_ID = :cart_id
+        ''')
+        cart_items = conn.execute(query, {'cart_id': cart_id}).fetchall()
+
+        return render_template('payment.html', cart_items=cart_items, price=price)
 
 @app.route('/payment.html', methods=["POST"])
 def paymentGo():
@@ -536,10 +672,10 @@ def paymentGo():
             expiry_date = current_date.replace(year=current_date.year + warranty_years, month=current_date.month + warranty_months)
 
         query = text('''
-            INSERT INTO Order_Items (Order_ID, Title, Expiry, Amount, Color, Size, Image, Price)
-            VALUES (:OrderID, :title, :expiry_date, :amount, :color, :size, :image, :indPrice)
+            INSERT INTO Order_Items (Order_ID, Title, Expiry, Amount, Color, Size, Image, Price, Product_ID)
+            VALUES (:OrderID, :title, :expiry_date, :amount, :color, :size, :image, :indPrice, :product_id)
         ''')
-        conn.execute(query, {'OrderID': OrderID, 'title': title, 'expiry_date': expiry_date, 'amount': amount, 'color': color, 'size': size, 'image': image, 'indPrice': indPrice})
+        conn.execute(query, {'OrderID': OrderID, 'title': title, 'expiry_date': expiry_date, 'amount': amount, 'color': color, 'size': size, 'image': image, 'indPrice': indPrice, 'product_id': product_id})
         conn.commit()
 
     query = text('''
@@ -636,7 +772,7 @@ def products():
         product_data.append(product_info)
     return render_template('products.html', product_data=product_data)
 
-@app.route('/product_details/<product_id>')
+@app.route('/product_details.html/<product_id>')
 def product_details(product_id):
     query = text('''
         SELECT *
@@ -655,7 +791,7 @@ def product_details(product_id):
     query = text('''
         SELECT Color
         FROM Colors
-        WHERE  Product_ID = :product_id;
+        WHERE Product_ID = :product_id;
     ''')
     colors = conn.execute(query, {'product_id': product_id}).fetchall()
 
@@ -674,6 +810,13 @@ def product_details(product_id):
 
     warranties = conn.execute(query,  {'product_id': product_id}).fetchone()
 
+    query = text('''
+        SELECT *
+        FROM Reviews
+        WHERE Product_ID = :product_id
+    ''')
+    reviews = conn.execute(query, {'product_id': product_id}).fetchall()
+
     query = text("SELECT * FROM Discount WHERE Product_ID =:product_id AND Discount_Period >= CURRENT_DATE")
     discounts = conn.execute(query, {'product_id': product_id, 'current_date': date.today()}).fetchall()
     
@@ -686,7 +829,7 @@ def product_details(product_id):
     else:
         discounted_price = None
 
-    return render_template('productDetails.html', product_data=product_data, images=images, warranties=warranties, colors=colors, sizes=sizes, discounts=discounts, discounted_price=discounted_price,current_date=date.today())
+    return render_template('productDetails.html', product_data=product_data, images=images, warranties=warranties, colors=colors, sizes=sizes, discounts=discounts, discounted_price=discounted_price, current_date=date.today(), reviews=reviews)
 
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
